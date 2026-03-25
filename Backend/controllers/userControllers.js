@@ -1,5 +1,5 @@
 const { response } = require("express");
-const userModel = require("../../../models/user.model");
+const userModel = require("../models/user.model");
 const bcryptjs = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const sendEmailFunc = require("../config/send.Email");
