@@ -15,7 +15,7 @@ async function sendEmail(to, subject, text, html) {
   try {
     const info = await transporter.sendMail({
       from: process.env.EMAIL,
-      to,
+      to :to.trim(),
       subject,
       text,
       html,

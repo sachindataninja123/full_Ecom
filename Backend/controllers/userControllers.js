@@ -3,6 +3,8 @@ const bcryptjs = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const sendEmailFunc = require("../config/send.Email");
 const EmailVerificationTemplate = require("../utils/verifyEmailTemplate");
+const generateAccessToken = require("../utils/generateAccessToken");
+const generateRefreshToken = require("../utils/generateRefreshToken");
 
 const registerUser = async (req, res) => {
   try {
@@ -119,4 +121,38 @@ const verifyEmail = async (req, res) => {
   }
 };
 
-module.exports = { registerUser , verifyEmail };
+const loginUser = async (req, res) => {
+  const { email, password } = req.body;
+
+  const user = await userModel.findOne({ email: email });
+
+  if (!user) {
+    return res.status(400).json({
+      error: true,
+      success: false,
+      message: "User not registered",
+    });
+  }
+  if (user.status !== "Active") {
+    return res.status(400).json({
+      error: true,
+      success: false,
+      message: "Contact to admin",
+    });
+  }
+
+  const checkPassword = await bcryptjs.compare(password, user.password);
+
+  if (!checkPassword) {
+    return res.status(400).json({
+      message: "Check your password",
+      error: true,
+      success: false,
+    });
+  }
+
+  const accessToken = await generateAccessToken(user._id);
+  const refreshToken = await generateRefreshToken(user, _id);
+};
+
+module.exports = { registerUser, verifyEmail };
