@@ -17,6 +17,6 @@ app.use(
   }),
 );
 
-app.use("/", userRoutes);
+app.use("/api/user", userRoutes);
 
 module.exports = app;

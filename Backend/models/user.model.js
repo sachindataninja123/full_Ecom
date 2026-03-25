@@ -12,16 +12,12 @@ const userSchema = mongoose.Schema(
       unique: true,
     },
     password: {
-      type: Number,
+      type: String,
       required: [true, "provide password"],
     },
     avatar: {
       type: String,
       default: "",
-    },
-    password: {
-      type: Number,
-      default: null,
     },
     verify_email: {
       type: Boolean,
@@ -33,7 +29,7 @@ const userSchema = mongoose.Schema(
     },
     status: {
       type: String,
-      enum: ["Active", "Inacctive", "Suspended"],
+      enum: ["Active", "Inactive", "Suspended"],
       default: "Active",
     },
     address_details: [
@@ -54,13 +50,11 @@ const userSchema = mongoose.Schema(
         ref: "order",
       },
     ],
-    forgot_password_otp: {
+    otp: {
       type: String,
-      default: null,
     },
-    forgot_password_expiry: {
+    otpExpires: {
       type: Date,
-      default: "",
     },
     role: {
       type: String,
