@@ -122,37 +122,100 @@ const verifyEmail = async (req, res) => {
 };
 
 const loginUser = async (req, res) => {
-  const { email, password } = req.body;
+  try {
+    const { email, password } = req.body;
 
-  const user = await userModel.findOne({ email: email });
+    const user = await userModel.findOne({ email: email });
 
-  if (!user) {
-    return res.status(400).json({
+    if (!user) {
+      return res.status(400).json({
+        error: true,
+        success: false,
+        message: "User not registered",
+      });
+    }
+    if (user.status !== "Active") {
+      return res.status(400).json({
+        error: true,
+        success: false,
+        message: "Contact to admin",
+      });
+    }
+
+    const checkPassword = await bcryptjs.compare(password, user.password);
+
+    if (!checkPassword) {
+      return res.status(400).json({
+        message: "Check your password",
+        error: true,
+        success: false,
+      });
+    }
+
+    const accessToken = await generateAccessToken(user._id);
+    const refreshToken = await generateRefreshToken(user._id);
+
+    const updateUser = await userModel.findByIdAndUpdate(user?._id, {
+      last_login_date: new Date(),
+      refresh_token: refreshToken,
+    });
+
+    const cookiesOption = {
+      httpOnly: true,
+      secure: true,
+      samesite: "None",
+    };
+
+    res.cookie("accessToken", accessToken, cookiesOption);
+    res.cookie("refreshToken", refreshToken, cookiesOption);
+
+    return res.json({
+      message: "Login successfully",
+      error: false,
+      success: true,
+      data: {
+        accessToken,
+        refreshToken,
+      },
+    });
+  } catch (error) {
+    return res.status(500).json({
+      message: error.message || error,
       error: true,
       success: false,
-      message: "User not registered",
     });
   }
-  if (user.status !== "Active") {
-    return res.status(400).json({
-      error: true,
-      success: false,
-      message: "Contact to admin",
-    });
-  }
-
-  const checkPassword = await bcryptjs.compare(password, user.password);
-
-  if (!checkPassword) {
-    return res.status(400).json({
-      message: "Check your password",
-      error: true,
-      success: false,
-    });
-  }
-
-  const accessToken = await generateAccessToken(user._id);
-  const refreshToken = await generateRefreshToken(user, _id);
 };
 
-module.exports = { registerUser, verifyEmail };
+const logoutUser = async (req, res) => {
+  try {
+    const userId = req.userId; // auth middleware
+
+    const cookiesOption = {
+      httpOnly: true,
+      secure: true,
+      sameSite: "None",
+    };
+
+    res.clearCookie("accessToken", cookiesOption);
+    res.clearCookie("refreshToken", cookiesOption);
+
+    const removeRefreshToken = await userModel.findByIdAndUpdate(userId, {
+      refresh_token: " ",
+    });
+
+    return res.json({
+      message: "LogOut successfully",
+      error: false,
+      success: true,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      message: error.message || error,
+      error: true,
+      success: false,
+    });
+  }
+};
+
+module.exports = { registerUser, verifyEmail, loginUser, logoutUser };
