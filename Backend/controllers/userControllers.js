@@ -561,6 +561,84 @@ const resetPassword = async (req, res) => {
   }
 };
 
+const refreshToken = async (req, res) => {
+  try {
+    const refreshToken =
+      req.cookies.refreshToken || req?.headers?.authorization?.split(" ")[1]; /// [Bearer Token]
+
+    if (!refreshToken) {
+      return res.status(401).json({
+        message: "Invalid Token",
+        error: true,
+        success: false,
+      });
+    }
+
+    const verifyToken = await jwt.verify(
+      refreshToken,
+      process.env.SECRET_KEY_REFRESH_TOKEN,
+    );
+
+    if (!verifyToken) {
+      return res.status(401).json({
+        message: "Token is expired",
+        error: true,
+        success: false,
+      });
+    }
+
+    const userId = verifyToken?._id;
+    const newAccessToken = await generateAccessToken(userId);
+
+    const cookiesOption = {
+      httpOnly: true,
+      secure: true,
+      sameSite: "None",
+    };
+
+    res.cookie("accessToken", newAccessToken, cookiesOption);
+
+    return res.status(200).json({
+      message: "New Access Token generated",
+      success: true,
+      error: false,
+      data: {
+        accessToken: newAccessToken,
+      },
+    });
+  } catch (error) {
+    return res.status(500).json({
+      message: error.message || error,
+      error: true,
+      success: false,
+    });
+  }
+};
+
+const userDetails = async (req, res) => {
+  try {
+    const userId = req.userId;
+    console.log(userId);
+
+    const user = await userModel
+      .findById(userId)
+      .select("-password -refresh_token");
+
+    return res.status(200).json({
+      message: "User Details",
+      data: user,
+      success: true,
+      error: false,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      message: error.message || error,
+      error: true,
+      success: false,
+    });
+  }
+};
+
 module.exports = {
   registerUser,
   verifyEmail,
@@ -572,4 +650,6 @@ module.exports = {
   forgotpassword,
   verifyForgotPassword,
   resetPassword,
+  refreshToken,
+  userDetails,
 };
