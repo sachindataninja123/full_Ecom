@@ -6,6 +6,17 @@ const EmailVerificationTemplate = require("../utils/verifyEmailTemplate");
 const generateAccessToken = require("../utils/generateAccessToken");
 const generateRefreshToken = require("../utils/generateRefreshToken");
 
+const cloudinary = require("cloudinary").v2;
+const fs = require("fs");
+
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CONFIG_CONFIG_NAME,
+  api_key: process.env.CLOUDINARY_CONFIG_API_KEY,
+  api_secret: process.env.CLOUDINARY_CONFIG_API_SECRET,
+  secure: true,
+});
+
+// register controller API
 const registerUser = async (req, res) => {
   try {
     let user;
@@ -73,6 +84,7 @@ const registerUser = async (req, res) => {
   }
 };
 
+// VerifyEmail controller API
 const verifyEmail = async (req, res) => {
   try {
     const { email, otp } = req.body;
@@ -121,6 +133,7 @@ const verifyEmail = async (req, res) => {
   }
 };
 
+// login controller API
 const loginUser = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -139,6 +152,14 @@ const loginUser = async (req, res) => {
         error: true,
         success: false,
         message: "Contact to admin",
+      });
+    }
+
+    if (user.verify_email !== true) {
+      return res.status(400).json({
+        message: "Your Email is not verify yet please verify your email first",
+        error: true,
+        success: false,
       });
     }
 
@@ -187,6 +208,7 @@ const loginUser = async (req, res) => {
   }
 };
 
+// logOut controller API
 const logoutUser = async (req, res) => {
   try {
     const userId = req.userId; // auth middleware
@@ -218,4 +240,227 @@ const logoutUser = async (req, res) => {
   }
 };
 
-module.exports = { registerUser, verifyEmail, loginUser, logoutUser };
+//image upload API
+const userimageAvatar = async (req, res) => {
+  try {
+    const userId = req.userId; // from auth middleware
+    const file = req.file; // multer single upload
+
+    // 🔴 Check file
+    if (!file) {
+      return res.status(400).json({
+        message: "Image is required",
+        error: true,
+        success: false,
+      });
+    }
+
+    // 🔴 Find user
+    const user = await userModel.findById(userId);
+
+    if (!user) {
+      return res.status(404).json({
+        message: "User not found",
+        error: true,
+        success: false,
+      });
+    }
+
+    // 🔥 Upload & Replace (overwrite)
+    const result = await cloudinary.uploader.upload(file.path, {
+      public_id: user.avatar_public_id || `users/${userId}`,
+      folder: "users", // optional but good practice
+      overwrite: true, // 🔥 THIS REPLACES OLD IMAGE
+    });
+
+    // 🔥 Delete local file
+    if (fs.existsSync(file.path)) {
+      fs.unlinkSync(file.path);
+    }
+
+    // 🔥 Save in DB
+    user.avatar = result.secure_url;
+    user.avatar_public_id = result.public_id;
+    await user.save();
+
+    // 🔥 Response
+    return res.status(200).json({
+      message: "Avatar updated successfully",
+      id: userId,
+      error: false,
+      success: true,
+      data: {
+        avatar: result.secure_url,
+      },
+    });
+  } catch (error) {
+    return res.status(500).json({
+      message: error.message || error,
+      error: true,
+      success: false,
+    });
+  }
+};
+
+// remove image API
+const removeImageAvatarFromCloudinary = async (req, res) => {
+  try {
+    const imgUrl = req.query.img;
+
+    if (!imgUrl) {
+      return res.status(400).json({
+        message: "Image URL required",
+        error: true,
+        success: false,
+      });
+    }
+
+    // Extract public_id properly
+    const urlArr = imgUrl.split("/");
+    const image = urlArr.slice(-2).join("/");
+    // e.g. products/abc123.jpg
+
+    const publicId = image.split(".")[0];
+    // products/abc123
+
+    // Delete from Cloudinary
+    const result = await cloudinary.uploader.destroy(publicId);
+
+    return res.json({
+      message: "Image deleted successfully",
+      success: true,
+      data: result,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      message: error.message || error,
+      error: true,
+      success: false,
+    });
+  }
+};
+
+const updateUserDetails = async (req, res) => {
+  try {
+    const userId = req.userId; // auth middleware
+    const { name, email, mobile, password } = req.body;
+
+    const userExist = await userModel.findById(userId);
+    if (!userExist) {
+      return res.status(400).send("The user cannot be updated");
+    }
+
+    let verifyCode = "";
+
+    if (email !== userExist.email) {
+      verifyCode = Math.floor(100000 + Math.random() * 900000).toString();
+    }
+
+    let hashPassword = "";
+
+    if (password) {
+      const salt = await bcryptjs.genSalt(10);
+      hashPassword = await bcryptjs.hash(password, salt);
+    } else {
+      hashPassword = userExist.password;
+    }
+
+    const updateUser = await userModel.findByIdAndUpdate(
+      userId,
+      {
+        name: name,
+        mobile: mobile,
+        email: email,
+        verify_email: email !== userExist.email ? false : true,
+        password: hashPassword,
+        otp: verifyCode !== "" ? verifyCode : null,
+        otpExpires: verifyCode !== "" ? Date.now() + 600000 : "",
+      },
+      {
+        new: true,
+      },
+    );
+
+    if (email !== userExist.email) {
+      // send verification mail
+      await sendEmailFunc({
+        to: email,
+        subject: "Verify email from ecommerce App",
+        text: "",
+        html: EmailVerificationTemplate(name, verifyCode),
+      });
+    }
+
+    return res.json({
+      message: "User Updated successfully",
+      error: false,
+      success: true,
+      user: updateUser,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      message: error.message || error,
+      error: true,
+      success: false,
+    });
+  }
+};
+
+const forgotpassword = async (req, res) => {
+  try {
+    const { email } = req.body;
+
+    const user = await userModel.findOne({ email: email });
+
+    if (!user) {
+      return res.status(400).json({
+        message: "Email not available",
+        error: true,
+        success: false,
+      });
+    }
+
+    let verifyCode = Math.floor(100000 + Math.random() * 900000).toString();
+    const updateUser = await userModel.findByIdAndUpdate(
+      user?._id,
+      {
+        otp: verifyCode,
+        otpExpires: Date.now() + 600000,
+      },
+      {
+        new: true,
+      },
+    );
+
+    // send verification mail
+    await sendEmailFunc({
+      to: email,
+      subject: "Verify email from ecommerce App",
+      text: "",
+      html: EmailVerificationTemplate(user?.name, verifyCode),
+    });
+
+    return res.json({
+      message: "Check your Email",
+      error: false,
+      success: true,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      message: error.message || error,
+      error: true,
+      success: false,
+    });
+  }
+};
+
+module.exports = {
+  registerUser,
+  verifyEmail,
+  loginUser,
+  logoutUser,
+  userimageAvatar,
+  removeImageAvatarFromCloudinary,
+  updateUserDetails,
+  forgotpassword,
+};
