@@ -2,7 +2,6 @@ const categoryModel = require("../models/category.model");
 
 const cloudinary = require("cloudinary").v2;
 const fs = require("fs");
-const path = require("path");
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CONFIG_CONFIG_NAME,
@@ -285,57 +284,6 @@ const deleteCategory = async (req, res) => {
   }
 };
 
-// const UpdateCategory = async (req, res) => {
-//   try {
-//     const file = req.file;
-
-//     let imageUrl = req.body.images; // fallback
-
-//     // 🔥 If new image uploaded
-//     if (file) {
-//       const result = await cloudinary.uploader.upload(file.path, {
-//         folder: "categories",
-//       });
-
-//       imageUrl = result.secure_url;
-
-//       // delete local file
-//       if (fs.existsSync(file.path)) {
-//         fs.unlinkSync(file.path);
-//       }
-//     }
-
-//     const category = await categoryModel.findByIdAndUpdate(
-//       req.params.id,
-//       {
-//         name: req.body.name,
-//         images: imageUrl,
-//         parentId: req.body.parentId,
-//         parentCatName: req.body.parentCatName,
-//       },
-//       { new: true },
-//     );
-
-//     if (!category) {
-//       return res.status(500).json({
-//         message: "Category cannot be updated!",
-//         success: false,
-//       });
-//     }
-
-//     res.status(200).json({
-//       success: true,
-//       error: false,
-//       category: category,
-//     });
-//   } catch (error) {
-//     return res.status(500).json({
-//       message: error.message || error,
-//       error: true,
-//       success: false,
-//     });
-//   }
-// };
 
 const UpdateCategory = async (req, res) => {
   try {

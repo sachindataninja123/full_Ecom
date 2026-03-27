@@ -5,6 +5,7 @@ const morgan = require("morgan");
 const helmet = require("helmet");
 const userRoutes = require("../routes/userRoutes");
 const categoryRouter = require("../routes/categoryRoutes");
+const productRouter = require("../routes/productRoutes");
 
 const app = express();
 app.use(cors());
@@ -20,5 +21,6 @@ app.use(
 
 app.use("/api/user", userRoutes);
 app.use("/api/category", categoryRouter);
+app.use("/api/product", productRouter);
 
 module.exports = app;
