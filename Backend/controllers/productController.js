@@ -11,7 +11,6 @@ cloudinary.config({
 });
 
 // image upload
-
 const uploadProductImages = async (req, res) => {
   let files = req.files;
 
@@ -83,8 +82,8 @@ const createProduct = async (req, res) => {
       catName: body.catName,
       catId: body.catId,
       subCatId: body.subCatId,
-      subCat: body.subCat,
-      thirdSubCat: body.thirdSubCat,
+      subCat: body.subCatName,
+      thirdSubCat: body.thirdSubCatName,
       thirdSubCatId: body.thirdSubCatId,
       countInStock: body.countInStock,
       rating: body.rating,
@@ -109,13 +108,28 @@ const createProduct = async (req, res) => {
   }
 };
 
-// getAllProducts
+// get All Products
 const getAllProducts = async (req, res) => {
   try {
+    const page = parseInt(req.query.page) || 1;
+    const perPage = parseInt(req.query.perPage);
+    const totalPosts = await productModel.countDocuments();
+    const totalPages = Math.ceil(totalPosts / perPage);
 
-    
+    if (page > totalPages) {
+      return res.status(404).json({
+        message: "Page not found",
+        error: true,
+        success: false,
+      });
+    }
 
-    const products = await productModel.find();
+    const products = await productModel
+      .find()
+      .populate("category")
+      .skip((page - 1) * perPage)
+      .limit(perPage)
+      .exec();
 
     if (!products) {
       res.status(500).json({
@@ -127,10 +141,10 @@ const getAllProducts = async (req, res) => {
     return res.status(200).json({
       success: true,
       error: false,
-      data: products,
+      products: products,
+      totalPages: totalPages,
+      page: page,
     });
-
-
   } catch (error) {
     return res.status(500).json({
       message: error.message,
@@ -140,4 +154,301 @@ const getAllProducts = async (req, res) => {
   }
 };
 
-module.exports = { uploadProductImages, createProduct , getAllProducts};
+// get All Products By Category Id
+const getAllProductsByCatId = async (req, res) => {
+  try {
+    const page = parseInt(req.query.page) || 1;
+    const perPage = parseInt(req.query.perPage) || 10000;
+    const totalPosts = await productModel.countDocuments();
+    const totalPages = Math.ceil(totalPosts / perPage);
+
+    if (page > totalPages) {
+      return res.status(404).json({
+        message: "Page not found",
+        error: true,
+        success: false,
+      });
+    }
+
+    const products = await productModel
+      .find({
+        catId: req.params.id,
+      })
+      .populate("category")
+      .skip((page - 1) * perPage)
+      .limit(perPage)
+      .exec();
+
+    if (!products) {
+      res.status(500).json({
+        error: true,
+        success: false,
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      error: false,
+      products: products,
+      totalPages: totalPages,
+      page: page,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      message: error.message,
+      error: true,
+      success: false,
+    });
+  }
+};
+
+// get All Products By Cat Name
+const getAllProductsByCatName = async (req, res) => {
+  try {
+    const page = parseInt(req.query.page) || 1;
+    const perPage = parseInt(req.query.perPage) || 10000;
+    const totalPosts = await productModel.countDocuments();
+    const totalPages = Math.ceil(totalPosts / perPage);
+
+    if (page > totalPages) {
+      return res.status(404).json({
+        message: "Page not found",
+        error: true,
+        success: false,
+      });
+    }
+
+    const products = await productModel
+      .find({
+        catName: req.query.catName,
+      })
+      .populate("category")
+      .skip((page - 1) * perPage)
+      .limit(perPage)
+      .exec();
+
+    if (!products) {
+      res.status(500).json({
+        error: true,
+        success: false,
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      error: false,
+      products: products,
+      totalPages: totalPages,
+      page: page,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      message: error.message,
+      error: true,
+      success: false,
+    });
+  }
+};
+
+// get All Products By Sub Category Id
+const getAllProductsBySubCatId = async (req, res) => {
+  try {
+    const page = parseInt(req.query.page) || 1;
+    const perPage = parseInt(req.query.perPage) || 10000;
+    const totalPosts = await productModel.countDocuments();
+    const totalPages = Math.ceil(totalPosts / perPage);
+
+    if (page > totalPages) {
+      return res.status(404).json({
+        message: "Page not found",
+        error: true,
+        success: false,
+      });
+    }
+
+    const products = await productModel
+      .find({
+        subCatId: req.params.id,
+      })
+      .populate("category")
+      .skip((page - 1) * perPage)
+      .limit(perPage)
+      .exec();
+
+    if (!products) {
+      res.status(500).json({
+        error: true,
+        success: false,
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      error: false,
+      products: products,
+      totalPages: totalPages,
+      page: page,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      message: error.message,
+      error: true,
+      success: false,
+    });
+  }
+};
+
+// get All Products By Sub Cat Name
+const getAllProductsBySubCatName = async (req, res) => {
+  try {
+    const page = parseInt(req.query.page) || 1;
+    const perPage = parseInt(req.query.perPage) || 10000;
+    const totalPosts = await productModel.countDocuments();
+    const totalPages = Math.ceil(totalPosts / perPage);
+
+    if (page > totalPages) {
+      return res.status(404).json({
+        message: "Page not found",
+        error: true,
+        success: false,
+      });
+    }
+
+    const products = await productModel
+      .find({
+        subCatName: req.query.subCatName,
+      })
+      .populate("category")
+      .skip((page - 1) * perPage)
+      .limit(perPage)
+      .exec();
+
+    if (!products) {
+      res.status(500).json({
+        error: true,
+        success: false,
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      error: false,
+      products: products,
+      totalPages: totalPages,
+      page: page,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      message: error.message,
+      error: true,
+      success: false,
+    });
+  }
+};
+
+const getAllProductsByThirdLevelCatId = async (req, res) => {
+  try {
+    const page = parseInt(req.query.page) || 1;
+    const perPage = parseInt(req.query.perPage) || 10000;
+    const totalPosts = await productModel.countDocuments();
+    const totalPages = Math.ceil(totalPosts / perPage);
+
+    if (page > totalPages) {
+      return res.status(404).json({
+        message: "Page not found",
+        error: true,
+        success: false,
+      });
+    }
+
+    const products = await productModel
+      .find({
+        thirdSubCatId: req.params.id,
+      })
+      .populate("category")
+      .skip((page - 1) * perPage)
+      .limit(perPage)
+      .exec();
+
+    if (!products) {
+      res.status(500).json({
+        error: true,
+        success: false,
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      error: false,
+      products: products,
+      totalPages: totalPages,
+      page: page,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      message: error.message,
+      error: true,
+      success: false,
+    });
+  }
+};
+
+// get All Products By Sub Cat Name
+const getAllProductsByThirdLevelCatName = async (req, res) => {
+  try {
+    const page = parseInt(req.query.page) || 1;
+    const perPage = parseInt(req.query.perPage) || 10000;
+    const totalPosts = await productModel.countDocuments();
+    const totalPages = Math.ceil(totalPosts / perPage);
+
+    if (page > totalPages) {
+      return res.status(404).json({
+        message: "Page not found",
+        error: true,
+        success: false,
+      });
+    }
+
+    const products = await productModel
+      .find({
+        thirdSubCatName: req.query.thirdSubCatName,
+      })
+      .populate("category")
+      .skip((page - 1) * perPage)
+      .limit(perPage)
+      .exec();
+
+    if (!products) {
+      res.status(500).json({
+        error: true,
+        success: false,
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      error: false,
+      products: products,
+      totalPages: totalPages,
+      page: page,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      message: error.message,
+      error: true,
+      success: false,
+    });
+  }
+};
+
+module.exports = {
+  uploadProductImages,
+  createProduct,
+  getAllProducts,
+  getAllProductsByCatId,
+  getAllProductsByCatName,
+  getAllProductsBySubCatId,
+  getAllProductsBySubCatName,
+  getAllProductsByThirdLevelCatId,
+  getAllProductsByThirdLevelCatName
+};

@@ -38,15 +38,15 @@ const productSchema = mongoose.Schema(
       type: String,
       default: "",
     },
+    subCatName: {
+      type: String,
+      default: "",
+    },
     subCatId: {
       type: String,
       default: "",
     },
-    subCat: {
-      type: String,
-      default: "",
-    },
-    thirdSubCat: {
+    thirdSubCatName: {
       type: String,
       default: "",
     },
@@ -54,11 +54,11 @@ const productSchema = mongoose.Schema(
       type: String,
       default: "",
     },
-    // category: {
-    //   type: mongoose.Schema.Types.ObjectId,
-    //   ref: 'category',
-    //   required: true,
-    // },
+    category: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "category",
+      required: true,
+    },
     countInStock: {
       type: Number,
       required: true,
