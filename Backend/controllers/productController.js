@@ -57,17 +57,17 @@ const uploadProductImages = async (req, res) => {
         try {
           if (fs.existsSync(file.path)) {
             fs.unlinkSync(file.path);
-            console.log("Deleted:", file.path);
+            // console.log("Deleted:", file.path);
           }
         } catch (err) {
-          console.log("Delete error:", err.message);
+          // console.log("Delete error:", err.message);
         }
       });
     }
   }
 };
 
-// create Product
+// // create Product
 const createProduct = async (req, res) => {
   try {
     const body = req.body || {};
@@ -346,6 +346,7 @@ const getAllProductsBySubCatName = async (req, res) => {
   }
 };
 
+// get All Products By ThirdLevelSub Cat Id
 const getAllProductsByThirdLevelCatId = async (req, res) => {
   try {
     const page = parseInt(req.query.page) || 1;
@@ -393,7 +394,7 @@ const getAllProductsByThirdLevelCatId = async (req, res) => {
   }
 };
 
-// get All Products By Sub Cat Name
+// get All Products By ThirdLevelSub Name
 const getAllProductsByThirdLevelCatName = async (req, res) => {
   try {
     const page = parseInt(req.query.page) || 1;
@@ -441,6 +442,238 @@ const getAllProductsByThirdLevelCatName = async (req, res) => {
   }
 };
 
+// get All Products By Price
+const getAllProductsByPrice = async (req, res) => {
+  try {
+    const {
+      catId,
+      subCatId,
+      thirdSubCatId,
+      minPrice,
+      maxPrice,
+      page = 1,
+      limit = 10,
+    } = req.query;
+
+    let query = {};
+
+    // 🔥 Category filters (priority based)
+    if (thirdSubCatId) {
+      query.thirdSubCatId = thirdSubCatId;
+    } else if (subCatId) {
+      query.subCatId = subCatId;
+    } else if (catId) {
+      query.catId = catId;
+    }
+
+    // 🔥 Price filter
+    if (minPrice || maxPrice) {
+      query.price = {};
+
+      if (minPrice) {
+        query.price.$gte = Number(minPrice);
+      }
+
+      if (maxPrice) {
+        query.price.$lte = Number(maxPrice);
+      }
+    }
+
+    // 🔥 Pagination
+    const skip = (page - 1) * limit;
+
+    const products = await productModel
+      .find(query)
+      .populate("category")
+      .skip(skip)
+      .limit(Number(limit));
+
+    const total = await productModel.countDocuments(query);
+
+    return res.status(200).json({
+      success: true,
+      products,
+      totalPages: Math.ceil(total / limit),
+      page: Number(page),
+    });
+  } catch (error) {
+    return res.status(500).json({
+      message: error.message,
+      error: true,
+    });
+  }
+};
+
+// get All Products By Rating
+const getAllProductsByRating = async (req, res) => {
+  try {
+    const page = parseInt(req.query.page) || 1;
+    const perPage = parseInt(req.query.perPage) || 10000;
+    const totalPosts = await productModel.countDocuments();
+    const totalPages = Math.ceil(totalPosts / perPage);
+
+    if (page > totalPages) {
+      return res.status(404).json({
+        message: "Page not found",
+        error: true,
+        success: false,
+      });
+    }
+
+    let products = [];
+
+    if (req.query.catId !== undefined) {
+      products = await productModel
+        .find({
+          rating: req.query.rating,
+          catId: req.query.catId,
+        })
+        .populate("category")
+        .skip((page - 1) * perPage)
+        .limit(perPage)
+        .exec();
+    }
+
+    if (req.query.subCatId !== undefined) {
+      products = await productModel
+        .find({
+          rating: req.query.rating,
+          subCatId: req.query.subCatId,
+        })
+        .populate("category")
+        .skip((page - 1) * perPage)
+        .limit(perPage)
+        .exec();
+    }
+
+    if (req.query.thirdSubCatId !== undefined) {
+      products = await productModel
+        .find({
+          rating: req.query.rating,
+          thirdSubCatId: req.query.thirdSubCatId,
+        })
+        .populate("category")
+        .skip((page - 1) * perPage)
+        .limit(perPage)
+        .exec();
+    }
+
+    if (!products) {
+      res.status(500).json({
+        error: true,
+        success: false,
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      error: false,
+      products: products,
+      totalPages: totalPages,
+      page: page,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      message: error.message,
+      error: true,
+      success: false,
+    });
+  }
+};
+
+// get all products count
+const getAllProductsCount = async (req, res) => {
+  try {
+    const productsCount = await productModel.countDocuments();
+
+    if (!productsCount) {
+      return res.json({
+        error: true,
+        success: false,
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      error: false,
+      productCounts: productsCount,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      message: error.message,
+      error: true,
+      success: false,
+    });
+  }
+};
+
+// get All features products
+const getAllFeaturedProducts = async (req, res) => {
+  try {
+    const products = await productModel
+      .find({
+        isFeatured: true,
+      })
+      .populate("category");
+
+    if (!products) {
+      res.status(500).json({
+        error: true,
+        success: false,
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      error: false,
+      products: products,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      message: error.message,
+      error: true,
+      success: false,
+    });
+  }
+};
+
+// delete Product
+const deleteProduct = async (req, res) => {
+  try {
+    const product = await productModel.findById(req.params.id);
+
+    if (!product) {
+      return res.status(404).json({
+        message: "Product not found!",
+        error: true,
+      });
+    }
+
+    // 🔥 Delete images from Cloudinary
+    if (product.images && product.images.length > 0) {
+      for (const img of product.images) {
+        if (img.public_id) {
+          const result = await cloudinary.uploader.destroy(img.public_id);
+          console.log("Deleted:", result);
+        }
+      }
+    }
+
+    await productModel.findByIdAndDelete(req.params.id);
+
+    return res.status(200).json({
+      success: true,
+      message: "Product deleted successfully",
+    });
+
+  } catch (error) {
+    return res.status(500).json({
+      message: error.message,
+      error: true,
+    });
+  }
+};
+
 module.exports = {
   uploadProductImages,
   createProduct,
@@ -450,5 +683,10 @@ module.exports = {
   getAllProductsBySubCatId,
   getAllProductsBySubCatName,
   getAllProductsByThirdLevelCatId,
-  getAllProductsByThirdLevelCatName
+  getAllProductsByThirdLevelCatName,
+  getAllProductsByPrice,
+  getAllProductsByRating,
+  getAllProductsCount,
+  getAllFeaturedProducts,
+  deleteProduct,
 };
