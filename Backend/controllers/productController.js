@@ -112,7 +112,7 @@ const createProduct = async (req, res) => {
 const getAllProducts = async (req, res) => {
   try {
     const page = parseInt(req.query.page) || 1;
-    const perPage = parseInt(req.query.perPage);
+    const perPage = parseInt(req.query.perPage) || 10;
     const totalPosts = await productModel.countDocuments();
     const totalPages = Math.ceil(totalPosts / perPage);
 
@@ -159,7 +159,7 @@ const getAllProductsByCatId = async (req, res) => {
   try {
     const page = parseInt(req.query.page) || 1;
     const perPage = parseInt(req.query.perPage) || 10000;
-    const totalPosts = await productModel.countDocuments();
+    const totalPosts = await productModel.countDocuments({ catId: req.params.id });
     const totalPages = Math.ceil(totalPosts / perPage);
 
     if (page > totalPages) {
@@ -207,7 +207,7 @@ const getAllProductsByCatName = async (req, res) => {
   try {
     const page = parseInt(req.query.page) || 1;
     const perPage = parseInt(req.query.perPage) || 10000;
-    const totalPosts = await productModel.countDocuments();
+     const totalPosts = await productModel.countDocuments({ catId: req.params.catName });
     const totalPages = Math.ceil(totalPosts / perPage);
 
     if (page > totalPages) {
@@ -255,7 +255,8 @@ const getAllProductsBySubCatId = async (req, res) => {
   try {
     const page = parseInt(req.query.page) || 1;
     const perPage = parseInt(req.query.perPage) || 10000;
-    const totalPosts = await productModel.countDocuments();
+    const totalPosts = await productModel.countDocuments({ subCatId: req.params.id });
+
     const totalPages = Math.ceil(totalPosts / perPage);
 
     if (page > totalPages) {
@@ -303,7 +304,8 @@ const getAllProductsBySubCatName = async (req, res) => {
   try {
     const page = parseInt(req.query.page) || 1;
     const perPage = parseInt(req.query.perPage) || 10000;
-    const totalPosts = await productModel.countDocuments();
+   const totalPosts = await productModel.countDocuments({ subCatName: req.params.id });
+
     const totalPages = Math.ceil(totalPosts / perPage);
 
     if (page > totalPages) {
@@ -351,7 +353,8 @@ const getAllProductsByThirdLevelCatId = async (req, res) => {
   try {
     const page = parseInt(req.query.page) || 1;
     const perPage = parseInt(req.query.perPage) || 10000;
-    const totalPosts = await productModel.countDocuments();
+    const totalPosts = await productModel.countDocuments({ thirdSubCatId: req.params.id });
+
     const totalPages = Math.ceil(totalPosts / perPage);
 
     if (page > totalPages) {
@@ -399,7 +402,8 @@ const getAllProductsByThirdLevelCatName = async (req, res) => {
   try {
     const page = parseInt(req.query.page) || 1;
     const perPage = parseInt(req.query.perPage) || 10000;
-    const totalPosts = await productModel.countDocuments();
+   const totalPosts = await productModel.countDocuments({ thirdSubCatName: req.params.id });
+
     const totalPages = Math.ceil(totalPosts / perPage);
 
     if (page > totalPages) {
@@ -507,11 +511,28 @@ const getAllProductsByPrice = async (req, res) => {
 // get All Products By Rating
 const getAllProductsByRating = async (req, res) => {
   try {
+    // ✅ Guard — require at least one category filter
+    if (!req.query.catId && !req.query.subCatId && !req.query.thirdSubCatId) {
+      return res.status(400).json({
+        message: "Provide catId, subCatId, or thirdSubCatId",
+        error: true,
+        success: false,
+      });
+    }
+ 
     const page = parseInt(req.query.page) || 1;
     const perPage = parseInt(req.query.perPage) || 10000;
-    const totalPosts = await productModel.countDocuments();
+ 
+    // ✅ Build filter once — reuse for count and query
+    const filter = { rating: req.query.rating };
+    if (req.query.catId)         filter.catId         = req.query.catId;
+    if (req.query.subCatId)      filter.subCatId      = req.query.subCatId;
+    if (req.query.thirdSubCatId) filter.thirdSubCatId = req.query.thirdSubCatId;
+ 
+    // ✅ Filtered count
+    const totalPosts = await productModel.countDocuments(filter);
     const totalPages = Math.ceil(totalPosts / perPage);
-
+ 
     if (page > totalPages) {
       return res.status(404).json({
         message: "Page not found",
@@ -519,52 +540,24 @@ const getAllProductsByRating = async (req, res) => {
         success: false,
       });
     }
-
-    let products = [];
-
-    if (req.query.catId !== undefined) {
-      products = await productModel
-        .find({
-          rating: req.query.rating,
-          catId: req.query.catId,
-        })
-        .populate("category")
-        .skip((page - 1) * perPage)
-        .limit(perPage)
-        .exec();
-    }
-
-    if (req.query.subCatId !== undefined) {
-      products = await productModel
-        .find({
-          rating: req.query.rating,
-          subCatId: req.query.subCatId,
-        })
-        .populate("category")
-        .skip((page - 1) * perPage)
-        .limit(perPage)
-        .exec();
-    }
-
-    if (req.query.thirdSubCatId !== undefined) {
-      products = await productModel
-        .find({
-          rating: req.query.rating,
-          thirdSubCatId: req.query.thirdSubCatId,
-        })
-        .populate("category")
-        .skip((page - 1) * perPage)
-        .limit(perPage)
-        .exec();
-    }
-
-    if (!products) {
-      res.status(500).json({
+ 
+    // ✅ Single query with filter
+    const products = await productModel
+      .find(filter)
+      .populate("category")
+      .skip((page - 1) * perPage)
+      .limit(perPage)
+      .exec();
+ 
+    // ✅ Proper empty check
+    if (!products || products.length === 0) {
+      return res.status(404).json({
+        message: "No products found",
         error: true,
         success: false,
       });
     }
-
+ 
     return res.status(200).json({
       success: true,
       error: false,
@@ -579,8 +572,7 @@ const getAllProductsByRating = async (req, res) => {
       success: false,
     });
   }
-};
-
+}
 // get all products count
 const getAllProductsCount = async (req, res) => {
   try {
@@ -655,8 +647,7 @@ const deleteProduct = async (req, res) => {
     if (product.images && product.images.length > 0) {
       for (const img of product.images) {
         if (img.public_id) {
-          const result = await cloudinary.uploader.destroy(img.public_id);
-          console.log("Deleted:", result);
+          await cloudinary.uploader.destroy(img.public_id);
         }
       }
     }
@@ -718,13 +709,9 @@ const removeImageAvatarFromCloudinary = async (req, res) => {
       });
     }
 
-    // Extract public_id properly
-    const urlArr = imgUrl.split("/");
-    const image = urlArr.slice(-2).join("/");
-    // e.g. products/abc123.jpg
-
-    const publicId = image.split(".")[0];
-    // products/abc123
+    const match = imgUrl.match(/\/(?:v\d+\/)?(.+)\.[^.]+$/);
+    if (!match) return res.status(400).json({ message: "Invalid image URL" });
+    const publicId = match[1]; // e.g. "products/abc123"
 
     // Delete from Cloudinary
     const result = await cloudinary.uploader.destroy(publicId);
@@ -833,5 +820,5 @@ module.exports = {
   deleteProduct,
   getSingleProduct,
   removeImageAvatarFromCloudinary,
-  updateProduct
+  updateProduct,
 };

@@ -4,8 +4,9 @@ const cookieParser = require("cookie-parser");
 const morgan = require("morgan");
 const helmet = require("helmet");
 const userRoutes = require("../routes/userRoutes");
-const categoryRouter = require("../routes/categoryRoutes");
-const productRouter = require("../routes/productRoutes");
+const categoryRoutes = require("../routes/categoryRoutes");
+const productRoutes = require("../routes/productRoutes");
+const cartRoutes = require("../routes/cartRoutes");
 
 const app = express();
 app.use(cors());
@@ -20,7 +21,8 @@ app.use(
 );
 
 app.use("/api/user", userRoutes);
-app.use("/api/category", categoryRouter);
-app.use("/api/product", productRouter);
+app.use("/api/category", categoryRoutes);
+app.use("/api/product", productRoutes);
+app.use("/api/cart", cartRoutes);
 
 module.exports = app;
