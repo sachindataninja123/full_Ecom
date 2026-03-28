@@ -10,6 +10,7 @@ cloudinary.config({
   secure: true,
 });
 
+//create Category
 const createCategory = async (req, res) => {
   try {
     const files = req.files; // multer array
@@ -78,6 +79,7 @@ const createCategory = async (req, res) => {
   }
 };
 
+//get All Category
 const getAllCategory = async (req, res) => {
   try {
     const categories = await categoryModel.find();
@@ -111,6 +113,7 @@ const getAllCategory = async (req, res) => {
   }
 };
 
+//get All Category Count
 const getAllCategoryCount = async (req, res) => {
   try {
     const categoryCount = await categoryModel.countDocuments({
@@ -133,6 +136,7 @@ const getAllCategoryCount = async (req, res) => {
   }
 };
 
+// get All Sub Category Count
 const getSubCategoryCount = async (req, res) => {
   try {
     const categories = await categoryModel.find();
@@ -158,6 +162,7 @@ const getSubCategoryCount = async (req, res) => {
   }
 };
 
+// get Single Category
 const getSingleCategory = async (req, res) => {
   try {
     const category = await categoryModel.findById(req.params.id);
@@ -184,6 +189,7 @@ const getSingleCategory = async (req, res) => {
   }
 };
 
+// remove image of category
 const removeImageAvatarFromCloudinary = async (req, res) => {
   try {
     const imgUrl = req.query.img;
@@ -221,6 +227,7 @@ const removeImageAvatarFromCloudinary = async (req, res) => {
   }
 };
 
+// delete Category
 const deleteCategory = async (req, res) => {
   try {
     const category = await categoryModel.findById(req.params.id);
@@ -284,10 +291,10 @@ const deleteCategory = async (req, res) => {
   }
 };
 
-
+// update Category
 const UpdateCategory = async (req, res) => {
   try {
-    const files = req.files; // ✅ array
+    const files = req.files; // array
     const body = req.body || {};
 
     let imagesArr = [];
@@ -315,8 +322,8 @@ const UpdateCategory = async (req, res) => {
       parentCatName: body.parentCatName,
     };
 
-    // ✅ Only update image if exists
-   if (imagesArr.length > 0) {
+    // Only update image if exists
+    if (imagesArr.length > 0) {
       updateData.images = imagesArr;
     }
 

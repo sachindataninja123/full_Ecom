@@ -511,7 +511,7 @@ const getAllProductsByPrice = async (req, res) => {
 // get All Products By Rating
 const getAllProductsByRating = async (req, res) => {
   try {
-    // ✅ Guard — require at least one category filter
+    //  Guard — require at least one category filter
     if (!req.query.catId && !req.query.subCatId && !req.query.thirdSubCatId) {
       return res.status(400).json({
         message: "Provide catId, subCatId, or thirdSubCatId",
@@ -523,13 +523,13 @@ const getAllProductsByRating = async (req, res) => {
     const page = parseInt(req.query.page) || 1;
     const perPage = parseInt(req.query.perPage) || 10000;
  
-    // ✅ Build filter once — reuse for count and query
+    //  Build filter once — reuse for count and query
     const filter = { rating: req.query.rating };
     if (req.query.catId)         filter.catId         = req.query.catId;
     if (req.query.subCatId)      filter.subCatId      = req.query.subCatId;
     if (req.query.thirdSubCatId) filter.thirdSubCatId = req.query.thirdSubCatId;
  
-    // ✅ Filtered count
+    // Filtered count
     const totalPosts = await productModel.countDocuments(filter);
     const totalPages = Math.ceil(totalPosts / perPage);
  
@@ -541,7 +541,7 @@ const getAllProductsByRating = async (req, res) => {
       });
     }
  
-    // ✅ Single query with filter
+    //  Single query with filter
     const products = await productModel
       .find(filter)
       .populate("category")
@@ -549,7 +549,7 @@ const getAllProductsByRating = async (req, res) => {
       .limit(perPage)
       .exec();
  
-    // ✅ Proper empty check
+    // Proper empty check
     if (!products || products.length === 0) {
       return res.status(404).json({
         message: "No products found",

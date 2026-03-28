@@ -16,7 +16,7 @@ cloudinary.config({
   secure: true,
 });
 
-// register controller API
+// registerUser controller 
 const registerUser = async (req, res) => {
   try {
     let user;
@@ -84,7 +84,7 @@ const registerUser = async (req, res) => {
   }
 };
 
-// VerifyEmail controller API
+// VerifyEmailUser controller  
 const verifyEmail = async (req, res) => {
   try {
     const { email, otp } = req.body;
@@ -133,7 +133,7 @@ const verifyEmail = async (req, res) => {
   }
 };
 
-// login controller API
+// loginUser controller 
 const loginUser = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -208,7 +208,7 @@ const loginUser = async (req, res) => {
   }
 };
 
-// logOut controller API
+// logOutUser controller 
 const logoutUser = async (req, res) => {
   try {
     const userId = req.userId; // auth middleware
@@ -240,13 +240,13 @@ const logoutUser = async (req, res) => {
   }
 };
 
-//image upload API
+//UplaodUserImage controller
 const userimageAvatar = async (req, res) => {
   try {
     const userId = req.userId; // from auth middleware
     const file = req.file; // multer single upload
 
-    // 🔴 Check file
+    // Check file
     if (!file) {
       return res.status(400).json({
         message: "Image is required",
@@ -255,7 +255,7 @@ const userimageAvatar = async (req, res) => {
       });
     }
 
-    // 🔴 Find user
+    // Find user
     const user = await userModel.findById(userId);
 
     if (!user) {
@@ -266,24 +266,24 @@ const userimageAvatar = async (req, res) => {
       });
     }
 
-    // 🔥 Upload & Replace (overwrite)
+    // Upload & Replace (overwrite)
     const result = await cloudinary.uploader.upload(file.path, {
       public_id: user.avatar_public_id || `users/${userId}`,
-      folder: "users", // optional but good practice
-      overwrite: true, // 🔥 THIS REPLACES OLD IMAGE
+      folder: "users", 
+      overwrite: true, // THIS REPLACES OLD IMAGE
     });
 
-    // 🔥 Delete local file
+    // Delete local file
     if (fs.existsSync(file.path)) {
       fs.unlinkSync(file.path);
     }
 
-    // 🔥 Save in DB
+    // Save in DB
     user.avatar = result.secure_url;
     user.avatar_public_id = result.public_id;
     await user.save();
 
-    // 🔥 Response
+    // Response
     return res.status(200).json({
       message: "Avatar updated successfully",
       id: userId,
@@ -302,7 +302,7 @@ const userimageAvatar = async (req, res) => {
   }
 };
 
-// remove image API
+// remove image controller
 const removeImageAvatarFromCloudinary = async (req, res) => {
   try {
     const imgUrl = req.query.img;
@@ -340,6 +340,7 @@ const removeImageAvatarFromCloudinary = async (req, res) => {
   }
 };
 
+// update user Details controller
 const updateUserDetails = async (req, res) => {
   try {
     const userId = req.userId; // auth middleware
@@ -406,6 +407,7 @@ const updateUserDetails = async (req, res) => {
   }
 };
 
+// forgot Password controller
 const forgotpassword = async (req, res) => {
   try {
     const { email } = req.body;
@@ -449,6 +451,7 @@ const forgotpassword = async (req, res) => {
   }
 };
 
+//Verify Forgot Password controller
 const verifyForgotPassword = async (req, res) => {
   try {
     const { email, otp } = req.body;
@@ -510,6 +513,7 @@ const verifyForgotPassword = async (req, res) => {
   }
 };
 
+// resetPassord controller
 const resetPassword = async (req, res) => {
   try {
     const { email, newPassword, confirmPassword } = req.body;
@@ -561,6 +565,7 @@ const resetPassword = async (req, res) => {
   }
 };
 
+//RefreshToken controller
 const refreshToken = async (req, res) => {
   try {
     const refreshToken =
@@ -615,6 +620,7 @@ const refreshToken = async (req, res) => {
   }
 };
 
+// getUser Details controller
 const userDetails = async (req, res) => {
   try {
     const userId = req.userId;
