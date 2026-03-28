@@ -3,10 +3,11 @@ const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const morgan = require("morgan");
 const helmet = require("helmet");
-const userRoutes = require("../routes/userRoutes");
-const categoryRoutes = require("../routes/categoryRoutes");
-const productRoutes = require("../routes/productRoutes");
-const cartRoutes = require("../routes/cartRoutes");
+const userRouter = require("../routes/userRoutes");
+const categoryRouter = require("../routes/categoryRoutes");
+const productRouter = require("../routes/productRoutes");
+const cartRouter = require("../routes/cartRoutes");
+const myListRouter = require("../routes/myListRoutes");
 
 const app = express();
 app.use(cors());
@@ -20,9 +21,10 @@ app.use(
   }),
 );
 
-app.use("/api/user", userRoutes);
-app.use("/api/category", categoryRoutes);
-app.use("/api/product", productRoutes);
-app.use("/api/cart", cartRoutes);
+app.use("/api/user", userRouter);
+app.use("/api/category", categoryRouter);
+app.use("/api/product", productRouter);
+app.use("/api/cart", cartRouter);
+app.use("/api/myList", myListRouter);
 
 module.exports = app;
