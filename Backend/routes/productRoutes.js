@@ -15,6 +15,9 @@ const {
   getAllProductsCount,
   getAllFeaturedProducts,
   deleteProduct,
+  getSingleProduct,
+  removeImageAvatarFromCloudinary,
+  updateProduct,
 } = require("../controllers/productController");
 
 const productRouter = express.Router();
@@ -44,5 +47,8 @@ productRouter.get("/getAllProductsByRating", getAllProductsByRating);
 productRouter.get("/getAllProductsCount", getAllProductsCount);
 productRouter.get("/getAllFeaturedProducts", getAllFeaturedProducts);
 productRouter.delete("/:id", deleteProduct);
+productRouter.get("/:id", getSingleProduct);
+productRouter.delete("/delete", auth, removeImageAvatarFromCloudinary);
+productRouter.put("/updateProduct/:id", auth, updateProduct);
 
 module.exports = productRouter;

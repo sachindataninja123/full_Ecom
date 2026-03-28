@@ -15,7 +15,7 @@ const uploadProductImages = async (req, res) => {
   let files = req.files;
 
   try {
-    // 🔴 Check files
+    // Check files
     if (!files || files.length === 0) {
       return res.status(400).json({
         message: "Product images are required",
@@ -26,19 +26,19 @@ const uploadProductImages = async (req, res) => {
 
     let imagesArr = [];
 
-    // 🔥 Upload each image
+    // Upload each image
     for (let i = 0; i < files.length; i++) {
       const result = await cloudinary.uploader.upload(files[i].path, {
-        folder: "products", // 👈 important
+        folder: "products", // important
       });
 
       imagesArr.push({
         url: result.secure_url,
-        public_id: result.public_id, // 🔥 useful for delete later
+        public_id: result.public_id, //  useful for delete later
       });
     }
 
-    // ✅ Response
+    //  Response
     return res.status(200).json({
       message: "Product images uploaded successfully",
       success: true,
@@ -51,7 +51,7 @@ const uploadProductImages = async (req, res) => {
       success: false,
     });
   } finally {
-    // 🔥 ALWAYS DELETE LOCAL FILES
+    // ALWAYS DELETE LOCAL FILES
     if (files && files.length > 0) {
       files.forEach((file) => {
         try {
@@ -79,12 +79,12 @@ const createProduct = async (req, res) => {
       brand: body.brand,
       price: body.price,
       oldPrice: body.oldPrice,
-      catName: body.catName,
       catId: body.catId,
+      catName: body.catName,
       subCatId: body.subCatId,
-      subCat: body.subCatName,
-      thirdSubCat: body.thirdSubCatName,
+      subCatName: body.subCatName,
       thirdSubCatId: body.thirdSubCatId,
+      thirdSubCatName: body.thirdSubCatName,
       countInStock: body.countInStock,
       rating: body.rating,
       isFeatured: body.isFeatured,
@@ -640,7 +640,9 @@ const getAllFeaturedProducts = async (req, res) => {
 // delete Product
 const deleteProduct = async (req, res) => {
   try {
-    const product = await productModel.findById(req.params.id);
+    const product = await productModel
+      .findById(req.params.id)
+      .populate("category");
 
     if (!product) {
       return res.status(404).json({
@@ -665,7 +667,147 @@ const deleteProduct = async (req, res) => {
       success: true,
       message: "Product deleted successfully",
     });
+  } catch (error) {
+    return res.status(500).json({
+      message: error.message,
+      error: true,
+      success: false,
+    });
+  }
+};
 
+// get Single Product
+const getSingleProduct = async (req, res) => {
+  try {
+    const product = await productModel
+      .findById(req.params.id)
+      .populate("category");
+
+    if (!product) {
+      return res.status(404).json({
+        message: "The Product is not found",
+        error: true,
+        success: false,
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      error: false,
+      product: product,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      message: error.msg || error,
+      error: true,
+      success: false,
+    });
+  }
+};
+
+//delete Images
+const removeImageAvatarFromCloudinary = async (req, res) => {
+  try {
+    const imgUrl = req.query.img;
+
+    if (!imgUrl) {
+      return res.status(400).json({
+        message: "Image URL required",
+        error: true,
+        success: false,
+      });
+    }
+
+    // Extract public_id properly
+    const urlArr = imgUrl.split("/");
+    const image = urlArr.slice(-2).join("/");
+    // e.g. products/abc123.jpg
+
+    const publicId = image.split(".")[0];
+    // products/abc123
+
+    // Delete from Cloudinary
+    const result = await cloudinary.uploader.destroy(publicId);
+
+    return res.json({
+      message: "Image deleted successfully",
+      success: true,
+      data: result,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      message: error.message || error,
+      error: true,
+      success: false,
+    });
+  }
+};
+
+//update Product
+const updateProduct = async (req, res) => {
+  try {
+    const productId = req.params.id;
+    const body = req.body || {};
+
+    const product = await productModel.findById(productId);
+
+    if (!product) {
+      return res.status(404).json({
+        message: "Product not found",
+        error: true,
+      });
+    }
+
+    let updatedImages = product.images; // default = old images
+
+    // If new images sent → replace old images
+    if (body.images) {
+      const newImages =
+        typeof body.images === "string" ? JSON.parse(body.images) : body.images;
+
+      //Delete old images from Cloudinary
+      if (product.images && product.images.length > 0) {
+        for (const img of product.images) {
+          if (img.public_id) {
+            await cloudinary.uploader.destroy(img.public_id);
+          }
+        }
+      }
+
+      updatedImages = newImages;
+    }
+
+    const updatedProduct = await productModel.findByIdAndUpdate(
+      productId,
+      {
+        name: body.name,
+        description: body.description,
+        images: updatedImages,
+        brand: body.brand,
+        price: Number(body.price),
+        oldPrice: Number(body.oldPrice),
+        catId: body.catId,
+        catName: body.catName,
+        subCatId: body.subCatId,
+        subCatName: body.subCatName,
+        thirdSubCatId: body.thirdSubCatId,
+        thirdSubCatName: body.thirdSubCatName,
+        countInStock: Number(body.countInStock),
+        rating: Number(body.rating),
+        isFeatured: body.isFeatured,
+        discount: Number(body.discount),
+        productRam: body.productRam,
+        size: body.size,
+        productWeight: body.productWeight,
+      },
+      { new: true },
+    );
+
+    return res.status(200).json({
+      message: "Product Updated Successfully",
+      success: true,
+      product: updatedProduct,
+    });
   } catch (error) {
     return res.status(500).json({
       message: error.message,
@@ -689,4 +831,7 @@ module.exports = {
   getAllProductsCount,
   getAllFeaturedProducts,
   deleteProduct,
+  getSingleProduct,
+  removeImageAvatarFromCloudinary,
+  updateProduct
 };
