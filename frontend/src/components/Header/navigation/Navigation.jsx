@@ -5,6 +5,7 @@ import { IoIosArrowDown } from "react-icons/io";
 import { Link } from "react-router-dom";
 import { MdOutlineRocketLaunch } from "react-icons/md";
 import CategoryPanel from "./CategoryPanel";
+import "./style.css";
 
 const Navigation = () => {
   const [openCatPanel, setOpenCatPanel] = useState(false);
@@ -29,7 +30,7 @@ const Navigation = () => {
           </div>
 
           <div className="col_2 w-[60%] uppercase">
-            <ul className="flex items-center gap-5">
+            <ul className="flex items-center gap-5 nav">
               <li className="list-none">
                 <Link
                   to="/"
@@ -38,13 +39,79 @@ const Navigation = () => {
                   Home
                 </Link>
               </li>
-              <li className="list-none">
+
+              <li className="list-none relative group/cat">
                 <Link
                   to="/"
-                  className="link transition text-[14px] font-medium"
+                  className="link transition text-[14px] font-medium hover:text-[#ff5252]"
                 >
                   Fashion
                 </Link>
+
+                <div
+                  className="submenu absolute top-[120%] left-0 min-w-45 bg-white shadow-md 
+                  opacity-0 transition-all 
+                  group-hover/cat:opacity-100 group-hover/cat:top-full"
+                >
+                  <ul>
+                    {/* Men — has inner submenu */}
+                    <li className="list-none w-full relative group/men">
+                      <Link to="/" className="w-full">
+                        <Button
+                          className="text-[rgba(0,0,0,0.8)]! w-full! justify-start! 
+                             rounded-none! hover:bg-[#f1f1f1]! 
+                             hover:text-[#ff5252]! transition-all!"
+                        >
+                          Men
+                        </Button>
+                      </Link>
+
+                      {/* ✅ Submenu is OUTSIDE Link, INSIDE li.group/men */}
+                      <div
+                        className="absolute top-[0%] left-full min-w-45 bg-white shadow-md 
+                        opacity-0 pointer-events-none transition-all
+                        group-hover/men:opacity-100 group-hover/men:pointer-events-auto"
+                      >
+                        <ul>
+                          {[
+                            "T-shirts",
+                            "Shirts",
+                            "Joggers",
+                            "Pants",
+                            "InnerWear",
+                          ].map((item) => (
+                            <li key={item} className="list-none w-full">
+                              <Link to="/" className="w-full">
+                                <Button
+                                  className="text-[rgba(0,0,0,0.8)]! w-full! justify-start! 
+                                     rounded-none! hover:bg-[#f1f1f1]! 
+                                     hover:text-[#ff5252]! transition-all!"
+                                >
+                                  {item}
+                                </Button>
+                              </Link>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    </li>
+
+                    {/* Women, Girls, Boys, Kids — NO inner submenu, hover color only */}
+                    {["Women", "Girls", "Boys", "Kids"].map((item) => (
+                      <li key={item} className="list-none w-full">
+                        <Link to="/" className="w-full">
+                          <Button
+                            className="text-[rgba(0,0,0,0.8)]! w-full! justify-start! 
+                               rounded-none! hover:bg-[#f1f1f1]! 
+                               hover:text-[#ff5252]! transition-all!"
+                          >
+                            {item}
+                          </Button>
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
               </li>
 
               <li className="list-none">
@@ -120,7 +187,6 @@ const Navigation = () => {
       <CategoryPanel
         setOpenCatPanel={setOpenCatPanel}
         openCatPanel={openCatPanel}
-    
       />
     </>
   );

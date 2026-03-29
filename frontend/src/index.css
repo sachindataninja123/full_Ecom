@@ -4,13 +4,40 @@ body {
   font-family: "Montserrat", sans-serif;
   font-optical-sizing: auto;
   background-color: #f5f0f0;
+  overflow: hidden;
 }
 
 .container {
   width: 95%;
   margin: auto;
 }
-.link:hover {
-  color: #ff5252;
-  transition: all 0.2s ease-in-out;
+
+.sliderHome {
+  overflow: inherit !important;
+}
+
+/* style.css or index.css */
+
+.sliderHome .swiper-button-next,
+.sliderHome .swiper-button-prev {
+  width: 40px;
+  height: 40px;
+  background: #fff;
+  border-radius: 50%;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  color: #ff5252 !important;
+  transition: all 0.3s ease;
+}
+
+.sliderHome .swiper-button-next:hover,
+.sliderHome .swiper-button-prev:hover {
+  background: #ff5252;
+  color: #fff !important;
+}
+
+/* make arrow icons smaller */
+.sliderHome .swiper-button-next::after,
+.sliderHome .swiper-button-prev::after {
+  font-size: 14px !important;
+  font-weight: 900;
 }

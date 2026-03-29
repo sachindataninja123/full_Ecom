@@ -43,7 +43,7 @@ const Header = () => {
                   <FaRegHeart className="text-[24px] text-black" />
                 </IconButton>
 
-                <span className="absolute -top-1 -right-1 h-5 w-5 flex items-center justify-center text-white text-[14px] bg-[#ff5252] rounded-full">
+                <span className="absolute top-0.5 right-0.5 h-5 w-5 flex items-center justify-center text-white text-[14px] bg-[#ff5252] rounded-full">
                   0
                 </span>
               </div>
@@ -54,7 +54,7 @@ const Header = () => {
                   <BsCart3 className="text-[24px] text-black" />
                 </IconButton>
 
-                <span className="absolute -top-1 -right-1 h-5 w-5 flex items-center justify-center text-white text-[14px] bg-[#ff5252] rounded-full">
+                <span className="absolute top-0.5 right-1 h-5 w-5 flex items-center justify-center text-white text-[14px] bg-[#ff5252] rounded-full">
                   0
                 </span>
               </div>
