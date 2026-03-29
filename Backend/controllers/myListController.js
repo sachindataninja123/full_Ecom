@@ -1,6 +1,7 @@
 const express = require("express");
 const myListModel = require("../models/myList.model");
 
+// add To MyList
 const addToMyList = async (req, res) => {
   try {
     const userId = req.userId;
@@ -15,6 +16,14 @@ const addToMyList = async (req, res) => {
       brand,
       discount,
     } = req.body;
+
+    if (!productId || !productTitle) {
+      return res.status(400).json({
+        message: "Provide productId and productTitle",
+        error: true,
+        success: false,
+      });
+    }
 
     const item = await myListModel.findOne({
       userId: userId,
@@ -42,6 +51,7 @@ const addToMyList = async (req, res) => {
 
     return res.status(200).json({
       message: "Item save in the my List",
+      data: save,
       error: false,
       success: true,
     });
@@ -54,6 +64,7 @@ const addToMyList = async (req, res) => {
   }
 };
 
+// delete from MyList
 const deleteToMyList = async (req, res) => {
   try {
     const myListItem = await myListModel.findById(req.params.id);
@@ -89,20 +100,20 @@ const deleteToMyList = async (req, res) => {
   }
 };
 
+// get all MyList
 const getAllMyList = async (req, res) => {
   try {
     const userId = req.userId;
 
     const myListItem = await myListModel.find({
-        userId : userId
-    })
+      userId: userId,
+    });
 
     return res.status(200).json({
-        success : true,
-        data : myListItem,
-        error: false,
-    })
-
+      success: true,
+      data: myListItem,
+      error: false,
+    });
   } catch (error) {
     return res.status(500).json({
       message: error.message || error,
@@ -112,4 +123,4 @@ const getAllMyList = async (req, res) => {
   }
 };
 
-module.exports = { addToMyList, deleteToMyList  , getAllMyList};
+module.exports = { addToMyList, deleteToMyList, getAllMyList };

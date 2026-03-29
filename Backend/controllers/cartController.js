@@ -8,7 +8,7 @@ const addToCartItem = async (req, res) => {
     const { productId } = req.body;
 
     if (!productId) {
-      return res.status(402).json({
+      return res.status(400).json({
         message: "Provide ProductID",
         error: true,
         success: false,
@@ -92,6 +92,8 @@ const updateCartItemQty = async (req, res) => {
     if (!_id || !Qty) {
       return res.status(400).json({
         message: "Provide _id , Qty",
+        error: true,
+        success: false,
       });
     }
 
@@ -124,45 +126,34 @@ const deleteCartItem = async (req, res) => {
     const userId = req.userId;
     const { _id, productId } = req.body;
 
-    if (!_id) {
+    if (!_id || !productId) {
       return res.status(400).json({
-        message: "Provide _id ",
+        message: "Provide _id and productId",
         success: false,
         error: true,
       });
     }
 
-    const deleteCartItem = await cartProductModel.deleteOne({
-      _id: _id,
-      userId: userId,
-    });
+    const deleted = await cartProductModel.deleteOne({ _id, userId });
 
-    if (!deleteCartItem) {
+    //check deletedCount instead of !deleted
+    if (deleted.deletedCount === 0) {
       return res.status(404).json({
-        message: "The Product in the cart is not found!",
+        message: "Cart item not found!",
         success: false,
         error: true,
       });
     }
 
-    const user = await userModel.findOne({
-      _id: userId,
-    });
-
-    const cartItems = user?.shopping_cart;
-
-    const updatedUserCart = [
-      ...cartItems.slice(0, cartItems.indexOf(productId)),
-      ...cartItems.slice(cartItems.indexOf(productId) + 1),
-    ];
-
-    user.shopping_cart = updatedUserCart;
-
-    await user.save();
+    // Fixed: use $pull instead of manual array splice
+    await userModel.updateOne(
+      { _id: userId },
+      { $pull: { shopping_cart: productId } },
+    );
 
     return res.status(200).json({
       message: "Item removed Successfully",
-      data: deleteCartItem,
+      data: deleted,
       success: true,
       error: false,
     });

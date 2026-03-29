@@ -159,7 +159,9 @@ const getAllProductsByCatId = async (req, res) => {
   try {
     const page = parseInt(req.query.page) || 1;
     const perPage = parseInt(req.query.perPage) || 10000;
-    const totalPosts = await productModel.countDocuments({ catId: req.params.id });
+    const totalPosts = await productModel.countDocuments({
+      catId: req.params.id,
+    });
     const totalPages = Math.ceil(totalPosts / perPage);
 
     if (page > totalPages) {
@@ -207,7 +209,9 @@ const getAllProductsByCatName = async (req, res) => {
   try {
     const page = parseInt(req.query.page) || 1;
     const perPage = parseInt(req.query.perPage) || 10000;
-     const totalPosts = await productModel.countDocuments({ catId: req.params.catName });
+    const totalPosts = await productModel.countDocuments({
+      catId: req.params.catName,
+    });
     const totalPages = Math.ceil(totalPosts / perPage);
 
     if (page > totalPages) {
@@ -255,7 +259,9 @@ const getAllProductsBySubCatId = async (req, res) => {
   try {
     const page = parseInt(req.query.page) || 1;
     const perPage = parseInt(req.query.perPage) || 10000;
-    const totalPosts = await productModel.countDocuments({ subCatId: req.params.id });
+    const totalPosts = await productModel.countDocuments({
+      subCatId: req.params.id,
+    });
 
     const totalPages = Math.ceil(totalPosts / perPage);
 
@@ -304,7 +310,9 @@ const getAllProductsBySubCatName = async (req, res) => {
   try {
     const page = parseInt(req.query.page) || 1;
     const perPage = parseInt(req.query.perPage) || 10000;
-   const totalPosts = await productModel.countDocuments({ subCatName: req.params.id });
+    const totalPosts = await productModel.countDocuments({
+      subCatName: req.params.id,
+    });
 
     const totalPages = Math.ceil(totalPosts / perPage);
 
@@ -353,7 +361,9 @@ const getAllProductsByThirdLevelCatId = async (req, res) => {
   try {
     const page = parseInt(req.query.page) || 1;
     const perPage = parseInt(req.query.perPage) || 10000;
-    const totalPosts = await productModel.countDocuments({ thirdSubCatId: req.params.id });
+    const totalPosts = await productModel.countDocuments({
+      thirdSubCatId: req.params.id,
+    });
 
     const totalPages = Math.ceil(totalPosts / perPage);
 
@@ -402,7 +412,9 @@ const getAllProductsByThirdLevelCatName = async (req, res) => {
   try {
     const page = parseInt(req.query.page) || 1;
     const perPage = parseInt(req.query.perPage) || 10000;
-   const totalPosts = await productModel.countDocuments({ thirdSubCatName: req.params.id });
+    const totalPosts = await productModel.countDocuments({
+      thirdSubCatName: req.params.id,
+    });
 
     const totalPages = Math.ceil(totalPosts / perPage);
 
@@ -519,20 +531,20 @@ const getAllProductsByRating = async (req, res) => {
         success: false,
       });
     }
- 
+
     const page = parseInt(req.query.page) || 1;
     const perPage = parseInt(req.query.perPage) || 10000;
- 
+
     //  Build filter once — reuse for count and query
     const filter = { rating: req.query.rating };
-    if (req.query.catId)         filter.catId         = req.query.catId;
-    if (req.query.subCatId)      filter.subCatId      = req.query.subCatId;
+    if (req.query.catId) filter.catId = req.query.catId;
+    if (req.query.subCatId) filter.subCatId = req.query.subCatId;
     if (req.query.thirdSubCatId) filter.thirdSubCatId = req.query.thirdSubCatId;
- 
+
     // Filtered count
     const totalPosts = await productModel.countDocuments(filter);
     const totalPages = Math.ceil(totalPosts / perPage);
- 
+
     if (page > totalPages) {
       return res.status(404).json({
         message: "Page not found",
@@ -540,7 +552,7 @@ const getAllProductsByRating = async (req, res) => {
         success: false,
       });
     }
- 
+
     //  Single query with filter
     const products = await productModel
       .find(filter)
@@ -548,7 +560,7 @@ const getAllProductsByRating = async (req, res) => {
       .skip((page - 1) * perPage)
       .limit(perPage)
       .exec();
- 
+
     // Proper empty check
     if (!products || products.length === 0) {
       return res.status(404).json({
@@ -557,7 +569,7 @@ const getAllProductsByRating = async (req, res) => {
         success: false,
       });
     }
- 
+
     return res.status(200).json({
       success: true,
       error: false,
@@ -572,7 +584,8 @@ const getAllProductsByRating = async (req, res) => {
       success: false,
     });
   }
-}
+};
+
 // get all products count
 const getAllProductsCount = async (req, res) => {
   try {
