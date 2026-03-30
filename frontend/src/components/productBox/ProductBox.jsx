@@ -1,6 +1,11 @@
 import React from "react";
 import "./style.css";
 import { Link } from "react-router-dom";
+import Button from "@mui/material/Button";
+import { FaRegHeart } from "react-icons/fa";
+import { IoIosGitCompare } from "react-icons/io";
+import { MdOutlineZoomOutMap } from "react-icons/md";
+import IconButton from "@mui/material/IconButton";
 
 const ProductBox = ({
   id,
@@ -16,20 +21,45 @@ const ProductBox = ({
     <Link to={`/product/${id}`}>
       <div className="productBox rounded-md overflow-hidden bg-white shadow-sm hover:shadow-md transition-shadow duration-300">
         {/* Image */}
-        <div className="imgWrapper w-full overflow-hidden rounded-t-md">
-          <img
-            src={img}
-            className="w-full h-61 object-cover hover:scale-105 transition-transform duration-300"
-            alt={name}
-          />
-        </div>
+        <div className="group imgWrapper relative w-full overflow-hidden rounded-t-md">
+          <Link to="/">
+            {/* First Image */}
+            <img
+              src={img}
+              className="w-full h-61 3object-cover transition-all duration-300 group-hover:opacity-0"
+              alt={name}
+            />
 
-        {/* Discount Badge */}
-        {/* {discount && (
-          <span className="absolute top-2 left-2 bg-red-500 text-white text-[11px] font-bold px-2 py-0.5 rounded">
-            -{discount}%
-          </span>
-        )} */}
+            {/* Second Image (Hover Image) */}
+            <img
+              src="https://rukminim2.flixcart.com/image/1536/1536/xif0q/ethnic-set/o/k/b/m-miss-94-miss-clothing-original-imahgmq75zgak58g.jpeg?q=90"
+              className="w-full h-61 object-cover absolute top-0 left-0 opacity-0 transition-all duration-300 group-hover:opacity-100 group-hover:scale-105"
+              alt={name}
+            />
+          </Link>
+
+          {/* Discount Badge */}
+          {discount && (
+            <span className="absolute top-2 left-2 bg-red-500 text-white text-[11px] font-bold px-2 py-1 rounded-lg">
+              -{discount}%
+            </span>
+          )}
+
+          {/* Actions */}
+          <div className="actions absolute -top-50 right-3 z-50 flex flex-col gap-2 transition-all duration-300 group-hover:top-4 opacity-0 group-hover:opacity-100">
+            <button className="w-10 h-10 rounded-full bg-white text-black shadow-sm flex items-center justify-center hover:text-white hover:bg-[#ff5252] hover:scale-105 active:scale-95 transition-all duration-150 cursor-pointer">
+              <MdOutlineZoomOutMap size={19} />
+            </button>
+
+            <button className="w-10 h-10 rounded-full bg-white text-black shadow-sm flex items-center justify-center hover:text-white hover:bg-[#ff5252] hover:scale-105 active:scale-95 transition-all duration-150 cursor-pointer">
+              <IoIosGitCompare size={19} />
+            </button>
+
+            <button className="w-10 h-10 rounded-full bg-white text-black shadow-sm flex items-center justify-center hover:text-white hover:bg-[#ff5252] hover:scale-105 active:scale-95 transition-all duration-150 cursor-pointer">
+              <FaRegHeart size={18} />
+            </button>
+          </div>
+        </div>
 
         {/* Info */}
         <div className="info p-3 py-3 bg-[#f1f1f1]">
@@ -48,7 +78,9 @@ const ProductBox = ({
 
           {/* Price */}
           <div className="flex items-center gap-2 mt-1">
-            <span className="text-[18px] font-bold text-[#ff5252]">₹{price}</span>
+            <span className="text-[18px] font-bold text-[#ff5252]">
+              ₹{price}
+            </span>
             {oldPrice && (
               <span className="text-[15px] font-medium text-gray-600 line-through">
                 ₹{oldPrice}
