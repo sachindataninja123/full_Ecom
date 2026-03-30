@@ -4,7 +4,7 @@ body {
   font-family: "Montserrat", sans-serif;
   font-optical-sizing: auto;
   background-color: #f5f0f0;
-  overflow: hidden;
+  overflow-x: hidden;
 }
 
 .container {
@@ -12,16 +12,28 @@ body {
   margin: auto;
 }
 
+::-webkit-scrollbar {
+  width: 6px !important;
+  height: 6px !important;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #ff5252;
+}
+
+::-webkit-scrollbar-track {
+  background: #fff;
+}
+
+/* homebannerslider */
 .sliderHome {
   overflow: inherit !important;
 }
 
-/* style.css or index.css */
-
 .sliderHome .swiper-button-next,
 .sliderHome .swiper-button-prev {
-  width: 40px;
-  height: 40px;
+  width: 30px;
+  height: 30px;
   background: #fff;
   border-radius: 50%;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
@@ -35,9 +47,111 @@ body {
   color: #fff !important;
 }
 
-/* make arrow icons smaller */
 .sliderHome .swiper-button-next::after,
 .sliderHome .swiper-button-prev::after {
   font-size: 14px !important;
   font-weight: 900;
+}
+
+/* homecategorySlider */
+.homeCatSlider {
+  overflow: inherit !important;
+}
+
+.homeCatSlider .swiper-button-next::after,
+.homeCatSlider .swiper-button-prev::after {
+  font-size: 12px !important;
+  font-weight: 500;
+}
+
+.homeCatSlider .swiper-button-next {
+  right: -2px !important;
+}
+
+.homeCatSlider .swiper-button-prev {
+  left: -2px !important;
+}
+
+.homeCatSlider .swiper-button-next,
+.homeCatSlider .swiper-button-prev {
+  width: 30px !important;
+  height: 30px !important;
+  min-width: 30px;
+  background: #fff;
+  border-radius: 50%;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  color: #ff5252;
+  transition: all;
+}
+
+.homeCatSlider .swiper-button-next:hover,
+.homeCatSlider .swiper-button-prev:hover {
+  background-color: #ff5252 !important;
+  color: #fff !important;
+}
+
+.homeCatSlider .item:hover img {
+  transform: scale(1.1);
+}
+
+/* AdsBanner */
+.adsBanner {
+  position: relative;
+}
+
+.adsBanner .swiper-button-next,
+.adsBanner .swiper-button-prev {
+  width: 28px !important;
+  height: 28px !important;
+  background: #fff;
+  border-radius: 50%;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  color: #333 !important;
+  transition: all;
+}
+
+.adsBanner .swiper-button-next::after,
+.adsBanner .swiper-button-prev::after {
+  font-size: 10px !important;
+  font-weight: 900;
+}
+
+.adsBanner .swiper-button-next:hover,
+.adsBanner .swiper-button-prev:hover {
+  background: #ff5252;
+}
+
+.MuiTabs-indicator {
+  background-color: #ff5252 !important;
+}
+
+.MuiTab-textColorPrimary.Mui-selected {
+  color: #ff5252 !important;
+}
+
+/* products slider */
+.productsSlider {
+  position: relative;
+}
+
+.productsSlider .swiper-button-next,
+.productsSlider .swiper-button-prev {
+  width: 28px !important;
+  height: 28px !important;
+  background: #fff;
+  border-radius: 50%;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  color: #333 !important;
+  transition: all;
+}
+
+.productsSlider .swiper-button-next::after,
+.productsSlider .swiper-button-prev::after {
+  font-size: 10px !important;
+  font-weight: 900;
+}
+
+.productsSlider .swiper-button-next:hover,
+.productsSlider .swiper-button-prev:hover {
+  background: #ff5252;
 }
