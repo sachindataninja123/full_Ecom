@@ -26,14 +26,14 @@ const ProductBox = ({
             {/* First Image */}
             <img
               src={img}
-              className="w-full h-61 3object-cover transition-all duration-300 group-hover:opacity-0"
+              className="w-full h-63 object-cover transition-all duration-300 group-hover:opacity-0"
               alt={name}
             />
 
             {/* Second Image (Hover Image) */}
             <img
-              src="https://rukminim2.flixcart.com/image/1536/1536/xif0q/ethnic-set/o/k/b/m-miss-94-miss-clothing-original-imahgmq75zgak58g.jpeg?q=90"
-              className="w-full h-61 object-cover absolute top-0 left-0 opacity-0 transition-all duration-300 group-hover:opacity-100 group-hover:scale-105"
+              src="https://rukminim2.flixcart.com/image/1536/1536/xif0q/sari/y/w/u/free-gadwal-fashion-club-collection-unstitched-original-imagydunza3jwxdf.jpeg?q=90"
+              className="w-full h-63 object-cover absolute top-0 left-0 opacity-0 transition-all duration-300 group-hover:opacity-100 group-hover:scale-105"
               alt={name}
             />
           </Link>

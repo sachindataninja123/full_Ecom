@@ -16,7 +16,7 @@ const Navigation = () => {
 
   return (
     <>
-      <nav className="p-2 border-t border-gray-200">
+      <nav className="border-t border-gray-200">
         <div className="container flex items-center justify-between gap-7">
           <div className="col_1 w-[20%]">
             <Button
@@ -43,7 +43,7 @@ const Navigation = () => {
               <li className="list-none relative group/cat">
                 <Link
                   to="/"
-                  className="link transition text-[14px] font-medium hover:text-[#ff5252]"
+                  className="link transition text-[14px] font-medium hover:text-[#ff5252] py-8!"
                 >
                   Fashion
                 </Link>

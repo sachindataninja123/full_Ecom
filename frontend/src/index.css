@@ -155,3 +155,30 @@ body {
 .productsSlider .swiper-button-prev:hover {
   background: #ff5252;
 }
+
+/* Blog slider */
+.blogSection {
+  position: relative;
+}
+
+.blogSection .swiper-button-next,
+.blogSection .swiper-button-prev {
+  width: 28px !important;
+  height: 28px !important;
+  background: #fff;
+  border-radius: 50%;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  color: #333 !important;
+  transition: all;
+}
+
+.blogSection .swiper-button-next::after,
+.blogSection .swiper-button-prev::after {
+  font-size: 10px !important;
+  font-weight: 900;
+}
+
+.blogSection .swiper-button-next:hover,
+.blogSection .swiper-button-prev:hover {
+  background: #ff5252;
+}
