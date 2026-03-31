@@ -14,10 +14,11 @@ import "swiper/css/navigation";
 import { Link } from "react-router-dom";
 import { Navigation } from "swiper/modules";
 import BlogBox from "../../components/BlogItem/BlogBox";
-import Footer from "../../components/Footer/Footer";
+
 import HomeSlider from "../../components/HomeSlider/HomeSlider";
 import HomeSliderV2 from "../../components/HomeSliderV2/HomeSliderV2";
 import BannerBoxV2 from "../../components/BannerBoxV2/BannerBoxV2";
+import AdsBannerV2 from "../../components/AdsBannersliderV2.jsx/AdsBannerV2";
 
 const Home = () => {
   const [value, setValue] = React.useState(0);
@@ -36,9 +37,9 @@ const Home = () => {
             <HomeSliderV2 />
           </div>
 
-          <div className="part2 w-[30%] flex items-center justify-center gap-5 flex-col">
-            <BannerBoxV2 />
-            <BannerBoxV2 />
+          <div className="part2 w-[30%] flex items-center justify-center gap-3 flex-col">
+            <BannerBoxV2 image={'https://www.threesixtycameras.com/wp-content/uploads/2016/02/go-hands-on-with-the-gear360-and-see-how-it-change-how-we-capture-our-memories25080954971ojpg-c749fe_765w.jpg'} info="left" />
+            <BannerBoxV2 image={'https://images.unsplash.com/photo-1634712282287-14ed57b9cc89?fm=jpg&q=60&w=3000&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8c29mYXxlbnwwfHwwfHx8MA%3D%3D'} info="right" />
           </div>
         </div>
       </section>
@@ -104,7 +105,7 @@ const Home = () => {
             </div>
           </div>
 
-          <AdsBanner items={4} />
+          <AdsBannerV2 items={4} />
         </div>
       </section>
 
@@ -175,8 +176,7 @@ const Home = () => {
         </div>
       </section>
 
-      {/* footer section */}
-      <Footer />
+      
     </div>
   );
 };

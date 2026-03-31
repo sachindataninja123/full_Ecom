@@ -179,7 +179,7 @@ const Footer = () => {
               </form>
 
               <FormControlLabel
-                control={<Checkbox defaultChecked />}
+                control={<Checkbox />}
                 label="I agree to the terms and conditions and the privacy policy."
               />
             </div>

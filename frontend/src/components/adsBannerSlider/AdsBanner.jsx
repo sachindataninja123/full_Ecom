@@ -13,7 +13,7 @@ const AdsBanner = ({ items }) => {
         spaceBetween={10}
         navigation={true}
         modules={[Navigation, Autoplay]}
-        autoplay={{ delay: 1500, disableOnInteraction: false }}
+        autoplay={{ delay: 1500, disableOnInteraction: true }}
         loop={true}
         className="mySwiper"
       >
