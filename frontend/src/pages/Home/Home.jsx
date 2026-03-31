@@ -17,6 +17,7 @@ import BlogBox from "../../components/BlogItem/BlogBox";
 import Footer from "../../components/Footer/Footer";
 import HomeSlider from "../../components/HomeSlider/HomeSlider";
 import HomeSliderV2 from "../../components/HomeSliderV2/HomeSliderV2";
+import BannerBoxV2 from "../../components/BannerBoxV2/BannerBoxV2";
 
 const Home = () => {
   const [value, setValue] = React.useState(0);
@@ -30,12 +31,18 @@ const Home = () => {
       {/* <HomeSlider /> */}
 
       <section className="py-6">
-        <div className="container flex items-center sliderHome ">
-          <div className="part1 w-[75%]">
+        <div className="container flex items-center sliderHome gap-4 ">
+          <div className="part1 w-[70%]">
             <HomeSliderV2 />
+          </div>
+
+          <div className="part2 w-[30%] flex items-center justify-center gap-5 flex-col">
+            <BannerBoxV2 />
+            <BannerBoxV2 />
           </div>
         </div>
       </section>
+
       <CategorySlider />
 
       {/* popular products section */}
@@ -170,8 +177,6 @@ const Home = () => {
 
       {/* footer section */}
       <Footer />
-
-
     </div>
   );
 };

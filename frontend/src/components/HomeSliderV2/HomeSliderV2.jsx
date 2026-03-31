@@ -15,6 +15,7 @@ const HomeSliderV2 = () => {
   return (
     <>
       <Swiper
+      loop={true}
         spaceBetween={30}
         effect={"fade"}
         navigation={true}
@@ -22,7 +23,7 @@ const HomeSliderV2 = () => {
           clickable: true,
         }}
         modules={[EffectFade, Navigation, Pagination]}
-        className="mySwiper"
+        className="homesliderV2"
       >
         <SwiperSlide>
           <div className="item overflow-hidden rounded-md relative">
@@ -31,7 +32,7 @@ const HomeSliderV2 = () => {
               className="w-full object-cover h-[70vh]"
             />
 
-            <div className="info absolute top-0 right-0 w-[50%] h-full z-50 p-8 flex items-center flex-col justify-center">
+            <div className="info absolute top-0 -right-full opacity-0 w-[50%] h-full z-50 p-8 flex items-center flex-col justify-center transition-all duration-500">
               <h4 className="text-[18px] font-medium w-full text-left mb-3">
                 Big Saving Days Sale
               </h4>
@@ -58,7 +59,7 @@ const HomeSliderV2 = () => {
               src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?q=80&w=1920&auto=format&fit=crop"
               className="w-full object-cover h-[70vh]"
             />
-            <div className="info absolute top-0 right-0 w-[50%] h-full z-50 p-8 flex items-center flex-col justify-center">
+          <div className="info absolute top-0 -right-full opacity-0 w-[50%] h-full z-50 p-8 flex items-center flex-col justify-center transition-all duration-500">
               <h4 className="text-[18px] font-medium w-full text-left mb-3">
                 Big Saving Days Sale
               </h4>
@@ -78,14 +79,14 @@ const HomeSliderV2 = () => {
             </div>
           </div>
         </SwiperSlide>
-https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=1920&auto=format&fit=crop
+
         <SwiperSlide>
           <div className="item overflow-hidden rounded-md">
             <img
               src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?q=80&w=1920&auto=format&fit=crop"
               className="w-full object-cover h-[70vh] object-right"
             />
-            <div className="info absolute top-0 right-0 w-[50%] h-full z-50 p-8 flex items-center flex-col justify-center">
+             <div className="info absolute top-0 -right-full opacity-0 w-[50%] h-full z-50 p-8 flex items-center flex-col justify-center transition-all duration-500">
               <h4 className="text-[18px] font-medium w-full text-left mb-3">
                 Big Saving Days Sale
               </h4>
@@ -112,7 +113,7 @@ https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=1920&auto=forma
               src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=1920&auto=format&fit=crop"
               className="w-full object-cover  h-[70vh] object-right"
             />
-            <div className="info absolute top-0 right-0 w-[50%] h-full z-50 p-8 flex items-center flex-col justify-center">
+            <div className="info absolute top-0 -right-full opacity-0 w-[50%] h-full z-50 p-8 flex items-center flex-col justify-center transition-all duration-500">
               <h4 className="text-[18px] font-medium w-full text-left mb-3">
                 Big Saving Days Sale
               </h4>

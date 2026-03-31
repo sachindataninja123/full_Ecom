@@ -201,3 +201,8 @@ body {
 .swiper-pagination-bullet-active{
   background:#ff5252 !important;
 }
+
+.homesliderV2 .swiper-slide-active .info{
+  right: 0;
+  opacity: 1 !important;
+} 
