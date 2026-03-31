@@ -15,6 +15,7 @@ import "swiper/css/navigation";
 import { Link } from "react-router-dom";
 import { Navigation } from "swiper/modules";
 import BlogBox from "../../components/BlogItem/BlogBox";
+import Footer from "../../components/Footer/Footer";
 
 const Home = () => {
   const [value, setValue] = React.useState(0);
@@ -158,11 +159,10 @@ const Home = () => {
         </div>
       </section>
 
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
+      {/* footer section */}
+      <Footer />
+
+      
     </div>
   );
 };

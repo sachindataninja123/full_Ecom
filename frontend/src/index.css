@@ -182,3 +182,18 @@ body {
 .blogSection .swiper-button-prev:hover {
   background: #ff5252;
 }
+
+.btn-org {
+  background-color: #ff5252 !important;
+  color: #fff !important;
+  padding: 10px 20px !important;
+}
+
+.css-vuhw6e-MuiButtonBase-root-MuiSwitchBase-root-MuiCheckbox-root {
+  color: #ff5252 !important;
+}
+
+.css-19opgx6-MuiFormControlLabel-root .MuiFormControlLabel-label {
+  font-size: 14px !important;
+  color: rgba(0, 0, 0, 0.7);
+}
