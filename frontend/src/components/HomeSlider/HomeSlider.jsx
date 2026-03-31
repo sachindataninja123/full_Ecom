@@ -5,7 +5,7 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { Navigation, Autoplay } from "swiper/modules";
 
-const Slider = () => {
+const HomeSlider = () => {
   const banners = [
    "https://www.jiomart.com/images/cms/aw_rbslider/slides/1772622561_2368x400.jpg?im=Resize=(2368,400)",
     "https://www.jiomart.com/images/cms/aw_rbslider/slides/1774009291_Get_Summer_ready.jpg?im=Resize=(2368,400)",
@@ -44,4 +44,4 @@ const Slider = () => {
   );
 };
 
-export default Slider;
+export default HomeSlider;

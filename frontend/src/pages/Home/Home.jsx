@@ -1,5 +1,4 @@
 import React from "react";
-import Slider from "../../components/HomeSlider/Slider";
 import CategorySlider from "../../components/CatSlider/CategorySlider";
 import { FaShippingFast } from "react-icons/fa";
 import AdsBanner from "../../components/adsBannerSlider/AdsBanner";
@@ -16,6 +15,8 @@ import { Link } from "react-router-dom";
 import { Navigation } from "swiper/modules";
 import BlogBox from "../../components/BlogItem/BlogBox";
 import Footer from "../../components/Footer/Footer";
+import HomeSlider from "../../components/HomeSlider/HomeSlider";
+import HomeSliderV2 from "../../components/HomeSliderV2/HomeSliderV2";
 
 const Home = () => {
   const [value, setValue] = React.useState(0);
@@ -26,7 +27,15 @@ const Home = () => {
 
   return (
     <div>
-      <Slider />
+      {/* <HomeSlider /> */}
+
+      <section className="py-6">
+        <div className="container flex items-center sliderHome ">
+          <div className="part1 w-[75%]">
+            <HomeSliderV2 />
+          </div>
+        </div>
+      </section>
       <CategorySlider />
 
       {/* popular products section */}
@@ -162,7 +171,7 @@ const Home = () => {
       {/* footer section */}
       <Footer />
 
-      
+
     </div>
   );
 };

@@ -40,7 +40,7 @@ const Announce = () => {
           Help & Center
         </Link>
         <Link to="/order-tracking" className="hover:border-[#111] border-b border-transparent transition">
-          Order Tracking
+          Become a seller
         </Link>
       </div>
     </div>

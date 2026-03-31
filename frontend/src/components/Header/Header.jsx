@@ -8,6 +8,7 @@ import Announce from "./AnnouncementBar/Announce";
 import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import Navigation from "./navigation/Navigation";
+import { IoIosGitCompare } from "react-icons/io";
 
 const Header = () => {
   return (
@@ -34,13 +35,24 @@ const Header = () => {
             </div>
 
             {/* Right Section */}
-            <div className="flex items-center gap-6">
+            <div className="flex items-center gap-3">
               <LogDropDown />
 
               {/* Wishlist */}
               <div className="relative">
                 <IconButton>
                   <FaRegHeart className="text-[24px] text-black" />
+                </IconButton>
+
+                <span className="absolute top-0.5 right-0.5 h-5 w-5 flex items-center justify-center text-white text-[14px] bg-[#ff5252] rounded-full">
+                  0
+                </span>
+              </div>
+
+              {/* Comapare */}
+              <div className="relative">
+                <IconButton>
+                  <IoIosGitCompare className="text-[24px] text-black" />
                 </IconButton>
 
                 <span className="absolute top-0.5 right-0.5 h-5 w-5 flex items-center justify-center text-white text-[14px] bg-[#ff5252] rounded-full">
