@@ -1,14 +1,14 @@
 import React from "react";
-import ProductListingPage from "../productListingPage/ProductListingPage";
+import ProductListingPage from "../../components/productListingPage/ProductListingPage";
 
 import Typography from "@mui/material/Typography";
 import Breadcrumbs from "@mui/material/Breadcrumbs";
 import Link from "@mui/material/Link";
-import ProductBox from "../productBox/ProductBox";
+
 
 const ProductListing = () => {
   return (
-    <div className="py-5">
+    <div className="py-5 pb-0">
       <div className="container">
         <Breadcrumbs aria-label="breadcrumb">
           <Link

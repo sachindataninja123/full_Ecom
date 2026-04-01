@@ -206,3 +206,14 @@ body {
   right: 0;
   opacity: 1 !important;
 } 
+
+
+.css-ptck8z-MuiButtonBase-root-MuiPaginationItem-root.Mui-selected{
+  background-color: #ff5252 !important;
+  color: #fff !important;
+  border: none !important; 
+}
+
+.thumbnails::-webkit-scrollbar{
+  display: none;
+}

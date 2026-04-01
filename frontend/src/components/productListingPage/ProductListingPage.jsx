@@ -1,6 +1,12 @@
 import { useState } from "react";
 import ProductBox from "../productBox/ProductBox";
 import ProductBoxListView from "../productBoxListView/ProductBoxListView";
+import Button from "@mui/material/Button";
+import { CiGrid42 } from "react-icons/ci";
+import { AiOutlineMenuUnfold } from "react-icons/ai";
+import Pagination from '@mui/material/Pagination';
+import Stack from '@mui/material/Stack';
+
 
 // ─── DATA ────────────────────────────────────────────────────────────────────
 
@@ -466,7 +472,7 @@ export default function ProductListingPage() {
                 className="text-2xl font-semibold text-gray-900 tracking-tight"
                 style={{ fontFamily: "'Playfair Display', serif" }}
               >
-                Sneakers
+                Products
               </h1>
             </div>
             <div className="flex items-center gap-3 flex-wrap">
@@ -488,18 +494,29 @@ export default function ProductListingPage() {
                   <option key={o}>{o}</option>
                 ))}
               </select>
-              <div className="flex border border-gray-200 rounded-lg overflow-hidden bg-white">
+              <div className="flex rounded-md overflow-hidden ">
                 <button
-                  className="px-2 py-1 cursor-pointer hover:bg-[#ff5252] hover:text-white  transition-all text-gray-700 bg-gray-50 text-lg"
+                  className={`cursor-pointer p-2 transition-all 
+    ${
+      itemView === "grid"
+        ? "text-[#ff5252]!"
+        : "text-gray-700! bg-gray-50 hover:bg-[#ff5252]! hover:text-white!"
+    }`}
                   onClick={() => setItemView("grid")}
                 >
-                  ⊞
+                  <CiGrid42  size={24} />
                 </button>
+
                 <button
-                  className="px-3 py-1 cursor-pointer hover:bg-[#ff5252] hover:text-white  transition-all text-gray-700 text-lg"
+                  className={` cursor-pointer p-2 transition-all  
+    ${
+      itemView === "list"
+        ? "text-[#ff5252]! "
+        : "text-gray-700! hover:bg-[#ff5252]! hover:text-white!"
+    }`}
                   onClick={() => setItemView("list")}
                 >
-                  ≡
+                  <AiOutlineMenuUnfold   size={24} />
                 </button>
               </div>
             </div>
@@ -545,26 +562,9 @@ export default function ProductListingPage() {
 
           {/* Pagination */}
           <div className="flex items-center justify-center gap-2 mt-10 mb-4">
-            <button className="w-8 h-8 rounded-lg border border-gray-200 bg-white text-gray-500 text-sm hover:border-orange-300 hover:text-orange-500 transition-colors">
-              ‹
-            </button>
-            {[1, 2, 3, 4, 5].map((n) => (
-              <button
-                key={n}
-                onClick={() => setPage(n)}
-                className={`w-8 h-8 rounded-lg text-sm font-medium transition-all duration-150 border
-                  ${
-                    page === n
-                      ? "bg-orange-500 text-white border-orange-500"
-                      : "bg-white border-gray-200 text-gray-600 hover:border-orange-300 hover:text-orange-500"
-                  }`}
-              >
-                {n}
-              </button>
-            ))}
-            <button className="w-8 h-8 rounded-lg border border-gray-200 bg-white text-gray-500 text-sm hover:border-orange-300 hover:text-orange-500 transition-colors">
-              ›
-            </button>
+             <Pagination count={10} variant="outlined" shape="rounded" />
+            
+      
           </div>
         </main>
       </div>
