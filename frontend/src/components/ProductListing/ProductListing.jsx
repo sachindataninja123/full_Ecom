@@ -1,5 +1,5 @@
 import React from "react";
-import ProductSideBar from "../productSidebar/ProductSideBar";
+import ProductListingPage from "../productListingPage/ProductListingPage";
 
 import Typography from "@mui/material/Typography";
 import Breadcrumbs from "@mui/material/Breadcrumbs";
@@ -33,23 +33,8 @@ const ProductListing = () => {
       <div className="bg-white p-2 mt-4">
         <div className="container flex gap-3">
           <div className="sidebarWrapper w-full h-full bg-white ">
-            <ProductSideBar />
+            <ProductListingPage />
           </div>
-
-          {/* <div className="rightContent w-[80%]">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              <ProductBox />
-              <ProductBox />
-                <ProductBox />
-              <ProductBox />
-                <ProductBox />
-              <ProductBox />
-                <ProductBox />
-              <ProductBox />
-                <ProductBox />
-              <ProductBox />
-            </div>
-          </div> */}
         </div>
       </div>
     </div>

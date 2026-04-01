@@ -1,5 +1,6 @@
 import { useState } from "react";
 import ProductBox from "../productBox/ProductBox";
+import ProductBoxListView from "../productBoxListView/ProductBoxListView";
 
 // ─── DATA ────────────────────────────────────────────────────────────────────
 
@@ -416,7 +417,9 @@ function ActiveTags({ filters, setFilters }) {
 
 // ─── MAIN PAGE ────────────────────────────────────────────────────────────────
 
-export default function ProductSideBar() {
+export default function ProductListingPage() {
+  const [itemView, setItemView] = useState("grid");
+
   const [filters, setFilters] = useState({
     categories: new Set(["Sneakers"]),
     brands: new Set(),
@@ -486,10 +489,18 @@ export default function ProductSideBar() {
                 ))}
               </select>
               <div className="flex border border-gray-200 rounded-lg overflow-hidden bg-white">
-                <button className="px-3 py-2 text-gray-400 bg-gray-50 text-sm">
+                <button
+                  className="px-2 py-1 cursor-pointer hover:bg-[#ff5252] hover:text-white  transition-all text-gray-700 bg-gray-50 text-lg"
+                  onClick={() => setItemView("grid")}
+                >
                   ⊞
                 </button>
-                <button className="px-3 py-2 text-gray-500 text-sm">≡</button>
+                <button
+                  className="px-3 py-1 cursor-pointer hover:bg-[#ff5252] hover:text-white  transition-all text-gray-700 text-lg"
+                  onClick={() => setItemView("list")}
+                >
+                  ≡
+                </button>
               </div>
             </div>
           </div>
@@ -504,19 +515,32 @@ export default function ProductSideBar() {
             ))} */}
           </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <ProductBox />
-            <ProductBox />
-            <ProductBox />
-            <ProductBox />
-            <ProductBox />
-            <ProductBox />
-            <ProductBox />
-            <ProductBox />
-            <ProductBox />
-            <ProductBox />
-            <ProductBox />
-            <ProductBox />
+          <div
+            className={`grid ${itemView === "grid" ? "grid grid-cols-2 md:grid-cols-4" : "grid grid-cols-1 md:grid-cols-1"} gap-4`}
+          >
+            {itemView === "grid" ? (
+              <>
+                <ProductBox />
+                <ProductBox />
+                <ProductBox />
+                <ProductBox />
+                <ProductBox />
+                <ProductBox />
+                <ProductBox />
+                <ProductBox />
+              </>
+            ) : (
+              <>
+                <ProductBoxListView />
+                <ProductBoxListView />
+                <ProductBoxListView />
+                <ProductBoxListView />
+                <ProductBoxListView />
+                <ProductBoxListView />
+                <ProductBoxListView />
+                <ProductBoxListView />
+              </>
+            )}
           </div>
 
           {/* Pagination */}
