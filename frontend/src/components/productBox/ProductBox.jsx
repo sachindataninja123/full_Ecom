@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import "./style.css";
 import { Link } from "react-router-dom";
 import Button from "@mui/material/Button";
@@ -6,6 +6,7 @@ import { FaRegHeart } from "react-icons/fa";
 import { IoIosGitCompare } from "react-icons/io";
 import { MdOutlineZoomOutMap } from "react-icons/md";
 import IconButton from "@mui/material/IconButton";
+import  { ProductviewContext } from "../../context/MyContext";
 
 const ProductBox = ({
   id,
@@ -17,8 +18,12 @@ const ProductBox = ({
   rating,
   discount,
 }) => {
+
+
+  const context = useContext(ProductviewContext);
+
   return (
-    <Link to={`/product/${id}`}>
+  
       <div className="productBox rounded-md overflow-hidden bg-white shadow-sm hover:shadow-md transition-shadow duration-300">
         {/* Image */}
         <div className="group imgWrapper relative w-full overflow-hidden rounded-t-md">
@@ -46,16 +51,19 @@ const ProductBox = ({
           )}
 
           {/* Actions */}
-          <div className="actions absolute -top-50 right-3 z-50 flex flex-col gap-2 transition-all duration-300 group-hover:top-4 opacity-0 group-hover:opacity-100">
-            <button className="w-10 h-10 rounded-full bg-white text-black shadow-sm flex items-center justify-center hover:text-white hover:bg-[#ff5252] hover:scale-105 active:scale-95 transition-all duration-150 cursor-pointer">
+          <div className="actions absolute -top-1 right-3 z-50 flex flex-col gap-2 transition-all duration-300 group-hover:top-4 opacity-0 group-hover:opacity-100">
+            <button
+              className="w-9 h-9 rounded-full bg-white text-black shadow-sm flex items-center justify-center hover:text-white hover:bg-[#ff5252] hover:scale-105 active:scale-95 transition-all duration-150 cursor-pointer"
+              onClick={() => context.setOpenProductDetailsModal(true)}
+            >
               <MdOutlineZoomOutMap size={19} />
             </button>
 
-            <button className="w-10 h-10 rounded-full bg-white text-black shadow-sm flex items-center justify-center hover:text-white hover:bg-[#ff5252] hover:scale-105 active:scale-95 transition-all duration-150 cursor-pointer">
+            <button className="w-9 h-9 rounded-full bg-white text-black shadow-sm flex items-center justify-center hover:text-white hover:bg-[#ff5252] hover:scale-105 active:scale-95 transition-all duration-150 cursor-pointer">
               <IoIosGitCompare size={19} />
             </button>
 
-            <button className="w-10 h-10 rounded-full bg-white text-black shadow-sm flex items-center justify-center hover:text-white hover:bg-[#ff5252] hover:scale-105 active:scale-95 transition-all duration-150 cursor-pointer">
+            <button className="w-9 h-9 rounded-full bg-white text-black shadow-sm flex items-center justify-center hover:text-white hover:bg-[#ff5252] hover:scale-105 active:scale-95 transition-all duration-150 cursor-pointer">
               <FaRegHeart size={18} />
             </button>
           </div>
@@ -78,9 +86,7 @@ const ProductBox = ({
 
           {/* Price */}
           <div className="flex items-center gap-2 mt-1">
-            <span className="text-[18px] font-bold text-[#ff5252]">
-              ₹1500
-            </span>
+            <span className="text-[18px] font-bold text-[#ff5252]">₹1500</span>
             {oldPrice && (
               <span className="text-[15px] font-medium text-gray-600 line-through">
                 ₹1800
@@ -89,7 +95,7 @@ const ProductBox = ({
           </div>
         </div>
       </div>
-    </Link>
+    
   );
 };
 

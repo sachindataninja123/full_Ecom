@@ -217,3 +217,11 @@ body {
 .thumbnails::-webkit-scrollbar{
   display: none;
 }
+
+.reviewScroll::-webkit-scrollbar{
+  width: 4px !important;
+}
+
+.reviewScroll::-webkit-scrollbar-thumb{
+  background: #ccc !important;
+}
