@@ -3,6 +3,10 @@ import Breadcrumbs from "@mui/material/Breadcrumbs";
 import { Link } from "react-router-dom";
 import ProductZoom from "../../components/ProductZoom/ProductZoom";
 import Button from "@mui/material/Button";
+import QtyBox from "../../components/QtyBox/QtyBox";
+import { IoCartOutline } from "react-icons/io5";
+import { FaRegHeart } from "react-icons/fa";
+import ProductTabs from "../../components/ProductTabs/ProductsTab";
 
 const ProductDetails = () => {
   const [productActionIndex, setProductActionIndex] = useState(null);
@@ -48,7 +52,7 @@ const ProductDetails = () => {
             <ProductZoom />
           </div>
 
-          <div className="productContent w-[60%] pt-2 ">
+          <div className="productContent w-[60%] pt-2 pr-1">
             {/* 🏷️ Title */}
             <h1 className="text-[20px] font-semibold text-gray-800 leading-6 line-clamp-2">
               Yuan Women's Rayon Floral Print Angrakha Kurti Pant Set | Kurta
@@ -125,17 +129,33 @@ const ProductDetails = () => {
               </div>
             </div>
 
-            
+            {/* Quantity Box */}
+            <div className="">
+              <QtyBox />
+            </div>
 
             {/* 🛒 Buttons */}
-            <div className="flex gap-4 mt-6">
-              <button className="bg-orange-500 text-white px-6 py-2 rounded-md font-semibold hover:bg-orange-600">
+            <div className="flex gap-4 mt-7">
+              <button className="bg-[#ff5252] transition-all cursor-pointer text-white px-7 py-2 rounded-md font-semibold hover:bg-orange-600 flex items-center justify-center gap-2">
+                <IoCartOutline size={23} />
                 Add to Cart
               </button>
-              <button className="bg-red-500 text-white px-6 py-2 rounded-md font-semibold hover:bg-red-600">
+              <button className="bg-[#ff5252] transition-all cursor-pointer text-white px-8 py-2 rounded-md font-semibold hover:bg-orange-600">
                 Buy Now
               </button>
             </div>
+
+            <div className="mt-1">
+              <p className="text-gray-500 text-sm font-semibold flex items-center  gap-1 link transition-all mt-3 cursor-pointer">
+                Add To Wishlist <FaRegHeart />
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div className="container pt-10">
+          <div className="flex gap-8">
+           <ProductTabs />
           </div>
         </div>
       </section>

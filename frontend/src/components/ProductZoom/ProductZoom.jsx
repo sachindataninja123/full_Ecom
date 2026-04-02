@@ -26,7 +26,7 @@ const ProductZoom = () => {
           zoomSrc={activeImage}
           zoomType="hover"
           zoomScale={1}
-          className="w-full h-110 object-cover rounded-md overflow-hidden transition-all"
+          className="w-full h-130 object-cover rounded-md overflow-hidden transition-all"
         />
       </div>
 
