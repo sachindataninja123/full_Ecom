@@ -4,9 +4,8 @@ import ProductBoxListView from "../productBoxListView/ProductBoxListView";
 import Button from "@mui/material/Button";
 import { CiGrid42 } from "react-icons/ci";
 import { AiOutlineMenuUnfold } from "react-icons/ai";
-import Pagination from '@mui/material/Pagination';
-import Stack from '@mui/material/Stack';
-
+import Pagination from "@mui/material/Pagination";
+import Stack from "@mui/material/Stack";
 
 // ─── DATA ────────────────────────────────────────────────────────────────────
 
@@ -504,7 +503,7 @@ export default function ProductListingPage() {
     }`}
                   onClick={() => setItemView("grid")}
                 >
-                  <CiGrid42  size={24} />
+                  <CiGrid42 size={24} />
                 </button>
 
                 <button
@@ -516,7 +515,7 @@ export default function ProductListingPage() {
     }`}
                   onClick={() => setItemView("list")}
                 >
-                  <AiOutlineMenuUnfold   size={24} />
+                  <AiOutlineMenuUnfold size={24} />
                 </button>
               </div>
             </div>
@@ -562,9 +561,7 @@ export default function ProductListingPage() {
 
           {/* Pagination */}
           <div className="flex items-center justify-center gap-2 mt-10 mb-4">
-             <Pagination count={10} variant="outlined" shape="rounded" />
-            
-      
+            <Pagination count={10} variant="outlined" shape="rounded" />
           </div>
         </main>
       </div>
