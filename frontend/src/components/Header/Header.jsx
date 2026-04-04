@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import Search from "../search/Search";
 import { FaRegHeart } from "react-icons/fa";
@@ -9,8 +9,14 @@ import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import Navigation from "./navigation/Navigation";
 import { IoIosGitCompare } from "react-icons/io";
+import { ProductviewContext } from "../../context/MyContext";
+
+
 
 const Header = () => {
+
+  const context = useContext(ProductviewContext)
+
   return (
     <>
       <div className="bg-white">
@@ -62,7 +68,7 @@ const Header = () => {
 
               {/* Cart */}
               <div className="relative">
-                <IconButton>
+                <IconButton onClick={() => context.setOpenCartPanel(true)}>
                   <BsCart3 className="text-[24px] text-black" />
                 </IconButton>
 

@@ -66,12 +66,12 @@ const ProductInfo = ({ sizes, productActionIndex, setProductActionIndex }) => {
         <h3 className="font-semibold text-gray-800 mb-2">Select Size</h3>
 
         <div className="flex gap-2">
-          {sizes.map((size, index) => (
+          {sizes.map((size, idx) => (
             <Button
-              key={index}
+              key={idx}
               onClick={() => setProductActionIndex(index)}
               className={`min-w-10! min-h-8! border! ${
-                productActionIndex === index ? "bg-[#ff5252]! text-white!" : ""
+                productActionIndex === idx ? "bg-[#ff5252]! text-white!" : ""
               }`}
             >
               {size}

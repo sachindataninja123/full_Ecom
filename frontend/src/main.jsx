@@ -7,10 +7,10 @@ import MyContext from "./context/MyContext.jsx";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <MyContext>
-      <BrowserRouter>
+    <BrowserRouter>
+      <MyContext>
         <App />
-      </BrowserRouter>
-    </MyContext>
+      </MyContext>
+    </BrowserRouter>
   </StrictMode>,
 );

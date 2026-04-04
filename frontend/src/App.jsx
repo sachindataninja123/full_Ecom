@@ -8,7 +8,11 @@ import ProductDetails from "./pages/ProductDetails/ProductDetails";
 import Login from "./pages/Login/Login";
 import Regsiter from "./pages/Register/Register";
 
+
+
 const App = () => {
+
+
   return (
     <div>
       <Header />
@@ -21,6 +25,8 @@ const App = () => {
         <Route path="/register" element={<Regsiter />} />
       </Routes>
       <Footer />
+
+     
     </div>
   );
 };

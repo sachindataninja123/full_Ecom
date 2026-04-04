@@ -7,6 +7,10 @@ import ProductZoom from "../components/ProductZoom/ProductZoom";
 import { IoMdClose } from "react-icons/io";
 import ProductInfo from "../components/ProductInfo/ProductInfo";
 
+import Drawer from "@mui/material/Drawer";
+import { Link } from "react-router-dom";
+import CartPanel from "../components/CartPanel/CartPanel";
+
 export const ProductviewContext = createContext();
 
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -18,6 +22,12 @@ const MyContext = ({ children }) => {
   const [openProductDetailsModal, setOpenProductDetailsModal] = useState(false);
   const [maxWidth, setMaxWidth] = useState("lg");
   const [fullWidth, setFullWidth] = useState(true);
+
+  const [openCartPanel, setOpenCartPanel] = useState(false);
+
+  const toggleDrawer = (newOpen) => () => {
+    setOpenCartPanel(newOpen);
+  };
 
   // ✅ Product state
   const [productActionIndex, setProductActionIndex] = useState(null);
@@ -49,7 +59,6 @@ const MyContext = ({ children }) => {
         handleClickOpenProductDetailsModal,
         handleCloseOpenProductDetailsModal,
 
-
         // product
         productActionIndex,
         setProductActionIndex,
@@ -60,6 +69,9 @@ const MyContext = ({ children }) => {
         setRating,
         reviews,
         addReview,
+
+        //cart drawer
+        setOpenCartPanel,
       }}
     >
       {children}
@@ -100,6 +112,25 @@ const MyContext = ({ children }) => {
           </div>
         </DialogContent>
       </Dialog>
+
+      {/* cart drawer */}
+      <Drawer
+        open={openCartPanel}
+        onClose={toggleDrawer(false)}
+        anchor="right"
+        className="cart_panel"
+      >
+        <div className=" flex items-center justify-between p-5 border-b border-[rgba(0,0,0,0.2)]">
+          <h4 className="font-semibold text-lg">Shopping Cart (1)</h4>
+          <IoMdClose
+            size={22}
+            className="cursor-pointer hover:bg-[#ff5252] rounded-full transition-all flex items-center justify-center  hover:text-white"
+            onClick={toggleDrawer(false)}
+          />
+        </div>
+
+       <CartPanel />
+      </Drawer>
     </ProductviewContext.Provider>
   );
 };

@@ -198,30 +198,34 @@ body {
   color: rgba(0, 0, 0, 0.7);
 }
 
-.swiper-pagination-bullet-active{
-  background:#ff5252 !important;
+.swiper-pagination-bullet-active {
+  background: #ff5252 !important;
 }
 
-.homesliderV2 .swiper-slide-active .info{
+.homesliderV2 .swiper-slide-active .info {
   right: 0;
   opacity: 1 !important;
-} 
-
-
-.css-ptck8z-MuiButtonBase-root-MuiPaginationItem-root.Mui-selected{
-  background-color: #ff5252 !important;
-  color: #fff !important;
-  border: none !important; 
 }
 
-.thumbnails::-webkit-scrollbar{
+.css-ptck8z-MuiButtonBase-root-MuiPaginationItem-root.Mui-selected {
+  background-color: #ff5252 !important;
+  color: #fff !important;
+  border: none !important;
+}
+
+.thumbnails::-webkit-scrollbar {
   display: none;
 }
 
-.reviewScroll::-webkit-scrollbar{
+.reviewScroll::-webkit-scrollbar {
   width: 4px !important;
 }
 
-.reviewScroll::-webkit-scrollbar-thumb{
+.reviewScroll::-webkit-scrollbar-thumb {
   background: #ccc !important;
+}
+
+.cart_panel .MuiPaper-root {
+  width: 400px;
+  overflow: hidden;
 }
