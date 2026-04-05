@@ -230,3 +230,15 @@ body {
   width: 400px;
   overflow: hidden;
 }
+.btn-border{
+  background-color: white !important;
+  border: 2px solid #ff5252 !important;
+  color:#ff5252 !important; 
+}
+
+.btn-border:hover{
+  background-color: #333 !important;
+  border: 2px #333 !important;
+  color:white !important;
+
+}

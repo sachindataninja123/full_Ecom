@@ -69,7 +69,7 @@ const ProductInfo = ({ sizes, productActionIndex, setProductActionIndex }) => {
           {sizes.map((size, idx) => (
             <Button
               key={idx}
-              onClick={() => setProductActionIndex(index)}
+              onClick={() => setProductActionIndex(idx)}
               className={`min-w-10! min-h-8! border! ${
                 productActionIndex === idx ? "bg-[#ff5252]! text-white!" : ""
               }`}

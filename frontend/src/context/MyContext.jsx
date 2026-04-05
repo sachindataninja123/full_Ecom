@@ -24,6 +24,8 @@ const MyContext = ({ children }) => {
   const [maxWidth, setMaxWidth] = useState("lg");
   const [fullWidth, setFullWidth] = useState(true);
 
+  const [isLoggedIn, setIsLoggedIn] = useState(true);
+
   const [openCartPanel, setOpenCartPanel] = useState(false);
 
   const toggleDrawer = (newOpen) => () => {
@@ -51,7 +53,7 @@ const MyContext = ({ children }) => {
     setReviews((prev) => [review, ...prev]);
   };
 
-  const openAlertBox = (status , msg) => {
+  const openAlertBox = (status, msg) => {
     if (status === "success") {
       toast.success(msg);
     }
@@ -83,6 +85,10 @@ const MyContext = ({ children }) => {
 
         //cart drawer
         setOpenCartPanel,
+
+        //Auth Login
+        isLoggedIn,
+        setIsLoggedIn,
       }}
     >
       {children}

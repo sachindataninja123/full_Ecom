@@ -166,7 +166,7 @@ const CartPanel = () => {
 
             <Link
               to="/checkout"
-              className="btn-org flex-1 text-center py-2.5 rounded-md font-semibold hover:bg-[#222]! transition-all"
+              className=" btn-border py-2 flex-1 text-center  rounded-md font-semibold  transition-all"
             >
               Checkout
             </Link>
