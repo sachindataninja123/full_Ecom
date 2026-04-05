@@ -1,12 +1,26 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import { IoEye, IoEyeOff } from "react-icons/io5";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FcGoogle } from "react-icons/fc";
+import { ProductviewContext } from "../../context/MyContext";
 
 const Login = () => {
   const [isShowPassword, setIsShowPassword] = useState(false);
+  const [formFields, setFormFields] = useState({
+    email: "",
+    password: "",
+  });
+
+  const context = useContext(ProductviewContext);
+
+  const history = useNavigate();
+
+  const forgotPassword = () => {
+    context.openAlertBox("success", "OTP Send");
+    history("/verify");
+  };
 
   return (
     <section className=" min-h-[80vh] flex items-center justify-center bg-gray-100">
@@ -23,6 +37,8 @@ const Login = () => {
             label="Email Address"
             variant="outlined"
             fullWidth
+            name="email"
+            id="email"
           />
 
           {/* Password */}
@@ -32,6 +48,8 @@ const Login = () => {
               label="Password"
               variant="outlined"
               fullWidth
+              name="password"
+              id="password"
             />
 
             <Button
@@ -45,8 +63,9 @@ const Login = () => {
           {/* Forgot password */}
           <div className="text-right">
             <Link
-              to="/forgot-password"
+              to="/verify"
               className="text-sm font-medium text-blue-500 hover:underline link"
+              onClick={forgotPassword}
             >
               Forgot Password?
             </Link>

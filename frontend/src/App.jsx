@@ -8,6 +8,7 @@ import ProductDetails from "./pages/ProductDetails/ProductDetails";
 import Login from "./pages/Login/Login";
 import Regsiter from "./pages/Register/Register";
 import CartPage from "./components/Cart/CartPage";
+import EmailVerify from "./components/Verify/EmailVerify";
 
 
 
@@ -25,6 +26,7 @@ const App = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Regsiter />} />
         <Route path="/cartpage" element={<CartPage />} />
+         <Route path="/verify" element={<EmailVerify />} />
       </Routes>
       <Footer />
 

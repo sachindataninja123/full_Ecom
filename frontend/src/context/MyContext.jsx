@@ -10,6 +10,7 @@ import ProductInfo from "../components/ProductInfo/ProductInfo";
 import Drawer from "@mui/material/Drawer";
 import { Link } from "react-router-dom";
 import CartPanel from "../components/CartPanel/CartPanel";
+import toast, { Toaster } from "react-hot-toast";
 
 export const ProductviewContext = createContext();
 
@@ -50,6 +51,15 @@ const MyContext = ({ children }) => {
     setReviews((prev) => [review, ...prev]);
   };
 
+  const openAlertBox = (status , msg) => {
+    if (status === "success") {
+      toast.success(msg);
+    }
+    if (status === "error") {
+      toast.error(msg);
+    }
+  };
+
   return (
     <ProductviewContext.Provider
       value={{
@@ -58,6 +68,7 @@ const MyContext = ({ children }) => {
         setOpenProductDetailsModal,
         handleClickOpenProductDetailsModal,
         handleCloseOpenProductDetailsModal,
+        openAlertBox,
 
         // product
         productActionIndex,
@@ -75,6 +86,8 @@ const MyContext = ({ children }) => {
       }}
     >
       {children}
+
+      <Toaster />
 
       {/* ✅ Modal UI */}
       <Dialog
@@ -129,7 +142,7 @@ const MyContext = ({ children }) => {
           />
         </div>
 
-       <CartPanel />
+        <CartPanel />
       </Drawer>
     </ProductviewContext.Provider>
   );
