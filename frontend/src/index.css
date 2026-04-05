@@ -221,6 +221,7 @@ body {
   width: 4px !important;
 }
 
+
 .reviewScroll::-webkit-scrollbar-thumb {
   background: #ccc !important;
 }
