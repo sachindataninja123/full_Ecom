@@ -82,7 +82,7 @@ const LogDropDown = () => {
 
                 <li>
                   <Link
-                    to="/wishlist"
+                    to="/mywishlist"
                     className="px-3 py-2 hover:bg-gray-100 flex items-center justify-start gap-2"
                   >
                     <FaRegHeart size={16} />

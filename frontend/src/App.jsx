@@ -7,12 +7,13 @@ import ProductListing from "./pages/ProductListing/ProductListing";
 import ProductDetails from "./pages/ProductDetails/ProductDetails";
 import Login from "./pages/Login/Login";
 import Regsiter from "./pages/Register/Register";
-import CartPage from "./components/Cart/CartPage";
+import CartPage from "./pages/Cart/CartPage";
 import EmailVerify from "./components/Verify/EmailVerify";
 import ForgotPassword from "./components/ForgotPassword/ForgotPassword";
 import ResetPassword from "./components/ResetPassword/ResetPassword";
 import CheckOut from "./pages/CheckOut/CheckOut";
 import MyProfile from "./pages/MyProfile/MyProfile";
+import MyList from "./pages/MyList/MyList";
 
 const App = () => {
   return (
@@ -32,6 +33,7 @@ const App = () => {
          <Route path="/checkout" element={<CheckOut />} />
 
          <Route path="/myprofile" element={<MyProfile />} />
+          <Route path="/mywishlist" element={<MyList />} />
       </Routes>
       <Footer />
     </div>
