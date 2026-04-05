@@ -157,12 +157,22 @@ const CartPanel = () => {
           <br />
 
           <div className="flex items-center justify-between w-full gap-5">
-            <Button className="btn-org w-[50%] hover:bg-[#222]! transition-all">
-              View Cart
-            </Button>
-            <Button className="btn-org w-[50%] hover:bg-[#222]! transition-all">
-              Checkout
-            </Button>
+            <div className="w-full rounded-md ">
+              <Link
+                to="/cartpage"
+                className="btn-org w-[50%] hover:bg-[#222]! rounded-md font-semibold transition-all"
+              >
+                View Cart
+              </Link>
+            </div>
+            <div className="w-full rounded-md">
+              <Link
+                to="/checkout"
+                className="btn-org w-[50%] hover:bg-[#222]! transition-all rounded-md font-semibold"
+              >
+                Checkout
+              </Link>
+            </div>
           </div>
         </div>
       </div>
