@@ -9,12 +9,10 @@ import Login from "./pages/Login/Login";
 import Regsiter from "./pages/Register/Register";
 import CartPage from "./components/Cart/CartPage";
 import EmailVerify from "./components/Verify/EmailVerify";
-
-
+import ForgotPassword from "./components/ForgotPassword/ForgotPassword";
+import ResetPassword from "./components/ResetPassword/ResetPassword";
 
 const App = () => {
-
-
   return (
     <div>
       <Header />
@@ -26,11 +24,11 @@ const App = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Regsiter />} />
         <Route path="/cartpage" element={<CartPage />} />
-         <Route path="/verify" element={<EmailVerify />} />
+        <Route path="/emailverify" element={<EmailVerify />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
       </Routes>
       <Footer />
-
-     
     </div>
   );
 };

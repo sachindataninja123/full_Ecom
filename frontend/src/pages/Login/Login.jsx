@@ -13,13 +13,13 @@ const Login = () => {
     password: "",
   });
 
-  const context = useContext(ProductviewContext);
+  // const context = useContext(ProductviewContext);
 
   const history = useNavigate();
 
   const forgotPassword = () => {
-    context.openAlertBox("success", "OTP Send");
-    history("/verify");
+    // context.openAlertBox("success", "OTP Send");
+    history("/emailverify");
   };
 
   return (
@@ -63,7 +63,7 @@ const Login = () => {
           {/* Forgot password */}
           <div className="text-right">
             <Link
-              to="/verify"
+              to="/forgot-password"
               className="text-sm font-medium text-blue-500 hover:underline link"
               onClick={forgotPassword}
             >
