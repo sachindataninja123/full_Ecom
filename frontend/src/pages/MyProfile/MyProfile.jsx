@@ -1,38 +1,3 @@
-// import React from "react";
-// import { FaCloudUploadAlt } from "react-icons/fa";
-
-// const MyProfile = () => {
-//   return (
-//     <section className="py-10 w-full">
-//       <div className="container flex gap-5">
-//         <div className="col1 w-[20%]">
-//           <div className="card bg-white shadow-md rounded-md p-5">
-//             <div className="w-full p-3 flex items-center justify-center flex-col">
-//               <div className="w-27 h-27 rounded-full overflow-hidden mb-4 group relative">
-//                 <img
-//                   src="https://img.freepik.com/free-photo/woman-showing-ok-sign_23-2148990150.jpg?semt=ais_incoming&w=740&q=80"
-//                   alt=""
-//                   className="w-full h-full object-cover"
-//                 />
-
-//                 <div className="overlay w-full h-full absolute top-0 left-0 z-50 bg-[rgba(0,0,0,0.6)] flex justify-center items-center cursor-pointer opacity-0 transition-all group-hover:opacity-100">
-//                     <FaCloudUploadAlt className="text-white text-[25px]" />
-//                     <input type="file" className="absolute top-0 left-0 w-full h-full opacity-0" />
-
-//                 </div>
-
-//               </div>
-//               <h2>Mahaieka Sharma</h2>
-//             </div>
-
-//           </div>
-//         </div>
-//       </div>
-//     </section>
-//   );
-// };
-
-// export default MyProfile;
 
 import React, { useState } from "react";
 import { FaCloudUploadAlt } from "react-icons/fa";

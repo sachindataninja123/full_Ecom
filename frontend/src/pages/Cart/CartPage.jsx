@@ -18,7 +18,7 @@ const CartPage = () => {
       qty: 1,
     },
     {
-      id: 1,
+      id: 2,
       brand: "Levis",
       title: "A-Line Kurti With sharara & Dupatta",
       image:
@@ -29,7 +29,7 @@ const CartPage = () => {
       qty: 1,
     },
     {
-      id: 1,
+      id: 3,
       brand: "Levis",
       title: "A-Line Kurti With sharara & Dupatta",
       image:
@@ -48,14 +48,19 @@ const CartPage = () => {
     0,
   );
 
+  const handleRemove = (id) => {
+    setCartItems(cartItems.filter((item) => item.id !== id));
+  };
+
   return (
     <section className="bg-[#f8f8f8] py-10">
       <div className="container max-w-6xl mx-auto px-4 flex gap-8">
         {/* LEFT */}
         <div className="w-[65%]">
-          <h2 className="text-2xl font-bold mb-2">Your Cart</h2>
+          <h2 className="text-[22px] text-gray-600 font-bold mb-1">Your Cart 🛒</h2>
           <p className="text-gray-600 mb-6">
-            {cartItems.length} item(s) in your cart
+            <span className="text-[#ff5252] font-semibold">
+              {cartItems.length} </span> item(s) in your cart
           </p>
 
           {cartItems.map((item) => (
@@ -80,6 +85,7 @@ const CartPage = () => {
                 {/* Remove */}
                 <RxCross2
                   size={20}
+                  onClick={() => handleRemove(item.id)}
                   className="absolute right-0 top-0 cursor-pointer text-gray-400 hover:text-red-500"
                 />
 

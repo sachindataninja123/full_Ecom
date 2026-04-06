@@ -35,9 +35,10 @@ const MyList = () => {
     <section className="bg-[#f8f8f8] py-10 min-h-[80vh]">
       <div className="container max-w-5xl mx-auto px-4">
         {/* Heading */}
-        <h2 className="text-2xl font-bold mb-2">My Wishlist ❤️</h2>
+        <h2 className="text-[22px] text-gray-600 font-bold mb-1">My Wishlist ❤️</h2>
         <p className="text-gray-600 mb-6">
-          {listItems.length} item(s) in your wishlist
+          <span className="text-[#ff5252] font-semibold">
+            {listItems.length} </span> item(s) in your wishlist
         </p>
 
         {/* EMPTY STATE */}
