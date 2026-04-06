@@ -33,7 +33,7 @@ const Header = () => {
   };
 
   return (
-    <header className="w-full shadow-md  h-auto py-3 pl-52 pr-7 bg-white  flex items-center justify-between">
+    <header className="w-full shadow-md  h-auto py-3 pl-78 pr-7 bg-white flex items-center justify-between">
       <div className="part1">
         <Button className="w-10! h-10! rounded-full! min-w-10! text-[rgba(0,0,0,0.8)]! ">
           <HiMenuAlt1 size={22} className="text-[rgba(0,0,0,0.8)]" />
