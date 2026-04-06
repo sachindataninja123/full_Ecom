@@ -1,11 +1,34 @@
-import React from 'react'
+import React from "react";
+import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom";
+import Dashboard from "./pages/dashboard/Dashboard";
+import Header from "./components/Header/Header";
+
+const Layout = () => {
+  return (
+    <>
+      <Header />
+      <div className="container py-5">
+        <Outlet />
+      </div>
+    </>
+  );
+};
 
 const App = () => {
-  return (
-    <div>
-      <h1 className='text-red-300'>hello</h1>
-    </div>
-  )
-}
+  const router = createBrowserRouter([
+    {
+      path: "/",
+      element: <Layout />,
+      children: [
+        {
+          path: "",
+          element: <Dashboard />,
+        },
+      ],
+    },
+  ]);
 
-export default App
+  return <RouterProvider router={router} />;
+};
+
+export default App;
