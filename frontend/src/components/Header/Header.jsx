@@ -11,11 +11,8 @@ import Navigation from "./navigation/Navigation";
 import { IoIosGitCompare } from "react-icons/io";
 import { ProductviewContext } from "../../context/MyContext";
 
-
-
 const Header = () => {
-
-  const context = useContext(ProductviewContext)
+  const context = useContext(ProductviewContext);
 
   return (
     <>
@@ -46,9 +43,11 @@ const Header = () => {
 
               {/* Wishlist */}
               <div className="relative">
+               <Link to="/mywishlist">
                 <IconButton>
                   <FaRegHeart className="text-[24px] text-black" />
                 </IconButton>
+               </Link>
 
                 <span className="absolute top-0.5 right-0.5 h-5 w-5 flex items-center justify-center text-white text-[14px] bg-[#ff5252] rounded-full">
                   0

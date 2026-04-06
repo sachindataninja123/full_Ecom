@@ -14,6 +14,7 @@ import ResetPassword from "./components/ResetPassword/ResetPassword";
 import CheckOut from "./pages/CheckOut/CheckOut";
 import MyProfile from "./pages/MyProfile/MyProfile";
 import MyList from "./pages/MyList/MyList";
+import MyOrders from "./pages/MyOrders/MyOrders";
 
 const App = () => {
   return (
@@ -30,10 +31,11 @@ const App = () => {
         <Route path="/emailverify" element={<EmailVerify />} />
         <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
-         <Route path="/checkout" element={<CheckOut />} />
+        <Route path="/checkout" element={<CheckOut />} />
 
-         <Route path="/myprofile" element={<MyProfile />} />
-          <Route path="/mywishlist" element={<MyList />} />
+        <Route path="/myprofile" element={<MyProfile />} />
+        <Route path="/mywishlist" element={<MyList />} />
+        <Route path="/myorders" element={<MyOrders />} />
       </Routes>
       <Footer />
     </div>

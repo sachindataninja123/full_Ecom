@@ -39,7 +39,7 @@ const LogDropDown = () => {
 
               <Link
                 to="/register"
-                className="text-center border border-gray-300 py-1 text-sm rounded-md hover:bg-gray-100"
+                className="btn-border py-1 flex-1 text-center  rounded-md font-semibold  transition-all"
               >
                 Sign Up
               </Link>
@@ -72,7 +72,7 @@ const LogDropDown = () => {
 
                 <li>
                   <Link
-                    to="/orders"
+                    to="/myorders"
                     className=" px-3 py-2 hover:bg-gray-100 flex items-center justify-start gap-2"
                   >
                     <IoBagHandleOutline size={16} />
