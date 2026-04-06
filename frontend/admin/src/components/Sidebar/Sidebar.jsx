@@ -1,72 +1,208 @@
-import Button from "@mui/material/Button";
-import React from "react";
-import { Link } from "react-router-dom";
-import { RxDashboard } from "react-icons/rx";
-import { TbSlideshow } from "react-icons/tb";
+import React, { useState } from "react";
+import { NavLink } from "react-router-dom";
+import {
+  RxDashboard
+} from "react-icons/rx";
+import {
+  TbSlideshow,
+  TbCategory2
+} from "react-icons/tb";
 import { LuUsers } from "react-icons/lu";
 import { LiaProductHunt } from "react-icons/lia";
-import { TbCategory2 } from "react-icons/tb";
-import { IoBagCheckOutline } from "react-icons/io5";
-import { IoLogOutOutline } from "react-icons/io5";
+import {
+  IoBagCheckOutline,
+  IoLogOutOutline
+} from "react-icons/io5";
+import { FaAngleDown } from "react-icons/fa6";
+import { Collapse } from "react-collapse";
 
 const SideBar = () => {
+  const [subMenuIdx, setSubMenuIdx] = useState(null);
+
+  const toggleMenu = (idx) => {
+    setSubMenuIdx(subMenuIdx === idx ? null : idx);
+  };
+
+  const menuClass =
+    "flex items-center gap-3 px-3 py-2 rounded-md text-[15px] font-medium transition-all";
+
   return (
-    <div className="sidebar fixed top-0 left-0 w-[18%] h-full bg-white shadow-md border-r border-[rgba(0,0,0,0.2)] py-2 px-4">
-      <div className="w-full py-1">
-        <Link to="/">
-          <img src="/logofably.png" className="w-40" alt="" />
-        </Link>
-      </div>
+    <div className="fixed top-0 left-0 w-60 h-full bg-white border-r border-gray-300 shadow-sm p-4">
 
-      <ul>
+      {/* LOGO */}
+      <NavLink to="/admin">
+        <img src="/logofably.png" className="w-36 mb-6" />
+      </NavLink>
+
+      <ul className="space-y-2">
+
+        {/* DASHBOARD */}
         <li>
-          <Button className="w-full capitalize! justify-start! flex items-center  gap-3 text-[14px]! font-medium text-[rgba(0,0,0,0.8)]!">
-            
-            <RxDashboard size={19} /> <span>Dashboard</span>
-          </Button>
+          <NavLink
+            to="/admin"
+            className={({ isActive }) =>
+              `${menuClass} ${
+                isActive
+                  ? "bg-[#ff5252] text-white"
+                  : "text-gray-700 hover:bg-gray-100"
+              }`
+            }
+          >
+            <RxDashboard className="text-[18px]"/> Dashboard
+          </NavLink>
         </li>
 
-         <li>
-          <Button className="w-full capitalize! justify-start! flex items-center  gap-3 text-[14px]! font-medium text-[rgba(0,0,0,0.8)]!">
-            
-            <TbSlideshow size={22} /> <span>Home Slides</span>
-          </Button>
+        {/* HOME SLIDES */}
+        <li>
+          <div
+            onClick={() => toggleMenu(1)}
+            className={`${menuClass} cursor-pointer text-gray-700 hover:bg-gray-100`}
+          >
+            <TbSlideshow className="text-[18px]"/> Home Slides
+            <FaAngleDown
+              className={`ml-auto transition ${
+                subMenuIdx === 1 ? "rotate-180" : ""
+              }`}
+            />
+          </div>
+
+          <Collapse isOpened={subMenuIdx === 1}>
+            <ul className="ml-6 mt-2 space-y-2 text-sm text-gray-600">
+
+              <li className="flex items-center gap-2">
+                <span className="w-1.5 h-1.5 bg-gray-500 rounded-full"></span>
+                <NavLink to="/admin/home-slides">
+                  Home Slide List
+                </NavLink>
+              </li>
+
+              <li className="flex items-center gap-2">
+                <span className="w-1.5 h-1.5 bg-gray-500 rounded-full"></span>
+                <NavLink to="/admin/add-slide">
+                  Add Home Banner
+                </NavLink>
+              </li>
+
+            </ul>
+          </Collapse>
         </li>
 
-         <li>
-          <Button className="w-full capitalize! justify-start! flex items-center  gap-3 text-[14px]! font-medium text-[rgba(0,0,0,0.8)]!">
-            
-            <LuUsers size={19} /> <span>Users</span>
-          </Button>
+        {/* USERS */}
+        <li>
+          <NavLink
+            to="/admin/users"
+            className={({ isActive }) =>
+              `${menuClass} ${
+                isActive
+                  ? "bg-[#ff5252] text-white"
+                  : "text-gray-700 hover:bg-gray-100"
+              }`
+            }
+          >
+            <LuUsers className="text-[18px]" /> Users
+          </NavLink>
         </li>
 
-         <li>
-          <Button className="w-full capitalize! justify-start! flex items-center  gap-3 text-[14px]! font-medium text-[rgba(0,0,0,0.8)]!">
-            
-            <LiaProductHunt size={20} /> <span>Products</span>
-          </Button>
+        {/* PRODUCTS */}
+        <li>
+          <div
+            onClick={() => toggleMenu(3)}
+            className={`${menuClass} cursor-pointer text-gray-700 hover:bg-gray-100`}
+          >
+            <LiaProductHunt className="text-[18px]"/> Products
+            <FaAngleDown
+              className={`ml-auto transition ${
+                subMenuIdx === 3 ? "rotate-180" : ""
+              }`}
+            />
+          </div>
+
+          <Collapse isOpened={subMenuIdx === 3}>
+            <ul className="ml-6 mt-2 space-y-2 text-sm text-gray-600">
+
+              <li className="flex items-center gap-2">
+                <span className="w-1.5 h-1.5 bg-gray-500 rounded-full"></span>
+                <NavLink to="/admin/products">
+                  Product List
+                </NavLink>
+              </li>
+
+              <li className="flex items-center gap-2">
+                <span className="w-1.5 h-1.5 bg-gray-500 rounded-full"></span>
+                <NavLink to="/admin/add-product">
+                  Product Upload
+                </NavLink>
+              </li>
+
+            </ul>
+          </Collapse>
         </li>
 
-         <li>
-          <Button className="w-full capitalize! justify-start! flex items-center  gap-3 text-[14px]! font-medium text-[rgba(0,0,0,0.8)]!">
-            
-            <TbCategory2 size={23} /> <span>Category</span>
-          </Button>
+        {/* CATEGORY */}
+        <li>
+          <div
+            onClick={() => toggleMenu(4)}
+            className={`${menuClass} cursor-pointer text-gray-700 hover:bg-gray-100`}
+          >
+            <TbCategory2 className="text-[18px]" /> Category
+            <FaAngleDown
+              className={`ml-auto transition ${
+                subMenuIdx === 4 ? "rotate-180" : ""
+              }`}
+            />
+          </div>
+
+          <Collapse isOpened={subMenuIdx === 4}>
+            <ul className="ml-6 mt-2 space-y-2 text-sm text-gray-600">
+
+              <li className="flex items-center gap-2">
+                <span className="w-1.5 h-1.5 bg-gray-500 rounded-full"></span>
+                <NavLink to="/admin/category">
+                  Category List
+                </NavLink>
+              </li>
+
+              <li className="flex items-center gap-2">
+                <span className="w-1.5 h-1.5 bg-gray-500 rounded-full"></span>
+                <NavLink to="/admin/add-category">
+                  Add Category
+                </NavLink>
+              </li>
+
+              <li className="flex items-center gap-2">
+                <span className="w-1.5 h-1.5 bg-gray-500 rounded-full"></span>
+                <NavLink to="/admin/sub-category">
+                  Sub Category List
+                </NavLink>
+              </li>
+
+            </ul>
+          </Collapse>
         </li>
 
-         <li>
-          <Button className="w-full capitalize! justify-start! flex items-center  gap-3 text-[14px]! font-medium text-[rgba(0,0,0,0.8)]!">
-            
-            <IoBagCheckOutline size={20} /> <span>Orders</span>
-          </Button>
+        {/* ORDERS */}
+        <li>
+          <NavLink
+            to="/admin/orders"
+            className={({ isActive }) =>
+              `${menuClass} ${
+                isActive
+                  ? "bg-[#ff5252] text-white"
+                  : "text-gray-700 hover:bg-gray-100"
+              }`
+            }
+          >
+            <IoBagCheckOutline className="text-[18px]" /> Orders
+          </NavLink>
         </li>
 
-         <li>
-          <Button className="w-full capitalize! justify-start! flex items-center  gap-3 text-[14px]! font-medium text-[rgba(0,0,0,0.8)]!">
-            
-            <IoLogOutOutline size={20} /> <span>Logout</span>
-          </Button>
+        {/* LOGOUT */}
+        <li>
+          <div className={`${menuClass} text-red-500 hover:bg-red-50 cursor-pointer`}>
+            <IoLogOutOutline className="text-[18px]" /> Logout
+          </div>
         </li>
+
       </ul>
     </div>
   );
