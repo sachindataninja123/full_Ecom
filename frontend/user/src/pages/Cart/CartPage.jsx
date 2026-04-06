@@ -57,10 +57,14 @@ const CartPage = () => {
       <div className="container max-w-6xl mx-auto px-4 flex gap-8">
         {/* LEFT */}
         <div className="w-[65%]">
-          <h2 className="text-[22px] text-gray-600 font-bold mb-1">Your Cart 🛒</h2>
+          <h2 className="text-[22px] text-gray-600 font-bold mb-1">
+            Your Cart 🛒
+          </h2>
           <p className="text-gray-600 mb-6">
             <span className="text-[#ff5252] font-semibold">
-              {cartItems.length} </span> item(s) in your cart
+              {cartItems.length}{" "}
+            </span>{" "}
+            item(s) in your cart
           </p>
 
           {cartItems.map((item) => (
@@ -159,10 +163,12 @@ const CartPage = () => {
 
             {/* Button */}
             <div className="mt-5 ">
-              <Button className="bg-[#ff5252]! text-white! w-full py-2! hover:bg-black! transition">
-                <HiShoppingBag size={20} className="mr-2" />
-                Proceed to Checkout
-              </Button>
+              <Link to="/checkout">
+                <Button className="bg-[#ff5252]! text-white! w-full py-2! hover:bg-black! transition">
+                  <HiShoppingBag size={20} className="mr-2" />
+                  Proceed to Checkout
+                </Button>
+              </Link>{" "}
             </div>
           </div>
         </div>
