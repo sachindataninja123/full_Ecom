@@ -102,10 +102,10 @@ const MyOrders = () => {
       .slice(0, 2)
       .toUpperCase();
 
-  const statusStyles = {
-    Pending: { badge: "bg-red-50 text-red-800", dot: "bg-red-500" },
-    Delivered: { badge: "bg-green-50 text-green-800", dot: "bg-green-500" },
-    Shipped: { badge: "bg-blue-50 text-blue-800", dot: "bg-blue-500" },
+   const statusStyles = {
+    Pending: { badge: "bg-red-100 text-red-700", dot: "bg-red-500" },
+    Delivered: { badge: "bg-green-100 text-green-700", dot: "bg-green-500" },
+    Shipped: { badge: "bg-blue-100 text-blue-700", dot: "bg-blue-500" },
   };
 
   return (

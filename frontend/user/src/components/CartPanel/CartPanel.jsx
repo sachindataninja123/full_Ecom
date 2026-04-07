@@ -159,14 +159,14 @@ const CartPanel = () => {
           <div className="flex items-center justify-between w-full gap-5">
             <Link
               to="/cartpage"
-              className="btn-org flex-1 text-center py-2.5 rounded-md font-semibold hover:bg-[#222]! transition-all"
+              className="btn-org flex-1 text-center py-2.5 rounded-sm font-semibold hover:bg-[#222]! transition-all"
             >
               View Cart
             </Link>
 
             <Link
               to="/checkout"
-              className=" btn-border py-2 flex-1 text-center  rounded-md font-semibold  transition-all"
+              className=" btn-border py-2 flex-1 text-center  rounded-sm font-semibold  transition-all"
             >
               Checkout
             </Link>

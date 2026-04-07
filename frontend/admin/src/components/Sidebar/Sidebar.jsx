@@ -27,7 +27,7 @@ const SideBar = () => {
     "flex items-center gap-3 px-3 py-2 rounded-md text-[15px] font-medium transition-all";
 
   return (
-    <div className="fixed top-0 left-0 w-60 h-full bg-white border-r border-gray-300 shadow-sm p-4">
+    <div className="fixed top-0 left-0 w-[18%] h-full bg-white border-r border-gray-300 shadow-sm p-4">
 
       {/* LOGO */}
       <NavLink to="/admin">
@@ -173,6 +173,14 @@ const SideBar = () => {
                 <span className="w-1.5 h-1.5 bg-gray-500 rounded-full"></span>
                 <NavLink to="/admin/sub-category">
                   Sub Category List
+                </NavLink>
+              </li>
+
+              
+              <li className="flex items-center gap-2">
+                <span className="w-1.5 h-1.5 bg-gray-500 rounded-full"></span>
+                <NavLink to="/admin/sub-category/add">
+                  Add Sub Category List
                 </NavLink>
               </li>
 

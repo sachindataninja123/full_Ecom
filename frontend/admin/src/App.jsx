@@ -14,11 +14,15 @@ const Layout = () => {
         <div className="sidebarWrapper w-[18%] shadow">
           <SideBar />
         </div>
-      </div>
 
+        <div className="contentRight px-3 py-4 w-[82%]">
+          <Dashboard />
+        </div>
+      </div>
+{/* 
       <div className="container py-5">
         <Outlet />
-      </div>
+      </div> */}
     </>
   );
 };
