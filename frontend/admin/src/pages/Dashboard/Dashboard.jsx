@@ -3,6 +3,11 @@ import DashboardBox from "../../components/DashboardBox/DashboardBox";
 import Button from "@mui/material/Button";
 import { FaPlus } from "react-icons/fa6";
 
+import Checkbox from "@mui/material/Checkbox";
+import ProgressBar from "../../components/Progress/ProgressBar";
+
+const label = { slotProps: { input: { "aria-label": "Checkbox demo" } } };
+
 const Dashboard = () => {
   const [selectedOrder, setSelectedOrder] = useState(null);
 
@@ -94,6 +99,48 @@ const Dashboard = () => {
           price: 3800,
         },
       ],
+    },
+  ]);
+
+  const [products] = useState([
+    {
+      id: "P001",
+      name: "Wireless Headphones",
+      image:
+        "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=100",
+      category: "Electronics",
+      subCategory: "Audio",
+      price: 2500,
+      sales: 120,
+    },
+    {
+      id: "P002",
+      name: "Smart Watch",
+      image:
+        "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=100",
+      category: "Electronics",
+      subCategory: "Wearables",
+      price: 3800,
+      sales: 95,
+    },
+    {
+      id: "P003",
+      name: "Gaming Keyboard",
+      image:
+        "https://images.unsplash.com/photo-1595225476474-87563907a212?w=100",
+      category: "Accessories",
+      subCategory: "Computer",
+      price: 3200,
+      sales: 60,
+    },
+    {
+      id: "P004",
+      name: "Running Shoes",
+      image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=100",
+      category: "Fashion",
+      subCategory: "Footwear",
+      price: 2200,
+      sales: 150,
     },
   ]);
 
@@ -381,6 +428,112 @@ const Dashboard = () => {
           </div>
         </div>
       )}
+
+      <div className="card my-3 bg-white shadow-md sm:rounded-lg ">
+        <div className="flex items-center justify-between px-3 py-3">
+          <h2 className="font-semibold text-gray-700 text-2xl">Products</h2>
+        </div>
+
+        <div className="p-3">
+          {/* Table */}
+          <div className="bg-white border border-gray-200 rounded-lg overflow-hidden">
+            {/* ✅ Horizontal Scroll Enabled */}
+            <div className="overflow-x-auto scroll-smooth pb-5">
+              <table className="w-full min-w-300 border-collapse text-sm">
+                <thead>
+                  <tr className="bg-gray-50 border-b border-gray-200">
+                    {[
+                      <Checkbox {...label} size="small" />,
+                      "Product",
+                      "Category",
+                      "Sub Category",
+                      "Price",
+                      "Sales",
+                      "Action",
+                    ].map((h) => (
+                      <th
+                        key={h}
+                        className="text-left text-[12px] uppercase tracking-wider text-gray-500 font-medium px-4 py-3 whitespace-nowrap"
+                      >
+                        {h}
+                      </th>
+                    ))}
+                  </tr>
+                </thead>
+
+                <tbody>
+                  {products.map((product) => (
+                    <tr
+                      key={product.id}
+                      className="border-b border-gray-100 hover:bg-gray-50 transition"
+                    >
+                      {/* Checkbox */}
+                      <td className="px-4 py-3">
+                        <Checkbox {...label} size="small" />
+                      </td>
+
+                      {/* Product */}
+                      <td className="px-4 py-3">
+                        <div className="flex items-center gap-3">
+                          <img
+                            src={product.image}
+                            alt=""
+                            className="w-12 h-12 object-cover rounded-md border"
+                          />
+                          <div>
+                            <p className="font-medium text-gray-900">
+                              {product.name}
+                            </p>
+                            <p className="text-xs text-gray-400">
+                              {product.id}
+                            </p>
+                          </div>
+                        </div>
+                      </td>
+
+                      {/* Category */}
+                      <td className="px-4 py-3 text-gray-600">
+                        {product.category}
+                      </td>
+
+                      {/* Sub Category */}
+                      <td className="px-4 py-3 text-gray-600">
+                        {product.subCategory}
+                      </td>
+
+                      {/* Price */}
+                      <td className="px-4 py-3 font-medium text-blue-700">
+                        ₹{product.price.toLocaleString("en-IN")}
+                      </td>
+
+                      {/* Sales */}
+                      <td className="px-4 py-3">
+                        <span className=" py-1 text-[15px] w-38 text-gray-500 font-semibold">
+                          <span className="font-bold text-md text-gray-500">
+                            {product.sales}
+                          </span>{" "}
+                          sold
+                          <ProgressBar value={40} type="success" />
+                        </span>
+                      </td>
+
+                      {/* Action */}
+                      <td className="px-4 py-3 flex gap-2">
+                        <button className="px-3 py-1 text-xs border rounded-lg hover:bg-gray-100">
+                          Edit
+                        </button>
+                        <button className="px-3 py-1 text-xs border rounded-lg text-red-500 hover:bg-red-50">
+                          Delete
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
     </>
   );
 };
