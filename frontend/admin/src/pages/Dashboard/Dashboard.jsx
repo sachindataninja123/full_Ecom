@@ -2,9 +2,14 @@ import React, { useState } from "react";
 import DashboardBox from "../../components/DashboardBox/DashboardBox";
 import Button from "@mui/material/Button";
 import { FaPlus } from "react-icons/fa6";
+import { BiEditAlt } from "react-icons/bi";
+import { MdDelete } from "react-icons/md";
 
 import Checkbox from "@mui/material/Checkbox";
 import ProgressBar from "../../components/Progress/ProgressBar";
+import Tooltip from "@mui/material/Tooltip";
+import { MdOutlineRemoveRedEye } from "react-icons/md";
+import Pagination from "@mui/material/Pagination";
 
 const label = { slotProps: { input: { "aria-label": "Checkbox demo" } } };
 
@@ -429,10 +434,12 @@ const Dashboard = () => {
         </div>
       )}
 
+      {/* products table */}
       <div className="card my-3 bg-white shadow-md sm:rounded-lg ">
         <div className="flex items-center justify-between px-3 py-3">
           <h2 className="font-semibold text-gray-700 text-2xl">Products</h2>
         </div>
+
 
         <div className="p-3">
           {/* Table */}
@@ -518,13 +525,35 @@ const Dashboard = () => {
                       </td>
 
                       {/* Action */}
-                      <td className="px-4 py-3 flex gap-2">
-                        <button className="px-3 py-1 text-xs border rounded-lg hover:bg-gray-100">
-                          Edit
-                        </button>
-                        <button className="px-3 py-1 text-xs border rounded-lg text-red-500 hover:bg-red-50">
-                          Delete
-                        </button>
+                      <td className="px-4 py-3">
+                        <div className="flex items-center gap-2">
+                          <Tooltip title="Edit Product" placement="top">
+                            <Button
+                              size="small"
+                              className="min-w-0! p-2! border border-gray-300! rounded-full! text-gray-600! hover:bg-gray-200!"
+                            >
+                              <BiEditAlt size={18} />
+                            </Button>
+                          </Tooltip>
+
+                          <Tooltip title="View Product" placement="top">
+                            <Button
+                              size="small"
+                              className="min-w-0! p-2! border border-gray-300! rounded-full! text-gray-600! hover:bg-gray-200!"
+                            >
+                              <MdOutlineRemoveRedEye size={18} />
+                            </Button>
+                          </Tooltip>
+
+                          <Tooltip title="Remove Product" placement="top">
+                            <Button
+                              size="small"
+                              className="min-w-0! p-2! border border-gray-300! rounded-full! text-red-500! hover:bg-red-200!"
+                            >
+                              <MdDelete size={18} />
+                            </Button>
+                          </Tooltip>
+                        </div>
                       </td>
                     </tr>
                   ))}
@@ -533,6 +562,10 @@ const Dashboard = () => {
             </div>
           </div>
         </div>
+
+      <div className="flex items-center justify-end pt-4 pb-4 px-4">
+          <Pagination count={10} color="primary" />
+      </div>
       </div>
     </>
   );
