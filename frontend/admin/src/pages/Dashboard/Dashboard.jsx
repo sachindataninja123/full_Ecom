@@ -10,6 +10,7 @@ import ProgressBar from "../../components/Progress/ProgressBar";
 import Tooltip from "@mui/material/Tooltip";
 import { MdOutlineRemoveRedEye } from "react-icons/md";
 import Pagination from "@mui/material/Pagination";
+import { Link } from "react-router-dom";
 
 const label = { slotProps: { input: { "aria-label": "Checkbox demo" } } };
 
@@ -440,7 +441,6 @@ const Dashboard = () => {
           <h2 className="font-semibold text-gray-700 text-2xl">Products</h2>
         </div>
 
-
         <div className="p-3">
           {/* Table */}
           <div className="bg-white border border-gray-200 rounded-lg overflow-hidden">
@@ -482,15 +482,19 @@ const Dashboard = () => {
                       {/* Product */}
                       <td className="px-4 py-3">
                         <div className="flex items-center gap-3">
-                          <img
-                            src={product.image}
-                            alt=""
-                            className="w-12 h-12 object-cover rounded-md border"
-                          />
+                          <Link to="/">
+                            <img
+                              src={product.image}
+                              alt=""
+                              className="w-13 h-13 object-cover rounded-md hover:scale-105 cursor-pointer transition-all "
+                            />
+                          </Link>
                           <div>
-                            <p className="font-medium text-gray-900">
-                              {product.name}
-                            </p>
+                            <Link to="/">
+                              <p className="font-medium hover:text-[#ff5252] transition-all cursor-pointer text-gray-900">
+                                {product.name}
+                              </p>
+                            </Link>
                             <p className="text-xs text-gray-400">
                               {product.id}
                             </p>
@@ -563,9 +567,9 @@ const Dashboard = () => {
           </div>
         </div>
 
-      <div className="flex items-center justify-end pt-4 pb-4 px-4">
+        <div className="flex items-center justify-end pt-4 pb-4 px-4">
           <Pagination count={10} color="primary" />
-      </div>
+        </div>
       </div>
     </>
   );

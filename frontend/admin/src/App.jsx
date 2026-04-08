@@ -1,43 +1,65 @@
-import React from "react";
-import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom";
+import React, { useContext } from "react";
+import {
+  createBrowserRouter,
+  RouterProvider,
+  Outlet,
+  Navigate,
+} from "react-router-dom";
 import Dashboard from "./pages/dashboard/Dashboard";
 import Header from "./components/Header/Header";
 import SideBar from "./components/Sidebar/SideBar";
+import { MyContext } from "./context/MyContext";
 
 const Layout = () => {
-  return (
-    <>
-      <Header />
+  const { isSideBarOpen } = useContext(MyContext);
 
-      <div className="contentMain flex">
-        {/* Sidebar */}
-        <div className="sidebarWrapper w-[18%] shadow">
+  return (
+    <div className="flex flex-col h-screen overflow-hidden">
+      <div className="shrink-0">
+        <Header />
+      </div>
+
+      <div className="flex flex-1 overflow-hidden">
+        <div
+          className={`transition-all duration-300 shrink-0 h-full sticky top-0 ${
+            isSideBarOpen ? "w-[18%] opacity-100" : "w-0 opacity-0"
+          }`}
+        >
           <SideBar />
         </div>
 
-        <div className="contentRight px-3 py-4 w-[82%]">
-          <Dashboard />
+        <div className="flex-1 overflow-y-auto px-3 py-4 bg-gray-50">
+          <Outlet />
         </div>
       </div>
-{/* 
-      <div className="container py-5">
-        <Outlet />
-      </div> */}
-    </>
+    </div>
   );
 };
 
 const App = () => {
   const router = createBrowserRouter([
     {
-      path: "/",
+      path: "/admin",
       element: <Layout />,
+      errorElement: <h1>404 Page Not Found</h1>,
       children: [
         {
-          path: "",
+          index: true,
           element: <Dashboard />,
         },
+        {
+          path: "products",
+          element: <h1>Products Page</h1>,
+        },
+        {
+          path: "orders",
+          element: <h1>Orders Page</h1>,
+        },
       ],
+    },
+    {
+      path: "/",
+      element: <Navigate to="/admin" replace />,
     },
   ]);
 
