@@ -11,11 +11,21 @@ import Tooltip from "@mui/material/Tooltip";
 import { MdOutlineRemoveRedEye } from "react-icons/md";
 import Pagination from "@mui/material/Pagination";
 import { Link } from "react-router-dom";
+import Select from "@mui/material/Select";
+import MenuItem from "@mui/material/MenuItem";
+import { AiOutlineCloudUpload } from "react-icons/ai";
+
 
 const label = { slotProps: { input: { "aria-label": "Checkbox demo" } } };
 
 const Dashboard = () => {
   const [selectedOrder, setSelectedOrder] = useState(null);
+
+  const [categotyFilter, setCategoryFilter] = useState("");
+
+  const handleChangeCatFilter = (event) => {
+    setCategoryFilter(event.target.value);
+  };
 
   const [orders] = useState([
     {
@@ -439,6 +449,42 @@ const Dashboard = () => {
       <div className="card my-3 bg-white shadow-md sm:rounded-lg ">
         <div className="flex items-center justify-between px-3 py-3">
           <h2 className="font-semibold text-gray-700 text-2xl">Products</h2>
+        </div>
+        <div className="flex items-center w-full pl-3 justify-between mb-3">
+          <div className="col w-[20%]">
+            <h4 className="font-semibold text-[16px] mb-2 text-gray-600">
+              Category By:
+            </h4>
+            <Select
+              className="w-full"
+              size="small"
+              labelId="demo-select-small-label"
+              id="demo-select-small"
+              value={categotyFilter}
+              label="Age"
+              onChange={handleChangeCatFilter}
+            >
+              <MenuItem value="">
+                <em>None</em>
+              </MenuItem>
+              <MenuItem value={10}>Men</MenuItem>
+              <MenuItem value={20}>Women</MenuItem>
+              <MenuItem value={30}>Kids</MenuItem>
+              <MenuItem value={30}>Boys</MenuItem>
+              <MenuItem value={30}>Girls</MenuItem>
+            </Select>
+          </div>
+
+          <div className="col w-[30%] flex items-center justify-center gap-4">
+            <Button className="btn-green flex items-center justify-center gap-2 ">
+              {" "}
+              <AiOutlineCloudUpload size={22} /> Export
+            </Button>
+            <Button className="btn-blue flex items-center justify-center gap-2 ">
+              <FaPlus size={20} />
+              Add Product
+            </Button>
+          </div>
         </div>
 
         <div className="p-3">
