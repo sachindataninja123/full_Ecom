@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, PureComponent } from "react";
 import DashboardBox from "../../components/DashboardBox/DashboardBox";
 import Button from "@mui/material/Button";
 import { FaPlus } from "react-icons/fa6";
@@ -14,14 +14,29 @@ import { Link } from "react-router-dom";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import { AiOutlineCloudUpload } from "react-icons/ai";
-
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Legend } from "recharts";
+import { ResponsiveContainer, Tooltip as RechartsTooltip } from "recharts";
 
 const label = { slotProps: { input: { "aria-label": "Checkbox demo" } } };
 
 const Dashboard = () => {
   const [selectedOrder, setSelectedOrder] = useState(null);
-
   const [categotyFilter, setCategoryFilter] = useState("");
+
+ const [chart1Data, setChart1Data] = useState([
+  { name: "Jan", users: 4000, sales: 2400 },
+  { name: "Feb", users: 3200, sales: 1800 },
+  { name: "Mar", users: 2800, sales: 3200 },
+  { name: "Apr", users: 3500, sales: 2800 },
+  { name: "May", users: 4200, sales: 3600 },
+  { name: "Jun", users: 3900, sales: 3000 },
+  { name: "Jul", users: 4600, sales: 4100 },
+  { name: "Aug", users: 4800, sales: 4300 },
+  { name: "Sep", users: 5200, sales: 4700 },
+  { name: "Oct", users: 6100, sales: 5500 },
+  { name: "Nov", users: 7200, sales: 6800 },
+  { name: "Dec", users: 8500, sales: 7900 },
+]);
 
   const handleChangeCatFilter = (event) => {
     setCategoryFilter(event.target.value);
@@ -616,6 +631,59 @@ const Dashboard = () => {
         <div className="flex items-center justify-end pt-4 pb-4 px-4">
           <Pagination count={10} color="primary" />
         </div>
+      </div>
+
+      {/* recharts */}
+      <div className="card my-3 bg-white shadow-md sm:rounded-lg p-4">
+        <div className="flex items-center justify-between px-3 py-3 pb-0">
+          <h2 className="font-semibold text-gray-700 text-2xl">
+            Total Users & Total Sales
+          </h2>
+        </div>
+        <div className="flex items-center gap-5 px-3 py-3 pt-1 mb-4">
+          <span className="flex items-center gap-1 text-[15px] text-gray-700">
+            <span className="block w-2.5 h-2.5 rounded-full bg-blue-500"></span>
+            Total Users
+          </span>
+
+          <span className="flex items-center gap-1 text-[15px] text-gray-700">
+            <span className="block w-2.5 h-2.5 rounded-full bg-green-500"></span>
+            Total Sales
+          </span>
+        </div>
+        <ResponsiveContainer width="100%" height={400}>
+          <LineChart
+            data={chart1Data}
+            margin={{
+              top: 10,
+              right: 20,
+              left: 0,
+              bottom: 10,
+            }}
+          >
+            <CartesianGrid strokeDasharray="3 3" stroke="none" />
+            <XAxis dataKey="name" />
+            <YAxis />
+
+            {/* ✅ Correct Tooltip */}
+            <RechartsTooltip />
+
+            <Legend />
+
+            <Line
+              type="monotone"
+              dataKey="users"
+              stroke="#82ca9d"
+              strokeWidth={3}
+            />
+            <Line
+              type="monotone"
+              dataKey="sales"
+              stroke="#8884d8"
+              strokeWidth={3}
+            />
+          </LineChart>
+        </ResponsiveContainer>
       </div>
     </>
   );
