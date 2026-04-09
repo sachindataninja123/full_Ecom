@@ -10,6 +10,7 @@ import Header from "./components/Header/Header";
 import SideBar from "./components/Sidebar/SideBar";
 import { MyContext } from "./context/MyContext";
 import Login from "./pages/Login/Login";
+import SignUp from "./pages/register/SignUp";
 
 const Layout = () => {
   const { isSideBarOpen } = useContext(MyContext);
@@ -63,7 +64,13 @@ const App = () => {
     // login
     {
       path: "/admin/login",
-      element: <Login />, 
+      element: <Login />,
+    },
+
+    // register
+    {
+      path: "/admin/register",
+      element: <SignUp />,
     },
 
     //  Redirect root

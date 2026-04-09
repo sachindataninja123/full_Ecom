@@ -11,7 +11,7 @@ import IconButton from "@mui/material/IconButton";
 import { Link } from "react-router-dom";
 import { FiLogIn, FiUserPlus } from "react-icons/fi";
 
-const Login = () => {
+const SignUp = () => {
   const [showPassword, setShowPassword] = useState(false);
 
   return (
@@ -58,15 +58,16 @@ const Login = () => {
         {/* TEXT */}
         <div className="text-center mb-13">
           <h2 className="text-4xl font-bold text-gray-700 mb-2">
-            Welcome Back!{" "}
+            Join us today!{" "}
           </h2>
           <p className="text-gray-500 text-2xl font-semibold  mt-1">
-            Sign in to continue to your Dashboard
+            Get special benefits and stay up-to-date.
           </p>
         </div>
 
         {/* FORM */}
         <form className="flex flex-col gap-4 ">
+          <TextField label="Name" variant="outlined" size="small" fullWidth />
           <TextField
             label="Email Address"
             variant="outlined"
@@ -75,6 +76,25 @@ const Login = () => {
           />
           <TextField
             label="Password"
+            type={showPassword ? "text" : "password"}
+            variant="outlined"
+            size="small"
+            fullWidth
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton
+                    onClick={() => setShowPassword(!showPassword)}
+                    edge="end"
+                  >
+                    {showPassword ? <IoEyeOff /> : <IoEye />}
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
+          />
+          <TextField
+            label="Confirm Password"
             type={showPassword ? "text" : "password"}
             variant="outlined"
             size="small"
@@ -106,7 +126,7 @@ const Login = () => {
             variant="contained"
             className="bg-blue-500! text-white! text-[14px]! py-2! rounded-md!"
           >
-            Sign In
+            Sign Up
           </Button>
         </form>
 
@@ -138,12 +158,12 @@ const Login = () => {
 
         {/* FOOTER */}
         <p className="text-md text-center text-gray-500 mt-10">
-          Don’t have an account?{" "}
+          Already have an account?{" "}
           <NavLink
-            to="/admin/register"
+            to="/admin/login"
             className="text-black font-medium hover:underline"
           >
-            Sign Up
+            Sign In
           </NavLink>
         </p>
       </div>
@@ -151,4 +171,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default SignUp;
