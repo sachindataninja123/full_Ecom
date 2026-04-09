@@ -7,11 +7,15 @@ export const MyContext = createContext();
 const MyContextProvider = ({ children }) => {
   const [isSideBarOpen, setIsSideBarOpen] = useState(true);
 
+  const [isLoggedIn, setisLoggedIn] = useState(false);
+
   return (
     <MyContext.Provider
       value={{
         isSideBarOpen,
         setIsSideBarOpen,
+        isLoggedIn,
+        setisLoggedIn,
       }}
     >
       {children}

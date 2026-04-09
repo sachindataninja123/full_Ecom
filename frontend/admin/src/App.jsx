@@ -9,6 +9,7 @@ import Dashboard from "./pages/dashboard/Dashboard";
 import Header from "./components/Header/Header";
 import SideBar from "./components/Sidebar/SideBar";
 import { MyContext } from "./context/MyContext";
+import Login from "./pages/Login/Login";
 
 const Layout = () => {
   const { isSideBarOpen } = useContext(MyContext);
@@ -38,9 +39,10 @@ const Layout = () => {
 
 const App = () => {
   const router = createBrowserRouter([
+    // / page
     {
       path: "/admin",
-      element: <Layout />,
+      element: <Layout />, // ✅ only for protected pages
       errorElement: <h1>404 Page Not Found</h1>,
       children: [
         {
@@ -57,9 +59,23 @@ const App = () => {
         },
       ],
     },
+
+    // login
+    {
+      path: "/admin/login",
+      element: <Login />, 
+    },
+
+    //  Redirect root
     {
       path: "/",
       element: <Navigate to="/admin" replace />,
+    },
+
+    //Optional catch-all
+    {
+      path: "*",
+      element: <h1>404 Page Not Found</h1>,
     },
   ]);
 

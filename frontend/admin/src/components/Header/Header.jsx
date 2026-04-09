@@ -1,4 +1,3 @@
-
 import React, { useContext, useState } from "react";
 import { HiMenuAlt1 } from "react-icons/hi";
 import Button from "@mui/material/Button";
@@ -26,106 +25,93 @@ const Header = () => {
   const [anchorElMyAcc, setAnchorElMyAcc] = useState(null);
   const open = Boolean(anchorElMyAcc);
 
+  const { isSideBarOpen, setIsSideBarOpen, isLoggedIn, setIsLoggedIn } =
+    useContext(MyContext);
+
   const handleClickMyAcc = (event) => {
+    if (!isLoggedIn) return;
     setAnchorElMyAcc(event.currentTarget);
   };
+
   const handleCloseMyAcc = () => {
     setAnchorElMyAcc(null);
   };
 
-  const { isSideBarOpen, setIsSideBarOpen } = useContext(MyContext);
+  const handleLogout = () => {
+    setIsLoggedIn(false); //
+    handleCloseMyAcc();
+  };
 
   return (
-    
     <header className="w-full shadow-md py-3 px-5 bg-white flex items-center justify-between">
-      <div className="part1">
+      {/* LEFT */}
+      <div>
         <Button
-          className="w-10! h-10! rounded-full! min-w-10! text-[rgba(0,0,0,0.8)]!"
+          className="w-10! h-10! rounded-full! min-w-10!"
           onClick={() => setIsSideBarOpen(!isSideBarOpen)}
         >
-          <HiMenuAlt1 size={22} className="text-[rgba(0,0,0,0.8)]" />
+          <HiMenuAlt1 size={22} />
         </Button>
       </div>
 
-      <div className="part2 w-[40%] flex items-center justify-end gap-5">
-        <IconButton aria-label="notifications">
+      {/* RIGHT */}
+      <div className="w-[40%] flex items-center justify-end gap-5">
+        {/* Notification */}
+        <IconButton>
           <StyledBadge badgeContent={4} color="secondary">
             <FaRegBell />
           </StyledBadge>
         </IconButton>
 
+        {/* Avatar / Login */}
         <div className="relative">
-          <div
-            className="rounded-full w-9 h-9 overflow-hidden cursor-pointer"
-            onClick={handleClickMyAcc}
-          >
-            <img
-              src="https://plus.unsplash.com/premium_photo-1690407617542-2f210cf20d7e?w=1000&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8cGVyc29ufGVufDB8fDB8fHww"
-              alt="avatar"
-              className="w-full h-full object-cover"
-            />
-          </div>
+          {isLoggedIn ? (
+            <div
+              className="rounded-full w-9 h-9 overflow-hidden cursor-pointer"
+              onClick={handleClickMyAcc}
+            >
+              <img
+                src="https://plus.unsplash.com/premium_photo-1690407617542-2f210cf20d7e"
+                alt="avatar"
+                className="w-full h-full object-cover"
+              />
+            </div>
+          ) : (
+            <Button variant="contained" className="rounded-full!">
+              Sign In
+            </Button>
+          )}
 
+          {/* Always render Menu */}
           <Menu
             anchorEl={anchorElMyAcc}
-            id="account-menu"
             open={open}
             onClose={handleCloseMyAcc}
             onClick={handleCloseMyAcc}
-            slotProps={{
-              paper: {
-                elevation: 0,
-                sx: {
-                  overflow: "visible",
-                  filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
-                  mt: 1.5,
-                  "& .MuiAvatar-root": {
-                    width: 32,
-                    height: 32,
-                    ml: -0.5,
-                    mr: 1,
-                  },
-                  "&::before": {
-                    content: '""',
-                    display: "block",
-                    position: "absolute",
-                    top: 0,
-                    right: 14,
-                    width: 10,
-                    height: 10,
-                    bgcolor: "background.paper",
-                    transform: "translateY(-50%) rotate(45deg)",
-                    zIndex: 0,
-                  },
-                },
-              },
-            }}
             transformOrigin={{ horizontal: "right", vertical: "top" }}
             anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
           >
-            <MenuItem onClick={handleCloseMyAcc} className="bg-white!">
+            <MenuItem>
               <div className="flex items-center gap-3">
-                <div className="rounded-full w-9 h-9 overflow-hidden">
-                  <img
-                    src="https://plus.unsplash.com/premium_photo-1690407617542-2f210cf20d7e?w=1000&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8cGVyc29ufGVufDB8fDB8fHww"
-                    alt="avatar"
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-                <div className="info leading-tight">
-                  <h2 className="text-[15px] font-medium">Angellia Gotellina</h2>
-                  <p className="text-[13px] text-gray-400 font-medium">
-                    angelliagotellina@gmail.com
-                  </p>
+                <img
+                  src="https://plus.unsplash.com/premium_photo-1690407617542-2f210cf20d7e"
+                  className="w-9 h-9 rounded-full object-cover"
+                />
+                <div>
+                  <h2 className="text-[14px] font-medium">Sachin</h2>
+                  <p className="text-[12px] text-gray-400">sachin@gmail.com</p>
                 </div>
               </div>
             </MenuItem>
+
             <Divider />
+
             <MenuItem>
-              <CiUser className="mr-2" size={23} /> Profile
+              <CiUser className="mr-2" /> Profile
             </MenuItem>
-            <MenuItem>
-              <VscSignOut className="mr-2" size={22} /> Sign Out
+
+            <MenuItem onClick={handleLogout}>
+              <VscSignOut className="mr-2" /> Logout
             </MenuItem>
           </Menu>
         </div>
