@@ -54,7 +54,7 @@ const Login = () => {
       </header>
 
       {/* CARD */}
-      <div className="w-full max-w-150 rounded-md bg-white shadow-sm p-7 mt-7 z-10 ">
+      <div className="w-full max-w-150 rounded-md bg-[#f1f1f1]  shadow-sm p-7 mt-7 z-10 ">
         {/* TEXT */}
         <div className="text-center mb-13">
           <h2 className="text-4xl font-bold text-gray-700 mb-2">
@@ -95,7 +95,7 @@ const Login = () => {
 
           <div className="flex justify-end">
             <Link
-              to="/forgot-password"
+              to="/admin/forgot-password"
               className="text-sm text-blue-500 cursor-pointer hover:underline font-semibold"
             >
               Forgot Password?
@@ -141,7 +141,7 @@ const Login = () => {
           Don’t have an account?{" "}
           <NavLink
             to="/admin/register"
-            className="text-black font-medium hover:underline"
+            className="text-black font-medium hover:underline hover:text-blue-500 transition-all"
           >
             Sign Up
           </NavLink>

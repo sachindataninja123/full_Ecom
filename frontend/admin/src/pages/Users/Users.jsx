@@ -98,9 +98,7 @@ const Users = () => {
                     <th className="px-4 py-3 text-left text-xs uppercase text-gray-500">
                       Status
                     </th>
-                    <th className="px-4 py-3 text-left text-xs uppercase text-gray-500">
-                      Action
-                    </th>
+                   
                   </tr>
                 </thead>
 
@@ -150,29 +148,6 @@ const Users = () => {
                         >
                           {user.status}
                         </span>
-                      </td>
-
-                      {/* Actions */}
-                      <td className="px-4 py-3">
-                        <div className="flex gap-2">
-                          <Tooltip title="Edit User">
-                            <Button className="min-w-0! p-2! border rounded-full!">
-                              <BiEditAlt size={18} />
-                            </Button>
-                          </Tooltip>
-
-                          <Tooltip title="View User">
-                            <Button className="min-w-0! p-2! border rounded-full!">
-                              <MdOutlineRemoveRedEye size={18} />
-                            </Button>
-                          </Tooltip>
-
-                          <Tooltip title="Delete User">
-                            <Button className="min-w-0! p-2! border rounded-full! text-red-500!">
-                              <MdDelete size={18} />
-                            </Button>
-                          </Tooltip>
-                        </div>
                       </td>
                     </tr>
                   ))}

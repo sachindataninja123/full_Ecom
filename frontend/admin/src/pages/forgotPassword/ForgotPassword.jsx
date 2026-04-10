@@ -11,7 +11,7 @@ import IconButton from "@mui/material/IconButton";
 import { Link } from "react-router-dom";
 import { FiLogIn, FiUserPlus } from "react-icons/fi";
 
-const SignUp = () => {
+const ForgotPassword = () => {
   const [showPassword, setShowPassword] = useState(false);
 
   return (
@@ -58,110 +58,36 @@ const SignUp = () => {
         {/* TEXT */}
         <div className="text-center mb-13">
           <h2 className="text-4xl font-bold text-gray-700 mb-2">
-            Join us today!{" "}
+            Having trouble to sign in?{" "}
           </h2>
           <p className="text-gray-500 text-2xl font-semibold  mt-1">
-            Get special benefits and stay up-to-date.
+            Reset your password
           </p>
         </div>
 
         {/* FORM */}
         <form className="flex flex-col gap-4 ">
-          <TextField label="Name" variant="outlined" size="small" fullWidth />
           <TextField
             label="Email Address"
             variant="outlined"
             size="small"
             fullWidth
           />
-          <TextField
-            label="Password"
-            type={showPassword ? "text" : "password"}
-            variant="outlined"
-            size="small"
-            fullWidth
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="end">
-                  <IconButton
-                    onClick={() => setShowPassword(!showPassword)}
-                    edge="end"
-                  >
-                    {showPassword ? <IoEyeOff /> : <IoEye />}
-                  </IconButton>
-                </InputAdornment>
-              ),
-            }}
-          />
-          <TextField
-            label="Confirm Password"
-            type={showPassword ? "text" : "password"}
-            variant="outlined"
-            size="small"
-            fullWidth
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="end">
-                  <IconButton
-                    onClick={() => setShowPassword(!showPassword)}
-                    edge="end"
-                  >
-                    {showPassword ? <IoEyeOff /> : <IoEye />}
-                  </IconButton>
-                </InputAdornment>
-              ),
-            }}
-          />
-
-          <div className="flex justify-end">
-            <Link
-              to="/forgot-password"
-              className="text-sm text-blue-500 cursor-pointer hover:underline font-semibold"
-            >
-              Forgot Password?
-            </Link>
-          </div>
 
           <Button
             variant="contained"
             className="bg-blue-500! text-white! text-[14px]! py-2! rounded-md!"
           >
-            Sign Up
+            Reset Password
           </Button>
         </form>
 
-        {/* DIVIDER */}
-        <div className="flex items-center gap-3 my-5 mt-10">
-          <span className="flex-1 h-px bg-gray-200"></span>
-          <span className="text-xs text-gray-400">OR CONTINUE WITH</span>
-          <span className="flex-1 h-px bg-gray-200"></span>
-        </div>
-
-        {/* SOCIAL LOGIN */}
-        <div className="flex gap-3">
-          <Button
-            variant="outlined"
-            className="border-gray-300! text-gray-700! py-2! flex items-center gap-2 w-full"
-          >
-            <FcGoogle size={22} />
-            Google
-          </Button>
-
-          <Button
-            variant="outlined"
-            className="border-gray-300! text-gray-700! py-2! flex items-center gap-2 w-full"
-          >
-            <FaFacebookF size={20} className="text-blue-600" />
-            Facebook
-          </Button>
-        </div>
-
         {/* FOOTER */}
         <p className="text-md text-center text-gray-500 mt-10">
-          Already have an account?{" "}
+          Don't want to reset?{" "}
           <NavLink
             to="/admin/login"
-            className="text-black font-medium hover:underline"
+            className="text-black font-medium hover:underline hover:text-blue-500 transition-all"
           >
             Sign In
           </NavLink>
@@ -171,4 +97,4 @@ const SignUp = () => {
   );
 };
 
-export default SignUp;
+export default ForgotPassword;
