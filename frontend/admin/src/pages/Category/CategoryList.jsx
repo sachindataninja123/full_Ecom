@@ -88,78 +88,78 @@ const CategoryList = () => {
       {/* Card */}
       <div className="bg-white shadow-md rounded-xl overflow-hidden">
         {/* Table */}
-       <div className="overflow-x-auto">
-  {/* Header */}
-  <table className="w-full text-sm table-fixed">
-    <thead className="bg-gray-100 text-gray-600 uppercase text-xs sticky top-0 z-10">
-      <tr>
-        <th className="w-15 text-center px-4">
-          <Checkbox size="small" />
-        </th>
-        <th className="w-40 px-4 py-6 text-left">Image</th>
-        <th className="w-50 px-4 py-6 text-left">Category Name</th>
-        <th className="px-4 py-6 text-left">Actions</th>
-      </tr>
-    </thead>
-  </table>
+        <div className="overflow-x-auto">
+          {/* Header */}
+          <table className="w-full text-sm table-fixed">
+            <thead className="bg-gray-100 text-gray-600 uppercase text-xs sticky top-0 z-10">
+              <tr>
+                <th className="w-15 text-center px-4">
+                  <Checkbox size="small" />
+                </th>
+                <th className="w-40 px-4 py-6 text-left">Image</th>
+                <th className="w-50 px-4 py-6 text-left">Category Name</th>
+                <th className="px-4 py-6 text-left">Actions</th>
+              </tr>
+            </thead>
+          </table>
 
-  {/* Body */}
-  <div className="max-h-100 overflow-y-auto mt-2">
-    <table className="w-full text-sm table-fixed border-separate border-spacing-y-2">
-      <tbody>
-        {images.map((item, index) => (
-          <tr
-            key={index}
-            className="bg-white shadow-sm hover:shadow-md transition"
-          >
-            {/* Checkbox */}
-            <td className="w-15 text-center px-4 align-middle">
-              <Checkbox size="small" />
-            </td>
+          {/* Body */}
+          <div className="max-h-100 overflow-y-auto mt-2">
+            <table className="w-full text-sm table-fixed border-separate border-spacing-y-2">
+              <tbody>
+                {images.map((item, index) => (
+                  <tr
+                    key={index}
+                    className="bg-white shadow-sm hover:shadow-md transition"
+                  >
+                    {/* Checkbox */}
+                    <td className="w-15 text-center px-4 align-middle">
+                      <Checkbox size="small" />
+                    </td>
 
-            {/* Image */}
-            <td className="w-40 px-4 py-3">
-              <div className="w-15 h-15 rounded-full overflow-hidden">
-                <img
-                  src={item.image}
-                  alt=""
-                  className="w-full h-full object-cover"
-                />
-              </div>
-            </td>
+                    {/* Image */}
+                    <td className="w-40 px-4 py-3">
+                      <div className="w-16 h-16 rounded-full overflow-hidden">
+                        <img
+                          src={item.image}
+                          alt=""
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                    </td>
 
-            {/* Category Name */}
-            <td className="w-50 px-4 py-3">
-              <p className="font-medium text-[16px] text-gray-800">
-                Electronics
-              </p>
-              <span className="text-md text-gray-500">
-                ID: {item.id}
-              </span>
-            </td>
+                    {/* Category Name */}
+                    <td className="w-50 px-4 py-3">
+                      <p className="font-medium text-[16px] text-gray-800">
+                        Electronics
+                      </p>
+                      <span className="text-md text-gray-500">
+                        ID: {item.id}
+                      </span>
+                    </td>
 
-            {/* Actions */}
-            <td className="px-4 py-3">
-              <div className="flex items-center gap-3">
-                <Tooltip title="Edit">
-                  <Button className="min-w-0! p-2! border rounded-full!">
-                    <BiEditAlt size={18} />
-                  </Button>
-                </Tooltip>
+                    {/* Actions */}
+                    <td className="px-4 py-3">
+                      <div className="flex items-center gap-3">
+                        <Tooltip title="Edit">
+                          <Button className="min-w-0! p-2! border rounded-full!">
+                            <BiEditAlt size={18} />
+                          </Button>
+                        </Tooltip>
 
-                <Tooltip title="Delete">
-                  <Button className="min-w-0! p-2! border rounded-full! text-red-500!">
-                    <MdDelete size={18} />
-                  </Button>
-                </Tooltip>
-              </div>
-            </td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
-  </div>
-</div>
+                        <Tooltip title="Delete">
+                          <Button className="min-w-0! p-2! border rounded-full! text-red-500!">
+                            <MdDelete size={18} />
+                          </Button>
+                        </Tooltip>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
 
         {/* Pagination */}
         <div className="flex justify-end p-4">

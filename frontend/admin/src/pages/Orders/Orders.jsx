@@ -1,50 +1,8 @@
-import React, { useState, PureComponent, useContext } from "react";
-import DashboardBox from "../../components/DashboardBox/DashboardBox";
-import Button from "@mui/material/Button";
-import { FaPlus } from "react-icons/fa6";
-import { BiEditAlt } from "react-icons/bi";
-import { MdDelete } from "react-icons/md";
+import React, { useState } from "react";
+import SearchBox from "../../components/SearchBox/SearchBox";
 
-import Checkbox from "@mui/material/Checkbox";
-import ProgressBar from "../../components/Progress/ProgressBar";
-import Tooltip from "@mui/material/Tooltip";
-import { MdOutlineRemoveRedEye } from "react-icons/md";
-import Pagination from "@mui/material/Pagination";
-import { Link } from "react-router-dom";
-import Select from "@mui/material/Select";
-import MenuItem from "@mui/material/MenuItem";
-import { AiOutlineCloudUpload } from "react-icons/ai";
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Legend } from "recharts";
-import { ResponsiveContainer, Tooltip as RechartsTooltip } from "recharts";
-import { MyContext } from "../../context/MyContext";
-
-const label = { slotProps: { input: { "aria-label": "Checkbox demo" } } };
-
-const Dashboard = () => {
+const Orders = () => {
   const [selectedOrder, setSelectedOrder] = useState(null);
-  const [categotyFilter, setCategoryFilter] = useState("");
-
-  const { isOpenFullScreenPanel, setIsOpenFullScreenPanel } =
-    useContext(MyContext);
-
-  const [chart1Data, setChart1Data] = useState([
-    { name: "Jan", users: 4000, sales: 2400 },
-    { name: "Feb", users: 3200, sales: 1800 },
-    { name: "Mar", users: 2800, sales: 3200 },
-    { name: "Apr", users: 3500, sales: 2800 },
-    { name: "May", users: 4200, sales: 3600 },
-    { name: "Jun", users: 3900, sales: 3000 },
-    { name: "Jul", users: 4600, sales: 4100 },
-    { name: "Aug", users: 4800, sales: 4300 },
-    { name: "Sep", users: 5200, sales: 4700 },
-    { name: "Oct", users: 6100, sales: 5500 },
-    { name: "Nov", users: 7200, sales: 6800 },
-    { name: "Dec", users: 8500, sales: 7900 },
-  ]);
-
-  const handleChangeCatFilter = (event) => {
-    setCategoryFilter(event.target.value);
-  };
 
   const [orders] = useState([
     {
@@ -135,7 +93,7 @@ const Dashboard = () => {
         },
       ],
     },
-      {
+    {
       orderId: "651f8c9a4d3b2f1a9c7e6d21",
       paymentId: "652a7b3c9e1d4f8a6c2b9d12",
       name: "Sachin Kumar",
@@ -202,7 +160,95 @@ const Dashboard = () => {
     {
       orderId: "651f8c9a4d3b2f1a9c7e6d21",
       paymentId: "651f8c9a4d3b2f1a9c7e6d21",
-      name: "shana Sharma",
+      name: "Raj Sharma",
+      phone: "9812345678",
+      email: "raj@gmail.com",
+      userId: "651f8c9a4d3b2f1a9c7e6d21",
+      address:
+        "H No 222 Street No 6 Adarsh Mohalla Maujpur Delhi near shivam medical.",
+      pincode: "110053",
+      totalAmount: 3800,
+      status: "Shipped",
+      date: "06 April 2026",
+      products: [
+        {
+          id: "651f8c9a4d3b2f1a9c7e6d21",
+          title: "Smart Watch Series 5",
+          image:
+            "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=120&q=80",
+          qty: 1,
+          price: 3800,
+        },
+      ],
+    },
+    {
+      orderId: "651f8c9a4d3b2f1a9c7e6d21",
+      paymentId: "652a7b3c9e1d4f8a6c2b9d12",
+      name: "Sachin Kumar",
+      phone: "9643990046",
+      email: "sachin@gmail.com",
+      userId: "651f8c9a4d3b2f1a9c7e6d21",
+      address:
+        "H No 222 Street No 6 Adarsh Mohalla Maujpur Delhi near shivam medical",
+      pincode: "110053",
+      totalAmount: 3800,
+      status: "Pending",
+      date: "06 April 2026",
+      products: [
+        {
+          id: "64fa12bc98de45ab67cd8910",
+          title: "Wireless Bluetooth Headphones",
+          image:
+            "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=120&q=80",
+          qty: 1,
+          price: 2500,
+        },
+        {
+          id: "64fa12bc98de45ab67cd8910",
+          title: "USB-C Charging Cable 2m",
+          image:
+            "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=120&q=80",
+          qty: 2,
+          price: 650,
+        },
+      ],
+    },
+    {
+      orderId: "651f8c9a4d3b2f1a9c7e6d21",
+      paymentId: "651f8c9a4d3b2f1a9c7e6d21",
+      name: "Lorem Ipsum",
+      phone: "9643990046",
+      email: "lorem@gmail.com",
+      userId: "651f8c9a4d3b2f1a9c7e6d21",
+      address:
+        "H No 222 Street No 6 Adarsh Mohalla Maujpur Delhi near shivam medical, extended address line here",
+      pincode: "110053",
+      totalAmount: 3800,
+      status: "Delivered",
+      date: "06 April 2026",
+      products: [
+        {
+          id: "651f8c9a4d3b2f1a9c7e6d21",
+          title: "Mechanical Keyboard TKL",
+          image:
+            "https://images.unsplash.com/photo-1595225476474-87563907a212?w=120&q=80",
+          qty: 1,
+          price: 3200,
+        },
+        {
+          id: "651f8c9a4d3b2f1a9c7e6d21",
+          title: "Mouse Pad XL",
+          image:
+            "https://images.unsplash.com/photo-1527814050087-3793815479db?w=120&q=80",
+          qty: 1,
+          price: 600,
+        },
+      ],
+    },
+    {
+      orderId: "651f8c9a4d3b2f1a9c7e6d21",
+      paymentId: "651f8c9a4d3b2f1a9c7e6d21",
+      name: "Raj Sharma",
       phone: "9812345678",
       email: "raj@gmail.com",
       userId: "651f8c9a4d3b2f1a9c7e6d21",
@@ -225,86 +271,11 @@ const Dashboard = () => {
     },
   ]);
 
-  const [products] = useState([
-    {
-      id: "P001",
-      name: "Wireless Headphones",
-      image:
-        "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=100",
-      category: "Electronics",
-      subCategory: "Audio",
-      price: 2500,
-      sales: 120,
-    },
-    {
-      id: "P002",
-      name: "Smart Watch",
-      image:
-        "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=100",
-      category: "Electronics",
-      subCategory: "Wearables",
-      price: 3800,
-      sales: 95,
-    },
-    {
-      id: "P003",
-      name: "Gaming Keyboard",
-      image:
-        "https://images.unsplash.com/photo-1595225476474-87563907a212?w=100",
-      category: "Accessories",
-      subCategory: "Computer",
-      price: 3200,
-      sales: 60,
-    },
-    {
-      id: "P004",
-      name: "Running Shoes",
-      image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=100",
-      category: "Fashion",
-      subCategory: "Footwear",
-      price: 2200,
-      sales: 150,
-    },
-    {
-      id: "P001",
-      name: "Wireless Headphones",
-      image:
-        "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=100",
-      category: "Electronics",
-      subCategory: "Audio",
-      price: 2500,
-      sales: 120,
-    },
-    {
-      id: "P002",
-      name: "Smart Watch",
-      image:
-        "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=100",
-      category: "Electronics",
-      subCategory: "Wearables",
-      price: 3800,
-      sales: 95,
-    },
-    {
-      id: "P003",
-      name: "Gaming Keyboard",
-      image:
-        "https://images.unsplash.com/photo-1595225476474-87563907a212?w=100",
-      category: "Accessories",
-      subCategory: "Computer",
-      price: 3200,
-      sales: 60,
-    },
-    {
-      id: "P004",
-      name: "Running Shoes",
-      image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=100",
-      category: "Fashion",
-      subCategory: "Footwear",
-      price: 2200,
-      sales: 150,
-    },
-  ]);
+  const statusStyles = {
+    Pending: { badge: "bg-red-100 text-red-700", dot: "bg-red-500" },
+    Delivered: { badge: "bg-green-100 text-green-700", dot: "bg-green-500" },
+    Shipped: { badge: "bg-blue-100 text-blue-700", dot: "bg-blue-500" },
+  };
 
   const getInitials = (name) =>
     name
@@ -314,55 +285,16 @@ const Dashboard = () => {
       .slice(0, 2)
       .toUpperCase();
 
-  const statusStyles = {
-    Pending: { badge: "bg-red-100 text-red-700", dot: "bg-red-500" },
-    Delivered: { badge: "bg-green-100 text-green-700", dot: "bg-green-500" },
-    Shipped: { badge: "bg-blue-100 text-blue-700", dot: "bg-blue-500" },
-  };
-
   return (
     <>
-      <div className="w-full bg-white py-3 p-8 border rounded-md border-[rgba(0,0,0,0.2)] flex items-start justify-between gap-8 mb-5">
-        <div className="mt-3">
-          <h1 className="text-[30px] font-bold leading-tight mb-4">
-            Good Morning , <br />
-            Cameron 👋
-          </h1>
-          <p className="text-gray-600 text-[17px]">
-            Here's What happening on your store today.See the statistics at
-            once.
-          </p>
-
-          <div className="mt-13">
-            <Button
-              className="btn-blue capitalize! flex items-center justify-center gap-3 text-[16px]!"
-              onClick={() =>
-                setIsOpenFullScreenPanel({
-                  open: true,
-                  model: "Add Product",
-                })
-              }
-            >
-              <FaPlus size={20} />
-              Add Product
-            </Button>
-          </div>
-        </div>
-
-        <img
-          src="https://static.vecteezy.com/system/resources/previews/039/373/911/non_2x/online-shopping-in-internet-shop-use-smartphone-app-vector.jpg"
-          alt=""
-          className="w-70 h-70"
-        />
-      </div>
-
-      <DashboardBox />
-
       <div className="card my-3 bg-white shadow-md sm:rounded-lg ">
         <div className="flex items-center justify-between px-3 py-3">
           <h2 className="font-semibold text-gray-700 text-2xl">
             Recent Orders
           </h2>
+          <div className="w-[40%]">
+            <SearchBox />
+          </div>
         </div>
 
         <div className="p-3">
@@ -370,7 +302,7 @@ const Dashboard = () => {
           <div className="bg-white border border-gray-200 rounded-lg overflow-hidden">
             <div className="overflow-x-auto">
               {/*  Y Scroll Container */}
-              <div className="max-h-[55vh] overflow-y-auto">
+              <div className="max-h-[65vh] overflow-y-auto">
                 <table className="w-full min-w-300 border-collapse text-sm">
                   {/*  Sticky Header */}
                   <thead className="sticky top-0 bg-gray-50 z-10">
@@ -600,223 +532,8 @@ const Dashboard = () => {
           </div>
         </div>
       )}
-
-      {/* products table */}
-      <div className="card my-3 bg-white shadow-md sm:rounded-lg ">
-        <div className="flex items-center justify-between px-3 py-3">
-          <h2 className="font-semibold text-gray-700 text-2xl">Products</h2>
-        </div>
-        <div className="flex items-center w-full pl-3 justify-between mb-3">
-          <div className="col w-[20%]">
-            <h4 className="font-semibold text-[16px] mb-2 text-gray-600">
-              Category By:
-            </h4>
-            <Select
-              className="w-full"
-              size="small"
-              labelId="demo-select-small-label"
-              id="demo-select-small"
-              value={categotyFilter}
-              label="Age"
-              onChange={handleChangeCatFilter}
-            >
-              <MenuItem value="">
-                <em>None</em>
-              </MenuItem>
-              <MenuItem value={10}>Men</MenuItem>
-              <MenuItem value={20}>Women</MenuItem>
-              <MenuItem value={30}>Kids</MenuItem>
-              <MenuItem value={30}>Boys</MenuItem>
-              <MenuItem value={30}>Girls</MenuItem>
-            </Select>
-          </div>
-
-          <div className="col w-[30%] flex items-center justify-center gap-4">
-            <Button className="btn-green flex items-center justify-center gap-2 ">
-              {" "}
-              <AiOutlineCloudUpload size={22} /> Export
-            </Button>
-            <Button
-              className="btn-blue flex items-center justify-center gap-2"
-              onClick={() =>
-                setIsOpenFullScreenPanel({
-                  open: true,
-                  model: "Add Product",
-                })
-              }
-            >
-              <FaPlus size={20} />
-              Add Product
-            </Button>
-          </div>
-        </div>
-
-        <div className="p-3">
-          <div className="bg-white border border-gray-200 rounded-lg overflow-hidden">
-            <div className="overflow-x-auto">
-              <div className="max-h-[60vh] overflow-y-auto">
-                <table className="w-full min-w-225 border-collapse text-sm">
-                  {/* Sticky Header */}
-                  <thead className="sticky top-0 bg-gray-50 z-10">
-                    <tr className="border-b border-gray-200">
-                      {[
-                        <Checkbox {...label} size="small" />,
-                        "Product",
-                        "Category",
-                        "Sub Category",
-                        "Price",
-                        "Sales",
-                        "Action",
-                      ].map((h, i) => (
-                        <th
-                          key={i}
-                          className="text-left text-[12px] uppercase text-gray-500 font-medium px-4 py-3 whitespace-nowrap"
-                        >
-                          {h}
-                        </th>
-                      ))}
-                    </tr>
-                  </thead>
-
-                  {/* Scrollable Body */}
-                  <tbody>
-                    {products.map((product) => (
-                      <tr
-                        key={product.id}
-                        className="border-b border-gray-100 hover:bg-gray-50"
-                      >
-                        <td className="px-4 py-3">
-                          <Checkbox {...label} size="small" />
-                        </td>
-
-                        <td className="px-4 py-3">
-                          <div className="flex items-center gap-3">
-                            <Link to="/">
-                              <img
-                                src={product.image}
-                                alt=""
-                                className="w-12 h-12 rounded-md object-cover"
-                              />
-                            </Link>
-                            <div>
-                              <p className="font-medium text-gray-900">
-                                {product.name}
-                              </p>
-                              <p className="text-xs text-gray-400">
-                                {product.id}
-                              </p>
-                            </div>
-                          </div>
-                        </td>
-
-                        <td className="px-4 py-3 text-gray-600">
-                          {product.category}
-                        </td>
-
-                        <td className="px-4 py-3 text-gray-600">
-                          {product.subCategory}
-                        </td>
-
-                        <td className="px-4 py-3 text-blue-700 font-medium">
-                          ₹{product.price.toLocaleString("en-IN")}
-                        </td>
-
-                        <td className="px-4 py-3">
-                          <span className="text-gray-500 font-semibold">
-                            {product.sales} sold
-                          </span>
-                          <ProgressBar value={40} type="success" />
-                        </td>
-
-                        <td className="px-4 py-3">
-                          <div className="flex gap-2">
-                            <Tooltip title="Edit Product">
-                              <Button className="min-w-0! p-2! border rounded-full!">
-                                <BiEditAlt size={18} />
-                              </Button>
-                            </Tooltip>
-
-                            <Tooltip title="View Product">
-                              <Button className="min-w-0! p-2! border rounded-full!">
-                                <MdOutlineRemoveRedEye size={18} />
-                              </Button>
-                            </Tooltip>
-
-                            <Tooltip title="Delete Product">
-                              <Button className="min-w-0! p-2! border rounded-full! text-red-500!">
-                                <MdDelete size={18} />
-                              </Button>
-                            </Tooltip>
-                          </div>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div className="flex items-center justify-end pt-4 pb-4 px-4">
-          <Pagination count={10} color="primary" />
-        </div>
-      </div>
-
-      {/* recharts */}
-      <div className="card my-3 bg-white shadow-md sm:rounded-lg p-4">
-        <div className="flex items-center justify-between px-3 py-3 pb-0">
-          <h2 className="font-semibold text-gray-700 text-2xl">
-            Total Users & Total Sales
-          </h2>
-        </div>
-        <div className="flex items-center gap-5 px-3 py-3 pt-1 mb-4">
-          <span className="flex items-center gap-1 text-[15px] text-gray-700">
-            <span className="block w-2.5 h-2.5 rounded-full bg-blue-500"></span>
-            Total Users
-          </span>
-
-          <span className="flex items-center gap-1 text-[15px] text-gray-700">
-            <span className="block w-2.5 h-2.5 rounded-full bg-green-500"></span>
-            Total Sales
-          </span>
-        </div>
-        <ResponsiveContainer width="100%" height={400}>
-          <LineChart
-            data={chart1Data}
-            margin={{
-              top: 10,
-              right: 20,
-              left: 0,
-              bottom: 10,
-            }}
-          >
-            <CartesianGrid strokeDasharray="3 3" stroke="none" />
-            <XAxis dataKey="name" />
-            <YAxis />
-
-            {/* ✅ Correct Tooltip */}
-            <RechartsTooltip />
-
-            <Legend />
-
-            <Line
-              type="monotone"
-              dataKey="users"
-              stroke="#82ca9d"
-              strokeWidth={3}
-            />
-            <Line
-              type="monotone"
-              dataKey="sales"
-              stroke="#8884d8"
-              strokeWidth={3}
-            />
-          </LineChart>
-        </ResponsiveContainer>
-      </div>
     </>
   );
 };
 
-export default Dashboard;
+export default Orders;

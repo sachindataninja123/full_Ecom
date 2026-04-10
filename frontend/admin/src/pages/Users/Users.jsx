@@ -35,6 +35,30 @@ const Users = () => {
       image: "https://randomuser.me/api/portraits/women/44.jpg",
       status: "Active",
     },
+     {
+      id: "U004",
+      name: "Rachin Sharma",
+      email: "sachin@gmail.com",
+      phone: "+91 9876543210",
+      image: "https://randomuser.me/api/portraits/men/32.jpg",
+      status: "Active",
+    },
+    {
+      id: "U005",
+      name: "Shiya Verma",
+      email: "rahul@gmail.com",
+      phone: "+91 9123456780",
+      image: "https://randomuser.me/api/portraits/men/45.jpg",
+      status: "Inactive",
+    },
+    {
+      id: "U006",
+      name: "Mohan Singh",
+      email: "priya@gmail.com",
+      phone: "+91 9988776655",
+      image: "https://randomuser.me/api/portraits/women/44.jpg",
+      status: "Active",
+    },
   ]);
 
   return (

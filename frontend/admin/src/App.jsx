@@ -18,6 +18,7 @@ import CategoryList from "./pages/Category/CategoryList";
 import Dashboard from "./pages/Dashboard/Dashboard";
 import SubCatList from "./pages/subCategory/SubCatList";
 import Users from "./pages/Users/Users";
+import Orders from "./pages/Orders/Orders";
 
 const Layout = () => {
   const { isSideBarOpen } = useContext(MyContext);
@@ -78,7 +79,7 @@ const App = () => {
         },
         {
           path: "orders",
-          element: <h1>Orders Page</h1>,
+          element: <Orders />,
         },
       ],
     },
