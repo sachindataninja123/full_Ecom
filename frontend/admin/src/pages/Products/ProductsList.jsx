@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import Button from "@mui/material/Button";
 import { Link, useNavigate } from "react-router-dom";
 import { FaPlus } from "react-icons/fa6";
@@ -13,13 +13,16 @@ import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import { AiOutlineCloudUpload } from "react-icons/ai";
 import SearchBox from "../../components/SearchBox/SearchBox";
+import { MyContext } from "../../context/MyContext";
 
 const label = { slotProps: { input: { "aria-label": "Checkbox demo" } } };
 
 const ProductsList = () => {
-  const navigate = useNavigate();
   const [categotyFilter, setCategoryFilter] = useState("");
 
+   const { isOpenFullScreenPanel, setIsOpenFullScreenPanel } =
+      useContext(MyContext);
+      
   const handleChangeCatFilter = (event) => {
     setCategoryFilter(event.target.value);
   };
@@ -58,14 +61,13 @@ const ProductsList = () => {
     {
       id: "P004",
       name: "Running Shoes",
-      image:
-        "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=100",
+      image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=100",
       category: "Fashion",
       subCategory: "Footwear",
       price: 2200,
       sales: 150,
     },
-     {
+    {
       id: "P001",
       name: "Wireless Headphones",
       image:
@@ -98,8 +100,7 @@ const ProductsList = () => {
     {
       id: "P004",
       name: "Running Shoes",
-      image:
-        "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=100",
+      image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=100",
       category: "Fashion",
       subCategory: "Footwear",
       price: 2200,
@@ -120,7 +121,12 @@ const ProductsList = () => {
 
           <Button
             className="btn-blue flex items-center gap-2"
-            onClick={() => navigate("/admin/products/add")}
+            onClick={() =>
+              setIsOpenFullScreenPanel({
+                open: true,
+                model: "Add Product",
+              })
+            }
           >
             <FaPlus size={20} />
             Add Product
@@ -162,7 +168,6 @@ const ProductsList = () => {
             <div className="overflow-x-auto">
               <div className="max-h-[60vh] overflow-y-auto">
                 <table className="w-full min-w-225 border-collapse text-sm">
-                  
                   {/* Sticky Header */}
                   <thead className="sticky top-0 bg-gray-50 z-10">
                     <tr className="border-b border-gray-200">
@@ -259,7 +264,6 @@ const ProductsList = () => {
                       </tr>
                     ))}
                   </tbody>
-
                 </table>
               </div>
             </div>

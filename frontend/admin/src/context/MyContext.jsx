@@ -26,12 +26,12 @@ export const MyContext = createContext();
 const MyContextProvider = ({ children }) => {
   const [isSideBarOpen, setIsSideBarOpen] = useState(true);
 
-  const [isLoggedIn, setisLoggedIn] = useState({
+  const [isLoggedIn, setisLoggedIn] = useState(false);
+
+  const [isOpenFullScreenPanel, setIsOpenFullScreenPanel] = useState({
     open: false,
     model: "",
   });
-
-  const [isOpenFullScreenPanel, setIsOpenFullScreenPanel] = useState(false);
 
   return (
     <MyContext.Provider

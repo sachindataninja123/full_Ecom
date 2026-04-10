@@ -1,9 +1,10 @@
-import React, { useState } from "react";
 
+import React, { useState } from "react";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 import Rating from "@mui/material/Rating";
-import Stack from "@mui/material/Stack";
+import Button from "@mui/material/Button";
+import { FaCloudUploadAlt } from "react-icons/fa";
 import UploadBox from "../../components/uploadBox/UploadBox";
 
 const AddProducts = () => {
@@ -14,272 +15,168 @@ const AddProducts = () => {
   const [productWeights, setproductWeights] = useState("");
   const [productSize, setproductSize] = useState("");
 
-  const handleChangeProductCat = (event) => {
-    setProductCat(event.target.value);
-  };
-
-  const handleChangeSubProductCat = (event) => {
-    setSubProductCat(event.target.value);
-  };
-  const handleChangeProductFeatured = (event) => {
-    setproductFeatured(event.target.value);
-  };
-
-  const handleChangeProductWeights = (event) => {
-    setproductWeights(event.target.value);
-  };
-
-  const handleChangeProductRams = (event) => {
-    setproductRams(event.target.value);
-  };
-
-  const handleChangeProductSize = (event) => {
-    setproductSize(event.target.value);
-  };
-
   return (
-    <>
-      <div className="bg-[#dedddd]">
-        <section className="w-[97%] mx-auto shadow-lg bg-[#ffffff] rounded-md mt-3">
-          <h1 className="px-3 pt-3 font-semibold text-gray-800 text-[20px] ">
+    <div className="h-screen flex flex-col bg-[#dedddd]">
+      
+      {/* Scrollable Content */}
+      <div className="flex-1 overflow-y-auto p-4 space-y-4">
+
+        {/* Form Section */}
+        <section className="w-full bg-white rounded-lg shadow-md p-5">
+          <h1 className="text-[20px] font-semibold mb-4">
             Add Product Details
           </h1>
-          <form action="" className="form p-5">
-            <div className="grid grid-cols-1 mb-4">
-              <div>
-                <label className="block text-[15px] font-medium text-gray-700 mb-1">
-                  Product Name
-                </label>
 
-                <input
-                  type="text"
-                  placeholder="Enter product name"
-                  className="w-full h-11 border border-gray-400 focus:outline-none focus:ring-1 focus:ring-[#6c6c6c]  focus:border-[#6c6c6c] rounded-sm px-3 text-md transition-all"
-                />
-              </div>
+          <form className="space-y-4">
+
+            <div>
+              <label className="label">Product Name</label>
+              <input type="text" className="input" />
             </div>
 
-            <div className="grid grid-cols-1 mb-4">
-              <div>
-                <label className="block text-[15px] font-medium text-gray-700 mb-1">
-                  Product Description
-                </label>
-
-                <textarea
-                  type="text"
-                  placeholder="Enter product Description"
-                  className="w-full h-30 border border-gray-400 focus:outline-none focus:ring-1 focus:ring-[#6c6c6c]  focus:border-[#6c6c6c] rounded-sm px-3 py-2 text-md transition-all"
-                />
-              </div>
+            <div>
+              <label className="label">Product Description</label>
+              <textarea className="textarea" />
             </div>
 
-            <div className="grid grid-cols-3 mb-4 gap-4">
+            <div className="grid grid-cols-3 gap-4">
               <div>
-                <label className="block text-[15px] font-medium text-gray-700 mb-1">
-                  Product Category
-                </label>
+                <label className="label">Category</label>
                 <Select
-                  labelId="demo-simple-select-label"
-                  id="productCatDrop"
                   size="small"
                   className="w-full"
                   value={productCat}
-                  label="Category"
-                  onChange={handleChangeProductCat}
+                  onChange={(e) => setProductCat(e.target.value)}
                 >
-                  <MenuItem value={""}>None</MenuItem>
-                  <MenuItem value={10}>Fashion</MenuItem>
-                  <MenuItem value={20}>Beauty</MenuItem>
-                  <MenuItem value={30}>Wellness</MenuItem>
+                  <MenuItem value="">None</MenuItem>
+                  <MenuItem value="fashion">Fashion</MenuItem>
+                  <MenuItem value="beauty">Beauty</MenuItem>
+                  <MenuItem value="wellness">Wellness</MenuItem>
                 </Select>
               </div>
 
               <div>
-                <label className="block text-[15px] font-medium text-gray-700 mb-1">
-                  Sub Category
-                </label>
+                <label className="label">Sub Category</label>
                 <Select
-                  labelId="demo-simple-select-label"
-                  id="productSubCatDrop"
                   size="small"
                   className="w-full"
                   value={productSubCat}
-                  label="Sub Category"
-                  onChange={handleChangeSubProductCat}
+                  onChange={(e) => setSubProductCat(e.target.value)}
                 >
-                  <MenuItem value={""}>None</MenuItem>
-                  <MenuItem value={10}>Men</MenuItem>
-                  <MenuItem value={20}>Women</MenuItem>
-                  <MenuItem value={30}>Girls</MenuItem>
-                  <MenuItem value={40}>Kids</MenuItem>
+                  <MenuItem value="">None</MenuItem>
+                  <MenuItem value="men">Men</MenuItem>
+                  <MenuItem value="women">Women</MenuItem>
+                  <MenuItem value="kids">Kids</MenuItem>
                 </Select>
               </div>
 
               <div>
-                <label className="block text-[15px] font-medium text-gray-700 mb-1">
-                  Product Price
-                </label>
-
-                <input
-                  type="number"
-                  placeholder="Enter Price"
-                  className="w-full h-10 border border-gray-400 focus:outline-none focus:ring-1 focus:ring-blue-500  focus:border-blue-500 rounded-sm px-3 text-md transition-all"
-                />
+                <label className="label">Price</label>
+                <input type="number" className="input" />
               </div>
             </div>
 
-            <div className="grid grid-cols-3 mb-4 gap-4">
+            <div className="grid grid-cols-3 gap-4">
               <div>
-                <label className="block text-[15px] font-medium text-gray-700 mb-1">
-                  Old Price
-                </label>
-
-                <input
-                  type="number"
-                  placeholder="Enter Old Price"
-                  className="w-full h-10 border border-gray-400 focus:outline-none focus:ring-1 focus:ring-blue-500  focus:border-blue-500 rounded-sm px-3 text-md transition-all"
-                />
+                <label className="label">Old Price</label>
+                <input type="number" className="input" />
               </div>
 
               <div>
-                <label className="block text-[15px] font-medium text-gray-700 mb-1">
-                  Is Featured?
-                </label>
+                <label className="label">Featured</label>
                 <Select
-                  labelId="demo-simple-select-label"
-                  id="productfeatured"
                   size="small"
                   className="w-full"
                   value={productFeatured}
-                  label="Product Featured"
-                  onChange={handleChangeProductFeatured}
+                  onChange={(e) => setproductFeatured(e.target.value)}
                 >
-                  <MenuItem value={10}>True</MenuItem>
-                  <MenuItem value={20}>False</MenuItem>
+                  <MenuItem value="true">True</MenuItem>
+                  <MenuItem value="false">False</MenuItem>
                 </Select>
               </div>
 
               <div>
-                <label className="block text-[15px] font-medium text-gray-700 mb-1">
-                  Product Stock
-                </label>
-
-                <input
-                  type="number"
-                  placeholder="Enter Stock"
-                  className="w-full h-10 border border-gray-400 focus:outline-none focus:ring-1 focus:ring-blue-500  focus:border-blue-500 rounded-sm px-3 text-md transition-all"
-                />
+                <label className="label">Stock</label>
+                <input type="number" className="input" />
               </div>
             </div>
 
-            <div className="grid grid-cols-3 mb-4 gap-4">
+            <div className="grid grid-cols-3 gap-4">
               <div>
-                <label className="block text-[15px] font-medium text-gray-700 mb-1">
-                  Product Brand
-                </label>
-
-                <input
-                  type="text"
-                  placeholder="Enter Brand"
-                  className="w-full h-10 border border-gray-400 focus:outline-none focus:ring-1 focus:ring-blue-500  focus:border-blue-500 rounded-sm px-3 text-md transition-all"
-                />
+                <label className="label">Brand</label>
+                <input type="text" className="input" />
               </div>
 
               <div>
-                <label className="block text-[15px] font-medium text-gray-700 mb-1">
-                  Product Discount
-                </label>
-
-                <input
-                  type="number"
-                  placeholder="Enter Discount"
-                  className="w-full h-10 border border-gray-400 focus:outline-none focus:ring-1 focus:ring-blue-500  focus:border-blue-500 rounded-sm px-3 text-md transition-all"
-                />
+                <label className="label">Discount</label>
+                <input type="number" className="input" />
               </div>
 
               <div>
-                <label className="block text-[15px] font-medium text-gray-700 mb-1">
-                  Product RAMs
-                </label>
+                <label className="label">RAM</label>
                 <Select
-                  labelId="demo-simple-select-label"
-                  id="productfeatured"
                   size="small"
                   className="w-full"
                   value={productRams}
-                  label="Product Featured"
-                  onChange={handleChangeProductRams}
+                  onChange={(e) => setproductRams(e.target.value)}
                 >
-                  <MenuItem value={10}>2GB</MenuItem>
-                  <MenuItem value={20}>4GB</MenuItem>
-                  <MenuItem value={30}>6GB</MenuItem>
-                  <MenuItem value={40}>8GB</MenuItem>
-                  <MenuItem value={50}>12GB</MenuItem>
-                  <MenuItem value={60}>16GB</MenuItem>
+                  <MenuItem value="4gb">4GB</MenuItem>
+                  <MenuItem value="8gb">8GB</MenuItem>
+                  <MenuItem value="16gb">16GB</MenuItem>
                 </Select>
               </div>
             </div>
 
-            <div className="grid grid-cols-3 mb-4 gap-4">
+            <div className="grid grid-cols-3 gap-4">
               <div>
-                <label className="block text-[15px] font-medium text-gray-700 mb-1">
-                  Product Weights
-                </label>
+                <label className="label">Weight</label>
                 <Select
-                  labelId="demo-simple-select-label"
-                  id="productfeatured"
                   size="small"
                   className="w-full"
                   value={productWeights}
-                  label="Product Featured"
-                  onChange={handleChangeProductWeights}
+                  onChange={(e) => setproductWeights(e.target.value)}
                 >
-                  <MenuItem value={10}>2KG</MenuItem>
-                  <MenuItem value={20}>4KG</MenuItem>
-                  <MenuItem value={30}>5KG</MenuItem>
-                  <MenuItem value={40}>6KG</MenuItem>
+                  <MenuItem value="2kg">2KG</MenuItem>
+                  <MenuItem value="5kg">5KG</MenuItem>
                 </Select>
               </div>
 
               <div>
-                <label className="block text-[15px] font-medium text-gray-700 mb-1">
-                  Product Size
-                </label>
+                <label className="label">Size</label>
                 <Select
-                  labelId="demo-simple-select-label"
-                  id="productSize"
                   size="small"
                   className="w-full"
                   value={productSize}
-                  label="Product Featured"
-                  onChange={handleChangeProductSize}
+                  onChange={(e) => setproductSize(e.target.value)}
                 >
-                  <MenuItem value={10}>S</MenuItem>
-                  <MenuItem value={20}>M</MenuItem>
-                  <MenuItem value={30}>L</MenuItem>
-                  <MenuItem value={40}>XL</MenuItem>
-                  <MenuItem value={50}>XXL</MenuItem>
-                  <MenuItem value={60}>XXXL</MenuItem>
+                  <MenuItem value="S">S</MenuItem>
+                  <MenuItem value="M">M</MenuItem>
+                  <MenuItem value="L">L</MenuItem>
                 </Select>
               </div>
 
               <div>
-                <label className="block text-[15px] font-medium text-gray-700 mb-1">
-                  Product Rating
-                </label>
-                <Rating name="half-rating" defaultValue={2.5} precision={0.5} />
+                <label className="label">Rating</label>
+                <Rating defaultValue={2.5} precision={0.5} />
               </div>
             </div>
+
           </form>
         </section>
+
+        {/* Upload Section */}
+        <UploadBox multiple={true} />
+
       </div>
 
-      <div className="col bg-[#dedddd]">
-        <div className="">
-          <UploadBox multiple={true} />
-        </div>
+      {/* Fixed Button */}
+      <div className="sticky bottom-0 bg-white p-4 border-t shadow-md">
+        <Button className="btn-blue w-full flex items-center justify-center gap-2">
+          <FaCloudUploadAlt size={20} />
+          Publish and Submit
+        </Button>
       </div>
-    </>
+    </div>
   );
 };
 

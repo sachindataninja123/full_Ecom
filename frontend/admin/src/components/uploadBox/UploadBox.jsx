@@ -3,9 +3,6 @@ import { FaRegImages } from "react-icons/fa6";
 import { RxCross2 } from "react-icons/rx";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import "react-lazy-load-image-component/src/effects/blur.css";
-import Button from "@mui/material/Button";
-
-import { FaCloudUploadAlt } from "react-icons/fa";
 
 const UploadBox = ({ multiple = false }) => {
   const [images, setImages] = useState([
@@ -56,65 +53,50 @@ const UploadBox = ({ multiple = false }) => {
     },
   ]);
 
-  //  Remove image
   const handleRemove = (id) => {
-    const filtered = images.filter((img) => img.id !== id);
-    setImages(filtered);
+    setImages(images.filter((img) => img.id !== id));
   };
 
   return (
-    <div className="bg-white w-[97%] mx-auto mt-4 rounded-lg p-5 shadow-sm">
-      <h1 className="font-semibold text-gray-800 text-[20px] mb-4">
-        Media & Images
-      </h1>
+    <div className="bg-white rounded-lg p-5 shadow-md">
+      <h1 className="text-[20px] font-semibold mb-4">Media & Images</h1>
 
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-7 gap-3">
-        {/* Upload Box */}
-        <div className="border-2 border-dashed border-gray-300 rounded-lg h-38 flex flex-col items-center justify-center bg-gray-50 cursor-pointer hover:bg-gray-100 hover:border-blue-400 transition-all relative">
-          <FaRegImages className="text-[40px] text-gray-500 mb-2 pointer-events-none" />
-          <p className="text-sm text-gray-600 font-medium pointer-events-none">
-            Upload Image
-          </p>
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3">
+        {/* Upload */}
+        <div className="border-2 border-dashed border-gray-300 hover:border-blue-500 transition-all rounded-lg h-36 flex flex-col items-center justify-center bg-gray-50 cursor-pointer hover:bg-gray-100 relative">
+          <FaRegImages className="text-[35px] text-gray-500 mb-2" />
+          <p className="text-md text-gray-600 ">Upload Images</p>
 
           <input
             type="file"
             multiple={multiple}
-            className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+            className="absolute inset-0 opacity-0 cursor-pointer"
           />
         </div>
 
-        {/* Images Preview */}
+        {/* Images */}
         {images.map((item) => (
           <div
             key={item.id}
-            className="relative h-38 w-full  rounded-lg overflow-hidden border border-gray-200 group"
+            className="relative h-37 w-full rounded-md overflow-hidden group"
           >
-            {/*  Delete Button */}
-            <button
-              onClick={() => handleRemove(item.id)}
-              className="absolute top-1.5 right-1.5 z-50 bg-red-600 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-all cursor-pointer"
-            >
-              <RxCross2 size={16} className="text-white" />
-            </button>
-
             <LazyLoadImage
+              src={item.url}
               alt={item.alt}
               effect="blur"
-              src={item.url}
-              className="w-full h-full object-cover "
+              className="w-full h-full object-cover"
             />
+
+            <button
+              onClick={() => handleRemove(item.id)}
+              className="absolute top-2 right-2 z-50 bg-red-600 text-white rounded-full p-1 
+                 opacity-0 group-hover:opacity-100 
+                 transition-opacity duration-200 cursor-pointer"
+            >
+              <RxCross2 size={14} />
+            </button>
           </div>
         ))}
-      </div>
-
-      <div className="w-full mt-6">
-        <Button
-          type="submit"
-          className="btn-blue w-full flex items-center justify-center gap-2"
-        >
-          <FaCloudUploadAlt size={21} />
-          Publish and Submit
-        </Button>
       </div>
     </div>
   );

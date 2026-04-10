@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { NavLink } from "react-router-dom";
 import { RxDashboard } from "react-icons/rx";
 import { TbSlideshow, TbCategory2 } from "react-icons/tb";
@@ -7,6 +7,7 @@ import { LiaProductHunt } from "react-icons/lia";
 import { IoBagCheckOutline, IoLogOutOutline } from "react-icons/io5";
 import { FaAngleDown } from "react-icons/fa6";
 import { Collapse } from "react-collapse";
+import { MyContext } from "../../context/MyContext";
 
 const SideBar = () => {
   const [subMenuIdx, setSubMenuIdx] = useState(null);
@@ -15,8 +16,14 @@ const SideBar = () => {
     setSubMenuIdx(subMenuIdx === idx ? null : idx);
   };
 
+  const { isOpenFullScreenPanel, setIsOpenFullScreenPanel } =
+    useContext(MyContext);
+
   const menuClass =
-    "flex items-center gap-3 px-3 py-2 rounded-md text-[15px] font-medium transition-all";
+    "flex items-center gap-3 px-3 py-2 rounded-md text-[15px] font-medium transition-all duration-200";
+
+  const subMenuClass =
+    "flex items-center gap-2 px-2 py-2 rounded-md hover:bg-gray-100 transition-all cursor-pointer";
 
   return (
     <div className="w-full min-h-screen overflow-y-auto bg-white border-r border-gray-300 shadow-sm p-4">
@@ -35,36 +42,41 @@ const SideBar = () => {
               `${menuClass} ${
                 isActive
                   ? "bg-[#ff5252] text-white"
-                  : "text-gray-700 hover:bg-gray-100"
+                  : "text-gray-700 hover:bg-gray-100 hover:text-black"
               }`
             }
           >
-            <RxDashboard className="text-[18px]" /> Dashboard
+            <RxDashboard /> Dashboard
           </NavLink>
         </li>
 
         {/* HOME SLIDES */}
         <li>
-          <div
+          <button
             onClick={() => toggleMenu(1)}
-            className={`${menuClass} cursor-pointer text-gray-700 hover:bg-gray-100`}
+            className={`${menuClass} w-full text-left text-gray-700 hover:bg-gray-100`}
           >
-            <TbSlideshow className="text-[18px]" /> Home Slides
+            <TbSlideshow /> Home Slides
             <FaAngleDown
               className={`ml-auto transition ${
                 subMenuIdx === 1 ? "rotate-180" : ""
               }`}
             />
-          </div>
+          </button>
+
           <Collapse isOpened={subMenuIdx === 1}>
-            <ul className="ml-6 mt-2 space-y-2 text-sm text-gray-600">
-              <li className="flex items-center gap-2">
-                <span className="w-1.5 h-1.5 bg-gray-500 rounded-full"></span>
-                <NavLink to="/admin/home-slides">Home Slide List</NavLink>
+            <ul className="ml-6 mt-2 space-y-1 text-sm text-gray-600">
+              <li>
+                <NavLink to="/admin/home-slides" className={subMenuClass}>
+                  <span className="w-1.5 h-1.5 bg-gray-500 rounded-full"></span>
+                  Home Slide List
+                </NavLink>
               </li>
-              <li className="flex items-center gap-2">
-                <span className="w-1.5 h-1.5 bg-gray-500 rounded-full"></span>
-                <NavLink to="/admin/add-slide">Add Home Banner</NavLink>
+              <li>
+                <NavLink to="/admin/add-slide" className={subMenuClass}>
+                  <span className="w-1.5 h-1.5 bg-gray-500 rounded-full"></span>
+                  Add Home Banner
+                </NavLink>
               </li>
             </ul>
           </Collapse>
@@ -82,32 +94,46 @@ const SideBar = () => {
               }`
             }
           >
-            <LuUsers className="text-[18px]" /> Users
+            <LuUsers /> Users
           </NavLink>
         </li>
 
         {/* PRODUCTS */}
         <li>
-          <div
+          <button
             onClick={() => toggleMenu(3)}
-            className={`${menuClass} cursor-pointer text-gray-700 hover:bg-gray-100`}
+            className={`${menuClass} w-full text-left text-gray-700 hover:bg-gray-100`}
           >
-            <LiaProductHunt className="text-[18px]" /> Products
+            <LiaProductHunt /> Products
             <FaAngleDown
               className={`ml-auto transition ${
                 subMenuIdx === 3 ? "rotate-180" : ""
               }`}
             />
-          </div>
+          </button>
+
           <Collapse isOpened={subMenuIdx === 3}>
-            <ul className="ml-6 mt-2 space-y-2 text-sm text-gray-600">
-              <li className="flex items-center gap-2">
-                <span className="w-1.5 h-1.5 bg-gray-500 rounded-full"></span>
-                <NavLink to="/admin/products">Product List</NavLink>
+            <ul className="ml-6 mt-2 space-y-1 text-sm text-gray-600">
+              <li>
+                <NavLink to="/admin/products" className={subMenuClass}>
+                  <span className="w-1.5 h-1.5 bg-gray-500 rounded-full"></span>
+                  Product List
+                </NavLink>
               </li>
-              <li className="flex items-center gap-2">
-                <span className="w-1.5 h-1.5 bg-gray-500 rounded-full"></span>
-                <NavLink to="/admin/add-product">Product Upload</NavLink>
+              <li>
+                <NavLink
+                  to="/admin"
+                  className={subMenuClass}
+                  onClick={() =>
+                    setIsOpenFullScreenPanel({
+                      open: true,
+                      model: "Add Product",
+                    })
+                  }
+                >
+                  <span className="w-1.5 h-1.5 bg-gray-500 rounded-full"></span>
+                  Product Upload
+                </NavLink>
               </li>
             </ul>
           </Collapse>
@@ -115,35 +141,42 @@ const SideBar = () => {
 
         {/* CATEGORY */}
         <li>
-          <div
+          <button
             onClick={() => toggleMenu(4)}
-            className={`${menuClass} cursor-pointer text-gray-700 hover:bg-gray-100`}
+            className={`${menuClass} w-full text-left text-gray-700 hover:bg-gray-100`}
           >
-            <TbCategory2 className="text-[18px]" /> Category
+            <TbCategory2 /> Category
             <FaAngleDown
               className={`ml-auto transition ${
                 subMenuIdx === 4 ? "rotate-180" : ""
               }`}
             />
-          </div>
+          </button>
+
           <Collapse isOpened={subMenuIdx === 4}>
-            <ul className="ml-6 mt-2 space-y-2 text-sm text-gray-600">
-              <li className="flex items-center gap-2">
-                <span className="w-1.5 h-1.5 bg-gray-500 rounded-full"></span>
-                <NavLink to="/admin/category">Category List</NavLink>
+            <ul className="ml-6 mt-2 space-y-1 text-sm text-gray-600">
+              <li>
+                <NavLink to="/admin/category" className={subMenuClass}>
+                  <span className="w-1.5 h-1.5 bg-gray-500 rounded-full"></span>
+                  Category List
+                </NavLink>
               </li>
-              <li className="flex items-center gap-2">
-                <span className="w-1.5 h-1.5 bg-gray-500 rounded-full"></span>
-                <NavLink to="/admin/add-category">Add Category</NavLink>
+              <li>
+                <NavLink to="/admin/add-category" className={subMenuClass}>
+                  <span className="w-1.5 h-1.5 bg-gray-500 rounded-full"></span>
+                  Add Category
+                </NavLink>
               </li>
-              <li className="flex items-center gap-2">
-                <span className="w-1.5 h-1.5 bg-gray-500 rounded-full"></span>
-                <NavLink to="/admin/sub-category">Sub Category List</NavLink>
+              <li>
+                <NavLink to="/admin/sub-category" className={subMenuClass}>
+                  <span className="w-1.5 h-1.5 bg-gray-500 rounded-full"></span>
+                  Sub Category List
+                </NavLink>
               </li>
-              <li className="flex items-center gap-2">
-                <span className="w-1.5 h-1.5 bg-gray-500 rounded-full"></span>
-                <NavLink to="/admin/sub-category/add">
-                  Add Sub Category List
+              <li>
+                <NavLink to="/admin/sub-category/add" className={subMenuClass}>
+                  <span className="w-1.5 h-1.5 bg-gray-500 rounded-full"></span>
+                  Add Sub Category
                 </NavLink>
               </li>
             </ul>
@@ -162,17 +195,17 @@ const SideBar = () => {
               }`
             }
           >
-            <IoBagCheckOutline className="text-[18px]" /> Orders
+            <IoBagCheckOutline /> Orders
           </NavLink>
         </li>
 
         {/* LOGOUT */}
         <li>
-          <div
-            className={`${menuClass} text-red-500 hover:bg-red-50 cursor-pointer`}
+          <button
+            className={`${menuClass} w-full text-left text-red-500 hover:bg-red-50`}
           >
-            <IoLogOutOutline className="text-[18px]" /> Logout
-          </div>
+            <IoLogOutOutline /> Logout
+          </button>
         </li>
       </ul>
     </div>

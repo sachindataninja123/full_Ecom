@@ -246,8 +246,15 @@ const Dashboard = () => {
           </p>
 
           <div className="mt-13">
-            <Button className="btn-blue capitalize! flex items-center justify-center gap-3 text-[16px]!">
-              {" "}
+            <Button
+              className="btn-blue capitalize! flex items-center justify-center gap-3 text-[16px]!"
+              onClick={() =>
+                setIsOpenFullScreenPanel({
+                  open: true,
+                  model: "Add Product",
+                })
+              }
+            >
               <FaPlus size={20} />
               Add Product
             </Button>
