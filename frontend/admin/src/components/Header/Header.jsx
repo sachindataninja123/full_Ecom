@@ -48,7 +48,7 @@ const Header = () => {
       {/* LEFT */}
       <div>
         <Button
-          className="w-10! h-10! rounded-full! min-w-10!"
+          className="w-10! text-black! h-10! rounded-full! min-w-10!"
           onClick={() => setIsSideBarOpen(!isSideBarOpen)}
         >
           <HiMenuAlt1 size={22} />

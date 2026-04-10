@@ -20,9 +20,9 @@ const label = { slotProps: { input: { "aria-label": "Checkbox demo" } } };
 const ProductsList = () => {
   const [categotyFilter, setCategoryFilter] = useState("");
 
-   const { isOpenFullScreenPanel, setIsOpenFullScreenPanel } =
-      useContext(MyContext);
-      
+  const { isOpenFullScreenPanel, setIsOpenFullScreenPanel } =
+    useContext(MyContext);
+
   const handleChangeCatFilter = (event) => {
     setCategoryFilter(event.target.value);
   };

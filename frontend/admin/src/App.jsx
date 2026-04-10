@@ -13,6 +13,7 @@ import Login from "./pages/Login/Login";
 import SignUp from "./pages/register/SignUp";
 import ProductsPage from "./pages/Products/ProductsList";
 import ProductsList from "./pages/Products/ProductsList";
+import HomeSliderBanner from "./pages/HomeSliderBanner/HomeSliderBanner";
 
 const Layout = () => {
   const { isSideBarOpen } = useContext(MyContext);
@@ -42,10 +43,9 @@ const Layout = () => {
 
 const App = () => {
   const router = createBrowserRouter([
-    // / page
     {
       path: "/admin",
-      element: <Layout />, // ✅ only for protected pages
+      element: <Layout />,
       errorElement: <h1>404 Page Not Found</h1>,
       children: [
         {
@@ -57,31 +57,30 @@ const App = () => {
           element: <ProductsList />,
         },
         {
+          path: "home-slides", // ✅ fixed (removed /)
+          element: <HomeSliderBanner />,
+        },
+        {
           path: "orders",
           element: <h1>Orders Page</h1>,
         },
       ],
     },
 
-    // login
     {
       path: "/admin/login",
       element: <Login />,
     },
-
-    // register
     {
       path: "/admin/register",
       element: <SignUp />,
     },
 
-    //  Redirect root
     {
       path: "/",
       element: <Navigate to="/admin" replace />,
     },
 
-    //Optional catch-all
     {
       path: "*",
       element: <h1>404 Page Not Found</h1>,
