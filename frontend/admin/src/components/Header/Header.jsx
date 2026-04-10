@@ -11,6 +11,7 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import Divider from "@mui/material/Divider";
 import { MyContext } from "../../context/MyContext";
+import { Link } from "react-router-dom";
 
 const StyledBadge = styled(Badge)(({ theme }) => ({
   "& .MuiBadge-badge": {
@@ -77,9 +78,11 @@ const Header = () => {
               />
             </div>
           ) : (
-            <Button variant="contained" className="rounded-full!">
-              Sign In
-            </Button>
+            <Link to="/admin/login">
+              <Button variant="contained" className="rounded-full!">
+                Sign In
+              </Button>
+            </Link>
           )}
 
           {/* Always render Menu */}

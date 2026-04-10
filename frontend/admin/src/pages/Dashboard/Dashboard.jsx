@@ -23,20 +23,20 @@ const Dashboard = () => {
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [categotyFilter, setCategoryFilter] = useState("");
 
- const [chart1Data, setChart1Data] = useState([
-  { name: "Jan", users: 4000, sales: 2400 },
-  { name: "Feb", users: 3200, sales: 1800 },
-  { name: "Mar", users: 2800, sales: 3200 },
-  { name: "Apr", users: 3500, sales: 2800 },
-  { name: "May", users: 4200, sales: 3600 },
-  { name: "Jun", users: 3900, sales: 3000 },
-  { name: "Jul", users: 4600, sales: 4100 },
-  { name: "Aug", users: 4800, sales: 4300 },
-  { name: "Sep", users: 5200, sales: 4700 },
-  { name: "Oct", users: 6100, sales: 5500 },
-  { name: "Nov", users: 7200, sales: 6800 },
-  { name: "Dec", users: 8500, sales: 7900 },
-]);
+  const [chart1Data, setChart1Data] = useState([
+    { name: "Jan", users: 4000, sales: 2400 },
+    { name: "Feb", users: 3200, sales: 1800 },
+    { name: "Mar", users: 2800, sales: 3200 },
+    { name: "Apr", users: 3500, sales: 2800 },
+    { name: "May", users: 4200, sales: 3600 },
+    { name: "Jun", users: 3900, sales: 3000 },
+    { name: "Jul", users: 4600, sales: 4100 },
+    { name: "Aug", users: 4800, sales: 4300 },
+    { name: "Sep", users: 5200, sales: 4700 },
+    { name: "Oct", users: 6100, sales: 5500 },
+    { name: "Nov", users: 7200, sales: 6800 },
+    { name: "Dec", users: 8500, sales: 7900 },
+  ]);
 
   const handleChangeCatFilter = (event) => {
     setCategoryFilter(event.target.value);
@@ -134,6 +134,45 @@ const Dashboard = () => {
   ]);
 
   const [products] = useState([
+    {
+      id: "P001",
+      name: "Wireless Headphones",
+      image:
+        "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=100",
+      category: "Electronics",
+      subCategory: "Audio",
+      price: 2500,
+      sales: 120,
+    },
+    {
+      id: "P002",
+      name: "Smart Watch",
+      image:
+        "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=100",
+      category: "Electronics",
+      subCategory: "Wearables",
+      price: 3800,
+      sales: 95,
+    },
+    {
+      id: "P003",
+      name: "Gaming Keyboard",
+      image:
+        "https://images.unsplash.com/photo-1595225476474-87563907a212?w=100",
+      category: "Accessories",
+      subCategory: "Computer",
+      price: 3200,
+      sales: 60,
+    },
+    {
+      id: "P004",
+      name: "Running Shoes",
+      image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=100",
+      category: "Fashion",
+      subCategory: "Footwear",
+      price: 2200,
+      sales: 150,
+    },
     {
       id: "P001",
       name: "Wireless Headphones",
@@ -503,127 +542,108 @@ const Dashboard = () => {
         </div>
 
         <div className="p-3">
-          {/* Table */}
           <div className="bg-white border border-gray-200 rounded-lg overflow-hidden">
-            {/* ✅ Horizontal Scroll Enabled */}
-            <div className="overflow-x-auto scroll-smooth pb-5">
-              <table className="w-full min-w-300 border-collapse text-sm">
-                <thead>
-                  <tr className="bg-gray-50 border-b border-gray-200">
-                    {[
-                      <Checkbox {...label} size="small" />,
-                      "Product",
-                      "Category",
-                      "Sub Category",
-                      "Price",
-                      "Sales",
-                      "Action",
-                    ].map((h) => (
-                      <th
-                        key={h}
-                        className="text-left text-[12px] uppercase tracking-wider text-gray-500 font-medium px-4 py-3 whitespace-nowrap"
+            <div className="overflow-x-auto">
+              <div className="max-h-[60vh] overflow-y-auto">
+                <table className="w-full min-w-225 border-collapse text-sm">
+                  {/* Sticky Header */}
+                  <thead className="sticky top-0 bg-gray-50 z-10">
+                    <tr className="border-b border-gray-200">
+                      {[
+                        <Checkbox {...label} size="small" />,
+                        "Product",
+                        "Category",
+                        "Sub Category",
+                        "Price",
+                        "Sales",
+                        "Action",
+                      ].map((h, i) => (
+                        <th
+                          key={i}
+                          className="text-left text-[12px] uppercase text-gray-500 font-medium px-4 py-3 whitespace-nowrap"
+                        >
+                          {h}
+                        </th>
+                      ))}
+                    </tr>
+                  </thead>
+
+                  {/* Scrollable Body */}
+                  <tbody>
+                    {products.map((product) => (
+                      <tr
+                        key={product.id}
+                        className="border-b border-gray-100 hover:bg-gray-50"
                       >
-                        {h}
-                      </th>
-                    ))}
-                  </tr>
-                </thead>
+                        <td className="px-4 py-3">
+                          <Checkbox {...label} size="small" />
+                        </td>
 
-                <tbody>
-                  {products.map((product) => (
-                    <tr
-                      key={product.id}
-                      className="border-b border-gray-100 hover:bg-gray-50 transition"
-                    >
-                      {/* Checkbox */}
-                      <td className="px-4 py-3">
-                        <Checkbox {...label} size="small" />
-                      </td>
-
-                      {/* Product */}
-                      <td className="px-4 py-3">
-                        <div className="flex items-center gap-3">
-                          <Link to="/">
-                            <img
-                              src={product.image}
-                              alt=""
-                              className="w-13 h-13 object-cover rounded-md hover:scale-105 cursor-pointer transition-all "
-                            />
-                          </Link>
-                          <div>
+                        <td className="px-4 py-3">
+                          <div className="flex items-center gap-3">
                             <Link to="/">
-                              <p className="font-medium hover:text-[#ff5252] transition-all cursor-pointer text-gray-900">
+                              <img
+                                src={product.image}
+                                alt=""
+                                className="w-12 h-12 rounded-md object-cover"
+                              />
+                            </Link>
+                            <div>
+                              <p className="font-medium text-gray-900">
                                 {product.name}
                               </p>
-                            </Link>
-                            <p className="text-xs text-gray-400">
-                              {product.id}
-                            </p>
+                              <p className="text-xs text-gray-400">
+                                {product.id}
+                              </p>
+                            </div>
                           </div>
-                        </div>
-                      </td>
+                        </td>
 
-                      {/* Category */}
-                      <td className="px-4 py-3 text-gray-600">
-                        {product.category}
-                      </td>
+                        <td className="px-4 py-3 text-gray-600">
+                          {product.category}
+                        </td>
 
-                      {/* Sub Category */}
-                      <td className="px-4 py-3 text-gray-600">
-                        {product.subCategory}
-                      </td>
+                        <td className="px-4 py-3 text-gray-600">
+                          {product.subCategory}
+                        </td>
 
-                      {/* Price */}
-                      <td className="px-4 py-3 font-medium text-blue-700">
-                        ₹{product.price.toLocaleString("en-IN")}
-                      </td>
+                        <td className="px-4 py-3 text-blue-700 font-medium">
+                          ₹{product.price.toLocaleString("en-IN")}
+                        </td>
 
-                      {/* Sales */}
-                      <td className="px-4 py-3">
-                        <span className=" py-1 text-[15px] w-38 text-gray-500 font-semibold">
-                          <span className="font-bold text-md text-gray-500">
-                            {product.sales}
-                          </span>{" "}
-                          sold
+                        <td className="px-4 py-3">
+                          <span className="text-gray-500 font-semibold">
+                            {product.sales} sold
+                          </span>
                           <ProgressBar value={40} type="success" />
-                        </span>
-                      </td>
+                        </td>
 
-                      {/* Action */}
-                      <td className="px-4 py-3">
-                        <div className="flex items-center gap-2">
-                          <Tooltip title="Edit Product" placement="top">
-                            <Button
-                              size="small"
-                              className="min-w-0! p-2! border border-gray-300! rounded-full! text-gray-600! hover:bg-gray-200!"
-                            >
-                              <BiEditAlt size={18} />
-                            </Button>
-                          </Tooltip>
+                        <td className="px-4 py-3">
+                          <div className="flex gap-2">
+                            <Tooltip title="Edit Product">
+                              <Button className="min-w-0! p-2! border rounded-full!">
+                                <BiEditAlt size={18} />
+                              </Button>
+                            </Tooltip>
 
-                          <Tooltip title="View Product" placement="top">
-                            <Button
-                              size="small"
-                              className="min-w-0! p-2! border border-gray-300! rounded-full! text-gray-600! hover:bg-gray-200!"
-                            >
-                              <MdOutlineRemoveRedEye size={18} />
-                            </Button>
-                          </Tooltip>
+                            <Tooltip title="View Product">
+                              <Button className="min-w-0! p-2! border rounded-full!">
+                                <MdOutlineRemoveRedEye size={18} />
+                              </Button>
+                            </Tooltip>
 
-                          <Tooltip title="Remove Product" placement="top">
-                            <Button
-                              size="small"
-                              className="min-w-0! p-2! border border-gray-300! rounded-full! text-red-500! hover:bg-red-200!"
-                            >
-                              <MdDelete size={18} />
-                            </Button>
-                          </Tooltip>
-                        </div>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+                            <Tooltip title="Delete Product">
+                              <Button className="min-w-0! p-2! border rounded-full! text-red-500!">
+                                <MdDelete size={18} />
+                              </Button>
+                            </Tooltip>
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
         </div>

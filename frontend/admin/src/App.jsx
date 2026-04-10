@@ -11,6 +11,7 @@ import SideBar from "./components/Sidebar/SideBar";
 import { MyContext } from "./context/MyContext";
 import Login from "./pages/Login/Login";
 import SignUp from "./pages/register/SignUp";
+import ProductsPage from "./pages/Products/ProductsPage";
 
 const Layout = () => {
   const { isSideBarOpen } = useContext(MyContext);
@@ -52,7 +53,7 @@ const App = () => {
         },
         {
           path: "products",
-          element: <h1>Products Page</h1>,
+          element: <ProductsPage />,
         },
         {
           path: "orders",
