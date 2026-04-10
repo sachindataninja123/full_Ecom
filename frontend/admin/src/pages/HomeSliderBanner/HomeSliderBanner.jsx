@@ -89,32 +89,35 @@ const HomeSliderBanner = () => {
       <div className="bg-white shadow-md rounded-xl overflow-hidden">
         {/* Table */}
         <div className="overflow-x-auto">
-          <table className="w-full text-sm">
+          {/* Header */}
+          <table className="w-full text-sm table-fixed">
             <thead className="bg-gray-100 text-gray-600 uppercase text-xs sticky top-0 z-10">
               <tr>
-                <th className="w-15 text-center">
+                <th className="w-17.5 text-center px-4">
                   <Checkbox size="small" />
                 </th>
-                <th className="p-3 py-6 text-left">Preview</th>
-                <th className="p-3 py-6 text-left">Actions</th>
+                <th className="w-75 px-4 py-6 text-left">Preview</th>
+                <th className="px-4 py-6 text-left">Actions</th>
               </tr>
             </thead>
           </table>
 
-          {/* ✅ Scrollable Body */}
-          <div className="max-h-100 overflow-y-auto">
-            <table className="w-full text-sm">
+          {/* Body */}
+          <div className="max-h-100 overflow-y-auto mt-2">
+            <table className="w-full text-sm table-fixed border-separate border-spacing-y-2">
               <tbody>
                 {banners.map((item, index) => (
                   <tr
                     key={index}
-                    className="border-b border-gray-300 hover:bg-gray-50 transition"
+                    className="bg-white shadow-sm hover:shadow-md transition"
                   >
-                    <td className="text-center">
+                    {/* Checkbox */}
+                    <td className="w-17.5 text-center px-4 align-middle">
                       <Checkbox size="small" />
                     </td>
 
-                    <td className="p-3">
+                    {/* Image */}
+                    <td className="w-75 px-4 py-3">
                       <div className="w-55 h-22.5 rounded-md overflow-hidden">
                         <img
                           src={item.image}
@@ -124,23 +127,24 @@ const HomeSliderBanner = () => {
                       </div>
                     </td>
 
-                    <td className="p-3">
-                      <div className="flex gap-2">
+                    {/* Actions */}
+                    <td className="px-4 py-3">
+                      <div className="flex items-center gap-3">
                         <Tooltip title="Edit">
                           <Button className="min-w-0! p-2! border rounded-full!">
-                            <BiEditAlt size={20} />
+                            <BiEditAlt size={18} />
                           </Button>
                         </Tooltip>
 
                         <Tooltip title="View">
                           <Button className="min-w-0! p-2! border rounded-full!">
-                            <MdOutlineRemoveRedEye size={20} />
+                            <MdOutlineRemoveRedEye size={18} />
                           </Button>
                         </Tooltip>
 
                         <Tooltip title="Delete">
                           <Button className="min-w-0! p-2! border rounded-full! text-red-500!">
-                            <MdDelete size={20} />
+                            <MdDelete size={18} />
                           </Button>
                         </Tooltip>
                       </div>

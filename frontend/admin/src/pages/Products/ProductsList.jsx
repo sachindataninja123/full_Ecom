@@ -112,7 +112,7 @@ const ProductsList = () => {
     <>
       {/* Header */}
       <div className="card bg-white shadow-md rounded-md p-5 flex items-center justify-between">
-        <h1 className="font-bold text-[25px] text-gray-700">Products</h1>
+        <h1 className="font-bold text-[25px] text-gray-700">Product List</h1>
 
         <div className="flex items-center gap-4">
           <Button className="btn-green flex items-center gap-2">

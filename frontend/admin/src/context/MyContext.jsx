@@ -14,6 +14,9 @@ import Slide from "@mui/material/Slide";
 
 import { createContext, useState } from "react";
 import AddProducts from "../pages/Products/AddProducts";
+import HomeSlideForm from "../pages/HomeSliderBanner/HomeSlideForm";
+import AddCategoryForm from "../pages/Category/AddCategoryForm";
+import AddSubCatList from "../pages/subCategory/AddSubCatList";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -79,7 +82,18 @@ const MyContextProvider = ({ children }) => {
             </Typography>
           </Toolbar>
         </AppBar>
+
         {isOpenFullScreenPanel?.model === "Add Product" && <AddProducts />}
+
+        {isOpenFullScreenPanel?.model === "Add Home Slide" && <HomeSlideForm />}
+
+        {isOpenFullScreenPanel?.model === "Add New Category" && (
+          <AddCategoryForm />
+        )}
+
+        {isOpenFullScreenPanel?.model === "Add New Sub Category" && (
+          <AddSubCatList />
+        )}
       </Dialog>
     </MyContext.Provider>
   );

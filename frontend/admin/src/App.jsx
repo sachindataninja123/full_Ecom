@@ -5,7 +5,7 @@ import {
   Outlet,
   Navigate,
 } from "react-router-dom";
-import Dashboard from "./pages/dashboard/Dashboard";
+
 import Header from "./components/Header/Header";
 import SideBar from "./components/Sidebar/SideBar";
 import { MyContext } from "./context/MyContext";
@@ -14,6 +14,10 @@ import SignUp from "./pages/register/SignUp";
 import ProductsPage from "./pages/Products/ProductsList";
 import ProductsList from "./pages/Products/ProductsList";
 import HomeSliderBanner from "./pages/HomeSliderBanner/HomeSliderBanner";
+import CategoryList from "./pages/Category/CategoryList";
+import Dashboard from "./pages/Dashboard/Dashboard";
+import SubCatList from "./pages/subCategory/SubCatList";
+import Users from "./pages/Users/Users";
 
 const Layout = () => {
   const { isSideBarOpen } = useContext(MyContext);
@@ -57,8 +61,20 @@ const App = () => {
           element: <ProductsList />,
         },
         {
-          path: "home-slides", // ✅ fixed (removed /)
+          path: "home-slides",
           element: <HomeSliderBanner />,
+        },
+        {
+          path: "category",
+          element: <CategoryList />,
+        },
+        {
+          path: "Sub-category",
+          element: <SubCatList />,
+        },
+        {
+          path: "Users",
+          element: <Users />,
         },
         {
           path: "orders",

@@ -73,7 +73,16 @@ const SideBar = () => {
                 </NavLink>
               </li>
               <li>
-                <NavLink to="/admin/add-slide" className={subMenuClass}>
+                <NavLink
+                  to="/admin"
+                  className={subMenuClass}
+                  onClick={() =>
+                    setIsOpenFullScreenPanel({
+                      open: true,
+                      model: "Add Home Slide",
+                    })
+                  }
+                >
                   <span className="w-1.5 h-1.5 bg-gray-500 rounded-full"></span>
                   Add Home Banner
                 </NavLink>
@@ -162,7 +171,16 @@ const SideBar = () => {
                 </NavLink>
               </li>
               <li>
-                <NavLink to="/admin/add-category" className={subMenuClass}>
+                <NavLink
+                  to="/admin"
+                  className={subMenuClass}
+                  onClick={() =>
+                    setIsOpenFullScreenPanel({
+                      open: true,
+                      model: "Add New Category",
+                    })
+                  }
+                >
                   <span className="w-1.5 h-1.5 bg-gray-500 rounded-full"></span>
                   Add Category
                 </NavLink>
@@ -174,7 +192,16 @@ const SideBar = () => {
                 </NavLink>
               </li>
               <li>
-                <NavLink to="/admin/sub-category/add" className={subMenuClass}>
+                <NavLink
+                  to="/admin"
+                  className={subMenuClass}
+                  onClick={() =>
+                    setIsOpenFullScreenPanel({
+                      open: true,
+                      model: "Add New Sub Category",
+                    })
+                  }
+                >
                   <span className="w-1.5 h-1.5 bg-gray-500 rounded-full"></span>
                   Add Sub Category
                 </NavLink>
