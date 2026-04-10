@@ -1,4 +1,4 @@
-import React, { useState, PureComponent } from "react";
+import React, { useState, PureComponent, useContext } from "react";
 import DashboardBox from "../../components/DashboardBox/DashboardBox";
 import Button from "@mui/material/Button";
 import { FaPlus } from "react-icons/fa6";
@@ -16,12 +16,16 @@ import MenuItem from "@mui/material/MenuItem";
 import { AiOutlineCloudUpload } from "react-icons/ai";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Legend } from "recharts";
 import { ResponsiveContainer, Tooltip as RechartsTooltip } from "recharts";
+import { MyContext } from "../../context/MyContext";
 
 const label = { slotProps: { input: { "aria-label": "Checkbox demo" } } };
 
 const Dashboard = () => {
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [categotyFilter, setCategoryFilter] = useState("");
+
+  const { isOpenFullScreenPanel, setIsOpenFullScreenPanel } =
+    useContext(MyContext);
 
   const [chart1Data, setChart1Data] = useState([
     { name: "Jan", users: 4000, sales: 2400 },
@@ -534,7 +538,15 @@ const Dashboard = () => {
               {" "}
               <AiOutlineCloudUpload size={22} /> Export
             </Button>
-            <Button className="btn-blue flex items-center justify-center gap-2 ">
+            <Button
+              className="btn-blue flex items-center justify-center gap-2"
+              onClick={() =>
+                setIsOpenFullScreenPanel({
+                  open: true,
+                  model: "Add Product",
+                })
+              }
+            >
               <FaPlus size={20} />
               Add Product
             </Button>

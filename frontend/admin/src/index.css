@@ -1,15 +1,15 @@
 @import "tailwindcss";
 
-body{
+body {
   background-color: #f1f1f1;
 }
 
-::-webkit-scrollbar{
+::-webkit-scrollbar {
   width: 6px !important;
   height: 6px !important;
 }
 
-::-webkit-scrollbar-thumb{
+::-webkit-scrollbar-thumb {
   background: #ccc !important;
 }
 
@@ -30,7 +30,6 @@ body{
 
 .btn-blue:hover {
   background-color: #1d56dc !important;
-  
 }
 
 .btn-green {
@@ -42,5 +41,14 @@ body{
 
 .btn-green:hover {
   background-color: rgb(12, 126, 12) !important;
-  
+}
+
+.MuiAppBar-colorPrimary {
+  background: #ccc !important;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }

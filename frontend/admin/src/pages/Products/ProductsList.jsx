@@ -16,7 +16,7 @@ import SearchBox from "../../components/SearchBox/SearchBox";
 
 const label = { slotProps: { input: { "aria-label": "Checkbox demo" } } };
 
-const ProductsPage = () => {
+const ProductsList = () => {
   const navigate = useNavigate();
   const [categotyFilter, setCategoryFilter] = useState("");
 
@@ -275,4 +275,4 @@ const ProductsPage = () => {
   );
 };
 
-export default ProductsPage;
+export default ProductsList;
