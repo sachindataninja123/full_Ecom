@@ -7,9 +7,21 @@ import { FaRegUser } from "react-icons/fa";
 import { FaRegHeart } from "react-icons/fa";
 import { IoBagHandleOutline } from "react-icons/io5";
 import { MdOutlineLogout } from "react-icons/md";
+import { fetchDataFromApi } from "../../../utils/api";
 
 const LogDropDown = () => {
-  const { isLoggedIn, setIsLoggedIn } = useContext(ProductviewContext);
+  const { isLoggedIn, setIsLoggedIn, openAlertBox } =
+    useContext(ProductviewContext);
+
+const handleLogOut = async () => {
+  const res = await fetchDataFromApi("/api/user/logout");
+
+  if (res?.success) {
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("refreshToken");
+    setIsLoggedIn(false);
+  }
+};
 
   return (
     <div className="relative z-999">
@@ -92,8 +104,8 @@ const LogDropDown = () => {
 
                 <li>
                   <button
-                    onClick={() => setIsLoggedIn(false)}
-                    className="w-full text-left px-3 py-2 hover:bg-gray-100 text-red-400 font-medium flex items-center justify-start gap-2"
+                    onClick={handleLogOut}
+                    className="w-full text-left px-3 py-2 hover:bg-gray-100 text-red-500 font-semibold flex items-center justify-start gap-2 cursor-pointer"
                   >
                     <MdOutlineLogout size={16} />
                     Logout

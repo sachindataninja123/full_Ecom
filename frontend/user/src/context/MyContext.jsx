@@ -1,4 +1,4 @@
-import React, { createContext, useState } from "react";
+import React, { createContext, useEffect, useState } from "react";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogContent from "@mui/material/DialogContent";
@@ -11,6 +11,7 @@ import Drawer from "@mui/material/Drawer";
 import { Link } from "react-router-dom";
 import CartPanel from "../components/CartPanel/CartPanel";
 import toast, { Toaster } from "react-hot-toast";
+import { fetchDataFromApi } from "../utils/api";
 
 export const ProductviewContext = createContext();
 
@@ -23,6 +24,7 @@ const MyContext = ({ children }) => {
   const [openProductDetailsModal, setOpenProductDetailsModal] = useState(false);
   const [maxWidth, setMaxWidth] = useState("lg");
   const [fullWidth, setFullWidth] = useState(true);
+  const [userData, setUserData] = useState(null);
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
@@ -53,6 +55,21 @@ const MyContext = ({ children }) => {
     setReviews((prev) => [review, ...prev]);
   };
 
+  useEffect(() => {
+    const token = localStorage.getItem("accessToken");
+
+    if (token !== undefined && token !== null && token !== "") {
+      setIsLoggedIn(true);
+
+      fetchDataFromApi("/api/user/user-details").then((res) => {
+        // console.log(res);
+        setUserData(res.data);
+      });
+    } else {
+      setIsLoggedIn(false);
+    }
+  }, [isLoggedIn]);
+
   const openAlertBox = (status, msg) => {
     if (status === "success") {
       toast.success(msg);
@@ -70,6 +87,8 @@ const MyContext = ({ children }) => {
         setOpenProductDetailsModal,
         handleClickOpenProductDetailsModal,
         handleCloseOpenProductDetailsModal,
+
+        //toaster message
         openAlertBox,
 
         // product
@@ -89,6 +108,9 @@ const MyContext = ({ children }) => {
         //Auth Login
         isLoggedIn,
         setIsLoggedIn,
+
+        // userData
+        setUserData,
       }}
     >
       {children}
