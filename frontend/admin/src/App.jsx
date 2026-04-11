@@ -20,6 +20,8 @@ import SubCatList from "./pages/subCategory/SubCatList";
 import Users from "./pages/Users/Users";
 import Orders from "./pages/Orders/Orders";
 import ForgotPassword from "./pages/forgotPassword/ForgotPassword";
+import VerifyAcc from "./pages/verifyAccount/VerifyAcc";
+import ChangePassword from "./pages/changePassword/ChangePassword";
 
 const Layout = () => {
   const { isSideBarOpen } = useContext(MyContext);
@@ -96,6 +98,14 @@ const App = () => {
     {
       path: "/admin/forgot-password",
       element: <ForgotPassword />,
+    },
+    {
+      path: "/admin/account-verify",
+      element: <VerifyAcc />,
+    },
+    {
+      path: "/admin/change-password",
+      element: <ChangePassword />,
     },
 
     {

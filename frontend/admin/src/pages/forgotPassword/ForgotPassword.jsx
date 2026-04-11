@@ -68,17 +68,13 @@ const ForgotPassword = () => {
         {/* FORM */}
         <form className="flex flex-col gap-4 ">
           <TextField
-            label="Email Address"
-            variant="outlined"
-            size="small"
+            label="Enter your Email"
             fullWidth
+            margin="normal"
+            size="small"
           />
-
-          <Button
-            variant="contained"
-            className="bg-blue-500! text-white! text-[14px]! py-2! rounded-md!"
-          >
-            Reset Password
+          <Button variant="contained"  fullWidth className="mt-1! bg-blue-500!">
+            Send OTP
           </Button>
         </form>
 
@@ -98,3 +94,4 @@ const ForgotPassword = () => {
 };
 
 export default ForgotPassword;
+

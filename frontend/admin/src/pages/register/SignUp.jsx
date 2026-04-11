@@ -113,14 +113,7 @@ const SignUp = () => {
             }}
           />
 
-          <div className="flex justify-end">
-            <Link
-              to="/forgot-password"
-              className="text-sm text-blue-500 cursor-pointer hover:underline font-semibold"
-            >
-              Forgot Password?
-            </Link>
-          </div>
+      
 
           <Button
             variant="contained"
