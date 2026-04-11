@@ -98,7 +98,10 @@ const verifyEmail = async (req, res) => {
       });
     }
 
-    const isCodeValid = (user.otp = otp);
+    // otp comparison
+    const isCodeValid = (user.otp == otp);
+
+    // expiry checked
     const isNotExpired = user.otpExpires > Date.now();
 
     if (isCodeValid && isNotExpired) {

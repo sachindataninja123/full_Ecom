@@ -221,7 +221,6 @@ body {
   width: 4px !important;
 }
 
-
 .reviewScroll::-webkit-scrollbar-thumb {
   background: #ccc !important;
 }
@@ -230,15 +229,19 @@ body {
   width: 400px;
   overflow: hidden;
 }
-.btn-border{
+.btn-border {
   background-color: white !important;
   border: 2px solid #ff5252 !important;
-  color:#ff5252 !important; 
+  color: #ff5252 !important;
 }
 
-.btn-border:hover{
+.btn-border:hover {
   background-color: #333 !important;
   border: 2px #333 !important;
-  color:white !important;
+  color: white !important;
+}
 
+button .MuiCircularProgress-root {
+  width: 30px !important;
+  height: 30px !important;
 }

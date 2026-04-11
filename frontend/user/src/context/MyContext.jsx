@@ -24,7 +24,7 @@ const MyContext = ({ children }) => {
   const [maxWidth, setMaxWidth] = useState("lg");
   const [fullWidth, setFullWidth] = useState(true);
 
-  const [isLoggedIn, setIsLoggedIn] = useState(true);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const [openCartPanel, setOpenCartPanel] = useState(false);
 

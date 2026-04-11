@@ -16,6 +16,7 @@
     "@mui/material": "^7.3.9",
     "@mui/styled-engine-sc": "^7.3.9",
     "@tailwindcss/vite": "^4.2.2",
+    "axios": "^1.15.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-hot-toast": "^2.6.0",

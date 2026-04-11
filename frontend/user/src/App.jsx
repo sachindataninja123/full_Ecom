@@ -16,6 +16,8 @@ import MyProfile from "./pages/MyProfile/MyProfile";
 import MyList from "./pages/MyList/MyList";
 import MyOrders from "./pages/MyOrders/MyOrders";
 
+const apiUrl = import.meta.env.VITE_API_URL;
+
 const App = () => {
   return (
     <div>
@@ -28,7 +30,7 @@ const App = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Regsiter />} />
         <Route path="/cartpage" element={<CartPage />} />
-        <Route path="/emailverify" element={<EmailVerify />} />
+        <Route path="/verifyEmail" element={<EmailVerify />} />
         <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/checkout" element={<CheckOut />} />

@@ -2,16 +2,17 @@ import React, { useState, useRef, useContext } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import Button from "@mui/material/Button";
 import { ProductviewContext } from "../../context/MyContext";
+import { postData } from "../../utils/api";
 
 const EmailVerify = () => {
-  const [otp, setOtp] = useState(["", "", "", ""]);
+  const [otp, setOtp] = useState(["", "", "", "", "", ""]);
   const inputs = useRef([]);
   const navigate = useNavigate();
-  const location = useLocation();
-  const email = location.state?.email;
+  const email = localStorage.getItem("userEmail");
 
   const context = useContext(ProductviewContext);
 
+  // 🔹 Handle input change
   const handleChange = (value, index) => {
     if (!/^[0-9]?$/.test(value)) return;
 
@@ -19,47 +20,83 @@ const EmailVerify = () => {
     newOtp[index] = value;
     setOtp(newOtp);
 
-    if (value && index < 3) {
+    // Move forward
+    if (value && index < otp.length - 1) {
       inputs.current[index + 1].focus();
+    }
+
+    // Move backward on delete
+    if (!value && index > 0) {
+      inputs.current[index - 1].focus();
     }
   };
 
-  const handleSubmit = () => {
-    const finalOtp = otp.join("");
-    if (finalOtp.length < 4)
-      return context.openAlertBox("error", "Enter Full OTP");
+  // 🔹 Check if OTP complete
+  const isOtpComplete = otp.every((digit) => digit !== "");
 
-    context.openAlertBox("success", "Email Verified");
-    navigate("/reset-password");
+  // 🔹 Submit handler
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const res = await postData("/api/user/verifyEmail", {
+      email: email,
+      otp: otp.join(""),
+    });
+
+    console.log(res);
+
+    if (res?.data?.success) {
+      context.openAlertBox("success", res.data.message || "Email Verified!");
+      localStorage.removeItem("userEmail");
+      navigate("/login");
+      
+    } else {
+      context.openAlertBox("error", res?.data?.message || "Invalid OTP");
+    }
   };
 
   return (
     <section className="py-20 flex justify-center bg-gray-100">
-      <div className="bg-white p-15 py-10 rounded-xl shadow-md text-center flex flex-col gap-4">
-        <h3 className="text-2xl font-bold mb-3">Verify OTP</h3>
-        <p className="text-sm ">
-          OTP sent to <span className="text-red-500">{email}</span>
+      <div className="bg-white p-10 rounded-xl shadow-md text-center flex flex-col gap-4 ">
+        {/* Heading */}
+        <h3 className="text-2xl font-bold mb-2">Verify OTP</h3>
+
+        {/* Email */}
+        <p className="text-sm">
+          OTP sent to <span className="text-red-500 font-medium">{email}</span>
         </p>
 
-        <div className="flex gap-3 justify-center mb-4">
-          {otp.map((d, i) => (
+        {/* OTP Inputs */}
+        <div className="flex gap-3 justify-center mt-4 mb-4">
+          {otp.map((digit, index) => (
             <input
-              key={i}
+              key={index}
+              type="text"
               maxLength="1"
-              ref={(el) => (inputs.current[i] = el)}
-              value={d}
-              onChange={(e) => handleChange(e.target.value, i)}
-              className="w-12 h-12 text-center border rounded"
+              ref={(el) => (inputs.current[index] = el)}
+              value={digit}
+              onChange={(e) => handleChange(e.target.value, index)}
+              className="w-12 h-12 text-center border rounded-lg text-lg focus:outline-none focus:ring-2 focus:ring-red-400"
             />
           ))}
         </div>
 
+        {/* Verify Button */}
         <Button
           onClick={handleSubmit}
-          className="bg-[#ff5252]! text-white! w-full hover:bg-gray-900!"
+          disabled={!isOtpComplete}
+          className="bg-[#ff5252]! text-white! w-full hover:bg-gray-900! py-2!"
         >
           Verify OTP
         </Button>
+
+        {/* Resend (optional UI only) */}
+        <p className="text-sm text-gray-500 mt-2">
+          Didn’t receive OTP?{" "}
+          <span className="text-blue-500 cursor-pointer hover:underline">
+            Resend
+          </span>
+        </p>
       </div>
     </section>
   );
