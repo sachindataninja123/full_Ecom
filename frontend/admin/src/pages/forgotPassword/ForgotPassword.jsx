@@ -83,7 +83,7 @@ const ForgotPassword = () => {
           Don't want to reset?{" "}
           <NavLink
             to="/admin/login"
-            className="text-black font-medium hover:underline hover:text-blue-500 transition-all"
+            className="text-blue-500 font-medium hover:underline hover:text-blue-600 transition-all"
           >
             Sign In
           </NavLink>

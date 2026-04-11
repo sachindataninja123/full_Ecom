@@ -154,7 +154,7 @@ const SignUp = () => {
           Already have an account?{" "}
           <NavLink
             to="/admin/login"
-            className="text-black font-medium hover:underline"
+            className="text-blue-500 hover:text-blue-600 font-medium hover:underline"
           >
             Sign In
           </NavLink>

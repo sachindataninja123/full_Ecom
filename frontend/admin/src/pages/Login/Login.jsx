@@ -96,7 +96,7 @@ const Login = () => {
           <div className="flex justify-end">
             <Link
               to="/admin/forgot-password"
-              className="text-sm text-blue-500 cursor-pointer hover:underline font-semibold"
+              className="text-sm text-blue-500 cursor-pointer hover:underline font-semibold hover:text-blue-600"
             >
               Forgot Password?
             </Link>
@@ -141,7 +141,7 @@ const Login = () => {
           Don’t have an account?{" "}
           <NavLink
             to="/admin/register"
-            className="text-black font-medium hover:underline hover:text-blue-500 transition-all"
+            className="text-blue-500 font-medium hover:underline hover:text-blue-600 transition-all "
           >
             Sign Up
           </NavLink>

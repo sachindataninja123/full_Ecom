@@ -71,7 +71,7 @@ const ChangePassword = () => {
       </header>
 
       {/* CARD */}
-      <div className="w-full max-w-md rounded-md bg-white shadow-lg p-7 mt-20">
+      <div className="w-full max-w-lg rounded-md bg-[#f1f1f1] shadow-lg px-7 pb-14 pt-5 mt-20">
         
         <div className="text-center mb-8">
           <h2 className="text-3xl font-bold text-gray-700">
@@ -130,7 +130,7 @@ const ChangePassword = () => {
             type="submit"
             variant="contained"
             fullWidth
-            className="bg-blue-500! hover:bg-blue-600! py-2.5!"
+            className="bg-blue-500! hover:bg-blue-600! py-2.5! "
           >
             Change Password
           </Button>
@@ -139,11 +139,11 @@ const ChangePassword = () => {
         </form>
 
         {/* FOOTER */}
-        <p className="text-md text-center text-gray-500 mt-6">
+        <p className="text-md text-center text-gray-500 mt-13">
           Don't want to reset?{" "}
           <NavLink
             to="/admin/login"
-            className="text-black font-medium hover:text-blue-500"
+            className="text-blue-500 font-medium hover:text-blue-600 transition-all hover:underline"
           >
             Sign In
           </NavLink>

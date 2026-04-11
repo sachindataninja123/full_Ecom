@@ -76,10 +76,12 @@ const VerifyAcc = () => {
       </header>
 
       {/* CARD */}
-      <div className="w-full max-w-lg rounded-md bg-white shadow-lg py-8 px-8 mt-20">
+      <div className="w-full max-w-lg rounded-md bg-[#f1f1f1] shadow-lg py-8 px-8 mt-20">
         <div className="text-center mb-8">
-          <h2 className="text-4xl font-bold text-gray-700 mb-2">Welcome Back!</h2>
-         <p className="text-gray-500 text-xl font-semibold  mt-1 mb-5">
+          <h2 className="text-4xl font-bold text-gray-700 mb-2">
+            Welcome Back!
+          </h2>
+          <p className="text-gray-500 text-xl font-semibold  mt-1 mb-5">
             Please verify your email
           </p>
           <p className="text-gray-500 mt-2">
@@ -114,7 +116,7 @@ const VerifyAcc = () => {
           Back to
           <NavLink
             to="/admin/login"
-            className="text-black hover:underline font-medium hover:text-blue-500 pl-1"
+            className="text-blue-500 hover:underline font-medium hover:text-blue-600 transition-all pl-1"
           >
             Login
           </NavLink>
