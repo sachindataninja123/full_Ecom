@@ -9,14 +9,13 @@ import Login from "./pages/Login/Login";
 import Regsiter from "./pages/Register/Register";
 import CartPage from "./pages/Cart/CartPage";
 import EmailVerify from "./components/Verify/EmailVerify";
-import ForgotPassword from "./components/ForgotPassword/ForgotPassword";
+
 import ResetPassword from "./components/ResetPassword/ResetPassword";
 import CheckOut from "./pages/CheckOut/CheckOut";
 import MyProfile from "./pages/MyProfile/MyProfile";
 import MyList from "./pages/MyList/MyList";
 import MyOrders from "./pages/MyOrders/MyOrders";
 
-const apiUrl = import.meta.env.VITE_API_URL;
 
 const App = () => {
   return (
@@ -32,7 +31,6 @@ const App = () => {
         <Route path="/cartpage" element={<CartPage />} />
         <Route path="/verifyEmail" element={<EmailVerify />} />
         <Route path="/reset-password" element={<ResetPassword />} />
-        <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/checkout" element={<CheckOut />} />
 
         <Route path="/myprofile" element={<MyProfile />} />

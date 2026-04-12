@@ -4,37 +4,71 @@ import Button from "@mui/material/Button";
 import { useNavigate, Link } from "react-router-dom";
 import { ProductviewContext } from "../../context/MyContext";
 import { IoEye, IoEyeOff } from "react-icons/io5";
+import CircularProgress from "@mui/material/CircularProgress";
+import { postData } from "../../utils/api";
 
 const ResetPassword = () => {
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-
+  const [isLoading, setIsLoading] = useState(false);
   const [isShowPassword, setIsShowPassword] = useState(false);
   const [isShowPassword2, setIsShowPassword2] = useState(false);
 
-  const navigate = useNavigate();
-  const context = useContext(ProductviewContext);
+  const [formFields, setFormFields] = useState({
+    email: localStorage.getItem("userEmail"),
+    newPassword: "",
+    confirmPassword: "",
+  });
+
+  const history = useNavigate();
+  const { openAlertBox, setIsLoggedIn } = useContext(ProductviewContext);
+
+  const onChangeInput = (e) => {
+    const { name, value } = e.target;
+    setFormFields(() => {
+      return {
+        ...formFields,
+        [name]: value,
+      };
+    });
+  };
+
+  const validateValue =
+    formFields.email &&
+    formFields.newPassword.trim() !== "" &&
+    formFields.confirmPassword.trim() !== "";
 
   const handleSubmit = (e) => {
-    e.preventDefault(); // ✅ prevent reload
+    e.preventDefault();
 
-    if (!password || !confirmPassword) {
-      context.openAlertBox("error", "All fields are required");
+    setIsLoading(true);
+
+    if (formFields.newPassword === "") {
+      openAlertBox("error", "Please enter new Password");
+      setIsLoading(false);
       return;
     }
 
-    if (password.length < 6) {
-      context.openAlertBox("error", "Password must be at least 6 characters");
+    if (formFields.confirmPassword === "") {
+      openAlertBox("error", "Please enter confirm Password");
+      setIsLoading(false);
       return;
     }
-
-    if (password !== confirmPassword) {
-      context.openAlertBox("error", "Passwords do not match");
+    if (formFields.confirmPassword !== formFields.newPassword) {
+      openAlertBox("error", "Password and confirm Password do not match");
+      setIsLoading(false);
       return;
     }
-
-    context.openAlertBox("success", "Password Changed Successfully");
-    navigate("/login");
+    postData(`/api/user/reset-password`, formFields).then((res) => {
+      // console.log(res);
+      if (res?.data?.error === false) {
+        localStorage.removeItem("userEmail");
+        localStorage.removeItem("actionType");
+        openAlertBox("success", res?.data?.message);
+        setIsLoading(false);
+        history("/login");
+      } else {
+        openAlertBox("error", res?.data?.message);
+      }
+    });
   };
 
   return (
@@ -52,8 +86,10 @@ const ResetPassword = () => {
               type={isShowPassword ? "text" : "password"}
               label="New Password"
               fullWidth
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              value={formFields.newPassword}
+              disabled={isLoading === true ? true : false}
+              onChange={onChangeInput}
+              name="newPassword"
             />
 
             <Button
@@ -71,8 +107,10 @@ const ResetPassword = () => {
               type={isShowPassword2 ? "text" : "password"}
               label="Confirm Password"
               fullWidth
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
+              value={formFields.confirmPassword}
+              disabled={isLoading === true ? true : false}
+              onChange={onChangeInput}
+              name="confirmPassword"
             />
 
             <Button
@@ -86,12 +124,17 @@ const ResetPassword = () => {
 
           {/* Submit */}
           <Button
-            type="submit"
             variant="contained"
+            type="submit"
             fullWidth
-            className="btn-org hover:bg-gray-900! py-2.5!"
+            className="hover:bg-gray-900! py-2.5! rounded-lg! btn-org flex items-center justify-center gap-3"
+            disabled={!validateValue || isLoading}
           >
-            Change Password
+            {isLoading ? (
+              <CircularProgress color="inherit" />
+            ) : (
+              "Change Password"
+            )}
           </Button>
 
           {/* Divider */}
@@ -103,7 +146,7 @@ const ResetPassword = () => {
 
           {/* Login */}
           <p className="text-center text-sm text-gray-600">
-            Remembered password?{" "}
+            Remembered password?
             <Link to="/login" className="text-blue-500 hover:underline link">
               Login
             </Link>

@@ -19,6 +19,7 @@ const handleLogOut = async () => {
   if (res?.success) {
     localStorage.removeItem("accessToken");
     localStorage.removeItem("refreshToken");
+    localStorage.removeItem("userEmail")
     setIsLoggedIn(false);
   }
 };

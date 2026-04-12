@@ -46,7 +46,7 @@ const EmailVerify = () => {
         otp: otp.join(""),
       });
 
-      console.log(res);
+      // console.log(res);
 
       if (res?.data?.success) {
         openAlertBox("success", res.data.message || "Email Verified!");
@@ -56,17 +56,16 @@ const EmailVerify = () => {
         openAlertBox("error", res?.data?.message || "Invalid OTP");
       }
     } else {
-      const res = await postData("/api/user/forgot-password", {
+      const res = await postData("/api/user/verify-forgot-password-otp", {
         email: email,
         otp: otp.join(""),
       });
 
-      console.log(res);
+      // console.log(res);
 
       if (res?.data?.success) {
         openAlertBox("success", res.data.message || "Email Verified!");
-        localStorage.removeItem("userEmail");
-        navigate("/login");
+        navigate("/reset-password");
       } else {
         openAlertBox("error", res?.data?.message || "Invalid OTP");
       }
@@ -107,14 +106,6 @@ const EmailVerify = () => {
         >
           Verify OTP
         </Button>
-
-        {/* Resend (optional UI only) */}
-        <p className="text-sm text-gray-500 mt-2">
-          Didn’t receive OTP?{" "}
-          <span className="text-blue-500 cursor-pointer hover:underline">
-            Resend
-          </span>
-        </p>
       </div>
     </section>
   );
