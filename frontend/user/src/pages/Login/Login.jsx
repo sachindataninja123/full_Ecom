@@ -26,7 +26,7 @@ const Login = () => {
     });
   };
 
-  const { openAlertBox , setIsLoggedIn } = useContext(ProductviewContext);
+  const { openAlertBox, setIsLoggedIn } = useContext(ProductviewContext);
 
   const history = useNavigate();
 
@@ -49,7 +49,9 @@ const Login = () => {
       return;
     }
 
-    const res = await postData("/api/user/login", formFields ,{withCredentials : true});
+    const res = await postData("/api/user/login", formFields, {
+      withCredentials: true,
+    });
 
     // console.log(res);
 
@@ -65,7 +67,7 @@ const Login = () => {
       localStorage.setItem("accessToken", res?.data?.data?.accessToken);
       localStorage.setItem("refreshToken", res?.data?.data?.refreshToken);
 
-      setIsLoggedIn(true)
+      setIsLoggedIn(true);
 
       history("/");
     } else {
@@ -73,6 +75,38 @@ const Login = () => {
     }
 
     setIsLoading(false);
+  };
+
+  const forgotPassword = async () => {
+    if (formFields.email === "") {
+      openAlertBox("error", "Please enter Email Id");
+      return;
+    }
+
+    try {
+      setIsLoading(true);
+
+      const res = await postData("/api/user/forgot-password", {
+        email: formFields.email,
+      });
+
+      if (res?.data?.success) {
+        openAlertBox("success", res.data.message || "OTP sent successfully!");
+
+        localStorage.setItem("userEmail", formFields.email);
+        localStorage.setItem("actionType", "forgot-password");
+
+        console.log(res)
+
+        history("/verifyEmail");
+      } else {
+        openAlertBox("error", res?.data?.message || "Something went wrong");
+      }
+    } catch (error) {
+      openAlertBox("error", "Server error");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -121,12 +155,13 @@ const Login = () => {
 
           {/* Forgot password */}
           <div className="text-right">
-            <Link
-              to="/forgot-password"
-              className="text-sm font-medium text-blue-500 hover:underline link"
+            <Button
+              onClick={forgotPassword}
+               disabled={isLoading}
+              className="text-sm! font-medium! text-blue-500! hover:underline! link! lowercase!"
             >
               Forgot Password?
-            </Link>
+            </Button>
           </div>
 
           {/* Login Button */}

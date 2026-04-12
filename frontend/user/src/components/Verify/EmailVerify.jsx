@@ -10,7 +10,7 @@ const EmailVerify = () => {
   const navigate = useNavigate();
   const email = localStorage.getItem("userEmail");
 
-  const context = useContext(ProductviewContext);
+  const { openAlertBox } = useContext(ProductviewContext);
 
   // 🔹 Handle input change
   const handleChange = (value, index) => {
@@ -38,20 +38,38 @@ const EmailVerify = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const res = await postData("/api/user/verifyEmail", {
-      email: email,
-      otp: otp.join(""),
-    });
+    const actionType = localStorage.getItem("actionType");
 
-    console.log(res);
+    if (actionType !== "forgot-password") {
+      const res = await postData("/api/user/verifyEmail", {
+        email: email,
+        otp: otp.join(""),
+      });
 
-    if (res?.data?.success) {
-      context.openAlertBox("success", res.data.message || "Email Verified!");
-      localStorage.removeItem("userEmail");
-      navigate("/login");
-      
+      console.log(res);
+
+      if (res?.data?.success) {
+        openAlertBox("success", res.data.message || "Email Verified!");
+        localStorage.removeItem("userEmail");
+        navigate("/login");
+      } else {
+        openAlertBox("error", res?.data?.message || "Invalid OTP");
+      }
     } else {
-      context.openAlertBox("error", res?.data?.message || "Invalid OTP");
+      const res = await postData("/api/user/forgot-password", {
+        email: email,
+        otp: otp.join(""),
+      });
+
+      console.log(res);
+
+      if (res?.data?.success) {
+        openAlertBox("success", res.data.message || "Email Verified!");
+        localStorage.removeItem("userEmail");
+        navigate("/login");
+      } else {
+        openAlertBox("error", res?.data?.message || "Invalid OTP");
+      }
     }
   };
 

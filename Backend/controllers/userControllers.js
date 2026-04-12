@@ -434,7 +434,7 @@ const forgotpassword = async (req, res) => {
       // send verification mail
       await sendEmailFunc({
         to: email,
-        subject: "Verify email from ecommerce App",
+        subject: "Verify OTP for Forgot password by Fably",
         text: "",
         html: EmailVerificationTemplate(user?.name, verifyCode),
       });
