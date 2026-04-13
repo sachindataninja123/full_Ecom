@@ -6,7 +6,8 @@ import { useContext } from "react";
 import { ProductviewContext } from "../../context/MyContext";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-
+import CircularProgress from "@mui/material/CircularProgress";
+import { editData } from "../../utils/api";
 
 const MyProfile = () => {
   const [image, setImage] = useState(
@@ -19,8 +20,61 @@ const MyProfile = () => {
     phone: "9876543210",
   });
 
-  const { isLoggedIn, setIsLoggedIn } = useContext(ProductviewContext);
+  const [previews, setPreviews] = useState([]);
+  const [uploading, setUploading] = useState(false);
+
+  const formdata = new FormData();
+
+  const { isLoggedIn, setIsLoggedIn, openAlertBox } =
+    useContext(ProductviewContext);
   const history = useNavigate();
+
+  let img_Arr = [];
+  let uniqueArray = [];
+  let selectedImages = [];
+
+  // Image Upload
+  const handleImageChange = (e) => {
+    try {
+      setPreviews([]);
+
+      const files = e.target.files;
+      // console.log(files)
+      setUploading(true);
+
+      for (var i = 0; i < files.length; i++) {
+        if (
+          files[i] &&
+          (files[i].type === "image/jpeg" ||
+            files[i].type === "image/png" ||
+            files[i].type === "image/jpg" ||
+            files[i].type === "image/webp")
+        ) {
+          const file = files[i];
+          selectedImages.push(file);
+          formdata.append("avatar", file);
+        } else {
+          openAlertBox(
+            "error",
+            "Please select a valid PNG , JPG or webp image file.",
+          );
+          setUploading(false);
+          return false;
+        }
+      }
+
+      editData("/api/user/user-avatar", formdata).then((res) => {
+        setUploading(false);
+        let avatar = [];
+        console.log(res?.data?.avatar);
+        avatar.push(res?.data?.avatar);
+        setPreviews(avatar);
+        // console.log(res);
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   useEffect(() => {
     const token = localStorage.getItem("accessToken");
@@ -29,14 +83,6 @@ const MyProfile = () => {
       history("/");
     }
   }, [history]);
-
-  // Image Upload
-  const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      setImage(URL.createObjectURL(file));
-    }
-  };
 
   // Input Change
   const handleChange = (e) => {
@@ -59,15 +105,33 @@ const MyProfile = () => {
         <div className="w-[25%]">
           <div className="bg-white shadow-md rounded-md p-5 py-10 text-center">
             {/* Profile Image */}
-            <div className="w-28 h-28 mx-auto rounded-full overflow-hidden mb-4 relative group">
-              <img src={image} alt="" className="w-full h-full object-cover" />
+            <div className="w-28 h-28 mx-auto rounded-full overflow-hidden mb-4 relative group flex items-center justify-center bg-gray-200">
+              {uploading === true ? (
+                <CircularProgress color="inherit" />
+              ) : (
+                <>
+                  {previews?.length !== 0 &&
+                    previews?.map((img, idx) => {
+                      return (
+                        <img
+                          src={img}
+                          key={idx}
+                          alt="user image"
+                          className="w-full h-full object-cover"
+                        />
+                      );
+                    })}
+                </>
+              )}
 
               {/* Overlay */}
               <div className="absolute top-0 left-0 w-full h-full bg-black/60 flex items-center justify-center opacity-0 group-hover:opacity-100 transition cursor-pointer">
                 <FaCloudUploadAlt className="text-white text-2xl" />
                 <input
                   type="file"
-                  onChange={handleImageChange}
+                  onChange={(e) => handleImageChange(e, "api/user/user-avatar")}
+                  name="avatar"
+                  accept="image/"
                   className="absolute w-full h-full opacity-0 cursor-pointer"
                 />
               </div>
