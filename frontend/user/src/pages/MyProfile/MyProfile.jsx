@@ -7,30 +7,27 @@ import { ProductviewContext } from "../../context/MyContext";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import CircularProgress from "@mui/material/CircularProgress";
-import { editData } from "../../utils/api";
+import { editData, uploadImage } from "../../utils/api";
 
 const MyProfile = () => {
-  const [image, setImage] = useState(
-    "https://img.freepik.com/free-photo/woman-showing-ok-sign_23-2148990150.jpg",
-  );
-
-  const [userData, setUserData] = useState({
-    name: "Mahaieka Sharma",
-    email: "mahaieka@gmail.com",
-    phone: "9876543210",
-  });
-
   const [previews, setPreviews] = useState([]);
   const [uploading, setUploading] = useState(false);
+  const [userId, setUserId] = useState("");
+
+  const [isLoading, setIsLoading] = useState(false);
+  const [formFields, setFormFields] = useState({
+    name: "",
+    email: "",
+    mobile: "",
+    address_details: "",
+  });
 
   const formdata = new FormData();
 
-  const { isLoggedIn, setIsLoggedIn, openAlertBox } =
+  const { isLoggedIn, setIsLoggedIn, openAlertBox, userData } =
     useContext(ProductviewContext);
   const history = useNavigate();
 
-  let img_Arr = [];
-  let uniqueArray = [];
   let selectedImages = [];
 
   // Image Upload
@@ -63,7 +60,7 @@ const MyProfile = () => {
         }
       }
 
-      editData("/api/user/user-avatar", formdata).then((res) => {
+      uploadImage("/api/user/user-avatar", formdata).then((res) => {
         setUploading(false);
         let avatar = [];
         console.log(res?.data?.avatar);
@@ -77,6 +74,14 @@ const MyProfile = () => {
   };
 
   useEffect(() => {
+    const userAvtar = [];
+    if (userData?.avatar !== "" && userData?.avatar !== undefined) {
+      userAvtar.push(userData?.avatar);
+      setPreviews(userAvtar);
+    }
+  }, [userData]);
+
+  useEffect(() => {
     const token = localStorage.getItem("accessToken");
 
     if (!token) {
@@ -85,12 +90,80 @@ const MyProfile = () => {
   }, [history]);
 
   // Input Change
-  const handleChange = (e) => {
-    setUserData({
-      ...userData,
-      [e.target.name]: e.target.value,
+  const onChangeInput = (e) => {
+    const { name, value } = e.target;
+    setFormFields(() => {
+      return {
+        ...formFields,
+        [name]: value,
+      };
     });
   };
+
+  const validateValue = Object.values(formFields).every((el) => el);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    setIsLoading(true);
+
+    if (formFields.email === "") {
+      openAlertBox("error", "Please enter Email Id");
+      setIsLoading(false);
+      return;
+    }
+
+    if (formFields.name === "") {
+      openAlertBox("error", "Please enter Name");
+      setIsLoading(false);
+      return;
+    }
+
+    if (formFields.mobile === "") {
+      openAlertBox("error", "Please enter Phone number");
+      setIsLoading(false);
+      return;
+    }
+
+    if (formFields.address_details === "") {
+      openAlertBox("error", "Please enter address details");
+      setIsLoading(false);
+      return;
+    }
+
+    const res = await editData(`api/user/${userId}`, formFields, {
+      withCredentials: true,
+    });
+
+    // console.log(res);
+
+    if (res?.data?.success) {
+      openAlertBox("success", res.data.message);
+      localStorage.setItem("userEmail", formFields.email);
+
+      setFormFields({
+        email: "",
+        password: "",
+      });
+
+      localStorage.setItem("accessToken", res?.data?.data?.accessToken);
+      localStorage.setItem("refreshToken", res?.data?.data?.refreshToken);
+
+      setIsLoggedIn(true);
+
+      history("/");
+    } else {
+      openAlertBox("error", res?.data?.message || "Something went wrong");
+    }
+
+    setIsLoading(false);
+  };
+
+  useEffect(() => {
+    if (userData?._id !== "" && userData?._id !== undefined) {
+      setUserId(userData?._id);
+    }
+  }, [userData]);
 
   // Save
   const handleSave = () => {
@@ -110,7 +183,7 @@ const MyProfile = () => {
                 <CircularProgress color="inherit" />
               ) : (
                 <>
-                  {previews?.length !== 0 &&
+                  {previews?.length !== 0 ? (
                     previews?.map((img, idx) => {
                       return (
                         <img
@@ -120,7 +193,14 @@ const MyProfile = () => {
                           className="w-full h-full object-cover"
                         />
                       );
-                    })}
+                    })
+                  ) : (
+                    <img
+                      src={"/user.png"}
+                      alt="user image"
+                      className="w-full h-full object-cover"
+                    />
+                  )}
                 </>
               )}
 
@@ -137,8 +217,8 @@ const MyProfile = () => {
               </div>
             </div>
 
-            <h2 className="font-semibold text-lg">{userData.name}</h2>
-            <p className="text-gray-500 text-sm">{userData.email}</p>
+            <h2 className="font-semibold text-lg">{userData?.name}</h2>
+            <p className="text-gray-500 text-sm">{userData?.email}</p>
           </div>
         </div>
 
@@ -147,49 +227,62 @@ const MyProfile = () => {
           <div className="bg-white shadow-md rounded-md p-6">
             <h2 className="text-xl font-bold mb-8">Edit Profile</h2>
 
-            <div className="grid grid-cols-2 gap-5">
-              <TextField
-                label="Full Name"
-                name="name"
-                value={userData.name}
-                onChange={handleChange}
-                fullWidth
-              />
+            <form action="" onSubmit={handleSubmit}>
+              <div className="grid grid-cols-2 gap-5">
+                <TextField
+                  label="Full Name"
+                  value={formFields.name}
+                  disabled={isLoading === true ? true : false}
+                  name="name"
+                  onChange={onChangeInput}
+                  fullWidth
+                />
 
-              <TextField
-                label="Email"
-                name="email"
-                value={userData.email}
-                onChange={handleChange}
-                fullWidth
-              />
+                <TextField
+                  type="email"
+                  label="Email"
+                  value={formFields.email}
+                  disabled={isLoading === true ? true : false}
+                  name="email"
+                  onChange={onChangeInput}
+                  fullWidth
+                />
 
-              <TextField
-                label="Phone"
-                name="phone"
-                value={userData.phone}
-                onChange={handleChange}
-                fullWidth
-              />
+                <TextField
+                  label="Phone"
+                  value={formFields.mobile}
+                  disabled={isLoading === true ? true : false}
+                  name="mobile"
+                  onChange={onChangeInput}
+                  fullWidth
+                />
 
-              <TextField
-                label="Address"
-                name="address"
-                onChange={handleChange}
-                fullWidth
-              />
-            </div>
+                <TextField
+                  label="Address"
+                  value={formFields.address_details}
+                  disabled={isLoading === true ? true : false}
+                  name="address_details"
+                  onChange={onChangeInput}
+                  fullWidth
+                />
+              </div>
+            </form>
 
             {/* Save Button */}
             <div className="mt-6 flex gap-5">
               <Button
-                onClick={handleSave}
-                className="bg-[#ff5252]! text-white! px-4! py-3! hover:bg-gray-800! transition-all"
+                variant="contained"
+                type="submit"
+                fullWidth
+                className=" hover:bg-gray-900! py-2.5! rounded-lg! btn-org flex items-center justify-center gap-3"
+                disabled={!validateValue}
               >
-                Save Changes
+                {isLoading === true ? (
+                  <CircularProgress color="inherit" />
+                ) : (
+                  "Update Profile"
+                )}
               </Button>
-
-              <Button className="btn-border px-4 ">Cancel</Button>
             </div>
           </div>
         </div>
