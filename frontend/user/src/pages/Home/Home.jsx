@@ -29,8 +29,8 @@ const Home = () => {
 
   return (
     <div>
-      {/* <HomeSlider /> */}
-
+      <HomeSlider />
+{/* 
       <section className="py-6">
         <div className="container flex items-center sliderHome gap-4 ">
           <div className="part1 w-[70%]">
@@ -42,7 +42,7 @@ const Home = () => {
             <BannerBoxV2 image={'https://images.unsplash.com/photo-1634712282287-14ed57b9cc89?fm=jpg&q=60&w=3000&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8c29mYXxlbnwwfHwwfHx8MA%3D%3D'} info="right" />
           </div>
         </div>
-      </section>
+      </section> */}
 
       <CategorySlider />
 

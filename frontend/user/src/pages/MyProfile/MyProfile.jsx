@@ -1,8 +1,12 @@
-
 import React, { useState } from "react";
 import { FaCloudUploadAlt } from "react-icons/fa";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
+import { useContext } from "react";
+import { ProductviewContext } from "../../context/MyContext";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+
 
 const MyProfile = () => {
   const [image, setImage] = useState(
@@ -15,7 +19,18 @@ const MyProfile = () => {
     phone: "9876543210",
   });
 
-  // 📸 Image Upload
+  const { isLoggedIn, setIsLoggedIn } = useContext(ProductviewContext);
+  const history = useNavigate();
+
+  useEffect(() => {
+    const token = localStorage.getItem("accessToken");
+
+    if (!token) {
+      history("/");
+    }
+  }, [history]);
+
+  // Image Upload
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -23,7 +38,7 @@ const MyProfile = () => {
     }
   };
 
-  // ✏️ Input Change
+  // Input Change
   const handleChange = (e) => {
     setUserData({
       ...userData,
@@ -31,10 +46,10 @@ const MyProfile = () => {
     });
   };
 
-  // ✅ Save
+  // Save
   const handleSave = () => {
     console.log(userData);
-    alert("Profile Updated ✅");
+    alert("Profile Updated ");
   };
 
   return (

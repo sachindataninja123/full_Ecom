@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { FaRegUserCircle } from "react-icons/fa";
 import { IoIosArrowDown } from "react-icons/io";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { ProductviewContext } from "../../../context/MyContext";
 import { FaRegUser } from "react-icons/fa";
 import { FaRegHeart } from "react-icons/fa";
@@ -13,6 +13,8 @@ const LogDropDown = () => {
   const { isLoggedIn, setIsLoggedIn, openAlertBox } =
     useContext(ProductviewContext);
 
+    const history = useNavigate();
+
 const handleLogOut = async () => {
   const res = await fetchDataFromApi("/api/user/logout");
 
@@ -21,6 +23,7 @@ const handleLogOut = async () => {
     localStorage.removeItem("refreshToken");
     localStorage.removeItem("userEmail")
     setIsLoggedIn(false);
+    history("/")
   }
 };
 
