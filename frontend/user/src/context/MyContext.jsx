@@ -55,20 +55,31 @@ const MyContext = ({ children }) => {
     setReviews((prev) => [review, ...prev]);
   };
 
+  // fixed useEffect
   useEffect(() => {
     const token = localStorage.getItem("accessToken");
 
-    if (token !== undefined && token !== null && token !== "") {
-      setIsLoggedIn(true);
-
-      fetchDataFromApi("/api/user/user-details").then((res) => {
-        // console.log(res);
-        setUserData(res.data);
-      });
-    } else {
+    if (!token) {
       setIsLoggedIn(false);
+      return;
     }
-  }, [isLoggedIn]);
+
+    setIsLoggedIn(true);
+
+    fetchDataFromApi("/api/user/user-details").then((res) => {
+      if (res?.success === true) {
+        setUserData(res.data);
+      } else if (res?.error === true) {
+        // Token expired or invalid → clean up
+        localStorage.removeItem("accessToken");
+        localStorage.removeItem("refreshToken");
+
+        openAlertBox("error", "Your session is expired! , please login again!");
+        setIsLoggedIn(false);
+        setUserData(null);
+      }
+    });
+  }, []); // only on mount
 
   const openAlertBox = (status, msg) => {
     if (status === "success") {

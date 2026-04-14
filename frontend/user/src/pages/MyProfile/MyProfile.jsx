@@ -24,7 +24,7 @@ const MyProfile = () => {
 
   const formdata = new FormData();
 
-  const { isLoggedIn, setIsLoggedIn, openAlertBox, userData } =
+  const { openAlertBox, userData, setUserData } =
     useContext(ProductviewContext);
   const history = useNavigate();
 
@@ -104,56 +104,21 @@ const MyProfile = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     setIsLoading(true);
 
-    if (formFields.email === "") {
-      openAlertBox("error", "Please enter Email Id");
-      setIsLoading(false);
-      return;
-    }
+    try {
+      const res = await editData(`/api/user/${userId}`, formFields);
 
-    if (formFields.name === "") {
-      openAlertBox("error", "Please enter Name");
-      setIsLoading(false);
-      return;
-    }
-
-    if (formFields.mobile === "") {
-      openAlertBox("error", "Please enter Phone number");
-      setIsLoading(false);
-      return;
-    }
-
-    if (formFields.address_details === "") {
-      openAlertBox("error", "Please enter address details");
-      setIsLoading(false);
-      return;
-    }
-
-    const res = await editData(`api/user/${userId}`, formFields, {
-      withCredentials: true,
-    });
-
-    // console.log(res);
-
-    if (res?.data?.success) {
-      openAlertBox("success", res.data.message);
-      localStorage.setItem("userEmail", formFields.email);
-
-      setFormFields({
-        email: "",
-        password: "",
-      });
-
-      localStorage.setItem("accessToken", res?.data?.data?.accessToken);
-      localStorage.setItem("refreshToken", res?.data?.data?.refreshToken);
-
-      setIsLoggedIn(true);
-
-      history("/");
-    } else {
-      openAlertBox("error", res?.data?.message || "Something went wrong");
+      if (res?.success) {
+        //  editData returns data directly, not res.data
+        openAlertBox("success", res.message);
+        localStorage.setItem("userEmail", formFields.email);
+        setUserData(res.data); // update context with new data
+      } else {
+        openAlertBox("error", res?.message || "Something went wrong");
+      }
+    } catch (error) {
+      openAlertBox("error", "Something went wrong");
     }
 
     setIsLoading(false);
@@ -165,11 +130,17 @@ const MyProfile = () => {
     }
   }, [userData]);
 
-  // Save
-  const handleSave = () => {
-    console.log(userData);
-    alert("Profile Updated ");
-  };
+  // Auto fill details after login
+  useEffect(() => {
+    if (userData) {
+      setFormFields({
+        name: userData.name || "",
+        email: userData.email || "",
+        mobile: userData.mobile || "",
+        address_details: userData.address_details || "",
+      });
+    }
+  }, [userData]);
 
   return (
     <section className="py-10 bg-gray-100 min-h-[80vh]">
@@ -242,7 +213,7 @@ const MyProfile = () => {
                   type="email"
                   label="Email"
                   value={formFields.email}
-                  disabled={isLoading === true ? true : false}
+                  disabled={true}
                   name="email"
                   onChange={onChangeInput}
                   fullWidth
@@ -266,24 +237,24 @@ const MyProfile = () => {
                   fullWidth
                 />
               </div>
-            </form>
 
-            {/* Save Button */}
-            <div className="mt-6 flex gap-5">
-              <Button
-                variant="contained"
-                type="submit"
-                fullWidth
-                className=" hover:bg-gray-900! py-2.5! rounded-lg! btn-org flex items-center justify-center gap-3"
-                disabled={!validateValue}
-              >
-                {isLoading === true ? (
-                  <CircularProgress color="inherit" />
-                ) : (
-                  "Update Profile"
-                )}
-              </Button>
-            </div>
+              {/* Save Button */}
+              <div className="mt-6 flex gap-5">
+                <Button
+                  variant="contained"
+                  type="submit"
+                  fullWidth
+                  className=" hover:bg-gray-900! py-2.5! rounded-lg! btn-org flex items-center justify-center gap-3"
+                  disabled={!validateValue}
+                >
+                  {isLoading === true ? (
+                    <CircularProgress color="inherit" />
+                  ) : (
+                    "Update Profile"
+                  )}
+                </Button>
+              </div>
+            </form>
           </div>
         </div>
       </div>

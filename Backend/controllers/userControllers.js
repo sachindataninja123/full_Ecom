@@ -16,7 +16,7 @@ cloudinary.config({
   secure: true,
 });
 
-// registerUser controller 
+// registerUser controller
 const registerUser = async (req, res) => {
   try {
     let user;
@@ -84,7 +84,7 @@ const registerUser = async (req, res) => {
   }
 };
 
-// VerifyEmailUser controller  
+// VerifyEmailUser controller
 const verifyEmail = async (req, res) => {
   try {
     const { email, otp } = req.body;
@@ -99,7 +99,7 @@ const verifyEmail = async (req, res) => {
     }
 
     // otp comparison
-    const isCodeValid = (user.otp == otp);
+    const isCodeValid = user.otp == otp;
 
     // expiry checked
     const isNotExpired = user.otpExpires > Date.now();
@@ -136,7 +136,7 @@ const verifyEmail = async (req, res) => {
   }
 };
 
-// loginUser controller 
+// loginUser controller
 const loginUser = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -211,33 +211,40 @@ const loginUser = async (req, res) => {
   }
 };
 
-// logOutUser controller 
+// logOutUser controller
 const logoutUser = async (req, res) => {
   try {
-    const userId = req.userId; // auth middleware
+    const userId = req.userId;
+    // console.log(userId);
+
+    if (!userId) {
+      return res.status(401).json({
+        message: "Unauthorized",
+        success: false,
+      });
+    }
 
     const cookiesOption = {
       httpOnly: true,
-      secure: true,
-      sameSite: "None",
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "Lax",
     };
 
     res.clearCookie("accessToken", cookiesOption);
     res.clearCookie("refreshToken", cookiesOption);
 
-    const removeRefreshToken = await userModel.findByIdAndUpdate(userId, {
-      refresh_token: " ",
+    await userModel.findByIdAndUpdate(userId, {
+      $unset: { refresh_token: 1 },
     });
 
     return res.json({
-      message: "LogOut successfully",
-      error: false,
+      message: "Logout successfully",
       success: true,
     });
   } catch (error) {
+    console.error("LOGOUT ERROR:", error); // 👈 ADD THIS
     return res.status(500).json({
-      message: error.message || error,
-      error: true,
+      message: error.message,
       success: false,
     });
   }
@@ -272,7 +279,7 @@ const userimageAvatar = async (req, res) => {
     // Upload & Replace (overwrite)
     const result = await cloudinary.uploader.upload(file.path, {
       public_id: user.avatar_public_id || `users/${userId}`,
-      folder: "users", 
+      folder: "users",
       overwrite: true, // THIS REPLACES OLD IMAGE
     });
 
@@ -347,7 +354,7 @@ const removeImageAvatarFromCloudinary = async (req, res) => {
 const updateUserDetails = async (req, res) => {
   try {
     const userId = req.userId; // auth middleware
-    const { name, email, mobile, password } = req.body;
+    const { name, email, mobile, password  } = req.body;
 
     const userExist = await userModel.findById(userId);
     if (!userExist) {
@@ -399,7 +406,14 @@ const updateUserDetails = async (req, res) => {
       message: "User Updated successfully",
       error: false,
       success: true,
-      user: updateUser,
+      user: {
+        name: updateUser?.name,
+        _id: updateUser?._id,
+        email: updateUser?.email,
+        mobile: updateUser?.mobile,
+        avatar: updateUser?.avatar,
+        address_details : updateUser?.address_details
+      },
     });
   } catch (error) {
     return res.status(500).json({

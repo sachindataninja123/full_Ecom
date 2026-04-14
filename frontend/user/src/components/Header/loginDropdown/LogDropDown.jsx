@@ -7,25 +7,30 @@ import { FaRegUser } from "react-icons/fa";
 import { FaRegHeart } from "react-icons/fa";
 import { IoBagHandleOutline } from "react-icons/io5";
 import { MdOutlineLogout } from "react-icons/md";
-import { fetchDataFromApi } from "../../../utils/api";
+import { postData } from "../../../utils/api";
 
 const LogDropDown = () => {
-  const { isLoggedIn, setIsLoggedIn, openAlertBox } =
+  const { isLoggedIn, setIsLoggedIn, openAlertBox , userData} =
     useContext(ProductviewContext);
 
-    const history = useNavigate();
+  const history = useNavigate();
 
-const handleLogOut = async () => {
-  const res = await fetchDataFromApi("/api/user/logout");
-
-  if (res?.success) {
-    localStorage.removeItem("accessToken");
-    localStorage.removeItem("refreshToken");
-    localStorage.removeItem("userEmail")
-    setIsLoggedIn(false);
-    history("/")
-  }
-};
+  // Full fixed handleLogOut
+  const handleLogOut = async () => {
+    try {
+      await postDatatData("/api/user/logout");
+    } catch (error) {
+      console.log("Logout API error:", error);
+    } finally {
+      // Always clear local state even if API fails
+      localStorage.removeItem("accessToken");
+      localStorage.removeItem("refreshToken");
+      localStorage.removeItem("userEmail");
+      setIsLoggedIn(false);
+      openAlertBox("success", "Logged out successfully");
+      history("/");
+    }
+  };
 
   return (
     <div className="relative z-999">
@@ -66,10 +71,10 @@ const handleLogOut = async () => {
           {isLoggedIn && (
             <>
               <div className="p-3 border-b flex justify-between items-center">
-                <p className="text-sm">
+                <p className="text-sm line-clamp-1">
                   Hello,{" "}
-                  <span className="font-medium text-[17px] text-[#ff5252]">
-                    Sachin
+                  <span className="font-medium  text-[17px] text-[#ff5252]">
+                    {userData?.name}
                   </span>{" "}
                   👋
                 </p>

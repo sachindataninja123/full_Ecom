@@ -19,6 +19,10 @@ const userSchema = mongoose.Schema(
       type: String,
       default: "",
     },
+    mobile: {
+      type: String,
+      default: "",
+    },
     verify_email: {
       type: Boolean,
       default: false,

@@ -6,18 +6,14 @@ export const postData = async (url, formData) => {
     const res = await fetch(apiUrl + url, {
       method: "POST",
       headers: {
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        Authorization: `Bearer ${localStorage.getItem("accessToken")}`, // 
         "Content-Type": "application/json",
       },
       body: JSON.stringify(formData),
     });
 
     const data = await res.json();
-
-    return {
-      status: res.status,
-      data: data,
-    };
+    return { status: res.status, data };
   } catch (error) {
     console.log(error);
     return null;
