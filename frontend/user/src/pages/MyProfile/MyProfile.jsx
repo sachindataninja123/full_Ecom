@@ -7,19 +7,28 @@ import { ProductviewContext } from "../../context/MyContext";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import CircularProgress from "@mui/material/CircularProgress";
-import { editData, uploadImage } from "../../utils/api";
+import { editData, postData, uploadImage } from "../../utils/api";
 
 const MyProfile = () => {
   const [previews, setPreviews] = useState([]);
   const [uploading, setUploading] = useState(false);
   const [userId, setUserId] = useState("");
+  const [showPasswordChange, setshowPasswordChange] = useState(false);
 
   const [isLoading, setIsLoading] = useState(false);
+  const [isLoading2, setIsLoading2] = useState(false);
   const [formFields, setFormFields] = useState({
     name: "",
     email: "",
     mobile: "",
     address_details: "",
+  });
+
+  const [changePassword, setchangePassword] = useState({
+    email: "",
+    oldPassword: "",
+    newPassword: "",
+    confirmPassword: "",
   });
 
   const formdata = new FormData();
@@ -89,18 +98,27 @@ const MyProfile = () => {
     }
   }, [history]);
 
-  // Input Change
-  const onChangeInput = (e) => {
+  // Input Change profile
+  const handleProfileChange = (e) => {
     const { name, value } = e.target;
-    setFormFields(() => {
-      return {
-        ...formFields,
-        [name]: value,
-      };
-    });
+    setFormFields((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  // input change password change
+  const handlePasswordChange = (e) => {
+    const { name, value } = e.target;
+    setchangePassword((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
   };
 
   const validateValue = Object.values(formFields).every((el) => el);
+
+  const validateValue2 = Object.values(changePassword).every((el) => el);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -124,6 +142,55 @@ const MyProfile = () => {
     setIsLoading(false);
   };
 
+  const handleSubmitPasswordChange = async (e) => {
+    e.preventDefault();
+
+    if (!changePassword.oldPassword) {
+      return openAlertBox("error", "Please enter old password!");
+    }
+
+    if (!changePassword.newPassword) {
+      return openAlertBox("error", "Please enter new password!");
+    }
+
+    if (!changePassword.confirmPassword) {
+      return openAlertBox("error", "Please enter confirm password!");
+    }
+
+    if (changePassword.confirmPassword !== changePassword.newPassword) {
+      return openAlertBox("error", "Passwords do not match!");
+    }
+
+    setIsLoading2(true);
+
+    try {
+      const payload = {
+        ...changePassword,
+        email: userData?.email,
+      };
+
+      const res = await postData(`/api/user/reset-password`, payload);
+      console.log(res);
+
+      if (res?.data?.success) {
+        openAlertBox("success", res?.data?.message);
+
+        setchangePassword({
+          email: userData?.email || "",
+          oldPassword: "",
+          newPassword: "",
+          confirmPassword: "",
+        });
+      } else {
+        openAlertBox("error", res?.data?.message || "Something went wrong");
+      }
+    } catch (error) {
+      openAlertBox("error", "Something went wrong");
+    }
+
+    setIsLoading2(false);
+  };
+
   useEffect(() => {
     if (userData?._id !== "" && userData?._id !== undefined) {
       setUserId(userData?._id);
@@ -139,14 +206,18 @@ const MyProfile = () => {
         mobile: userData.mobile || "",
         address_details: userData.address_details || "",
       });
+
+      setchangePassword({
+        email: userData?.email || "",
+      });
     }
   }, [userData]);
 
   return (
     <section className="py-10 bg-gray-100 min-h-[80vh]">
-      <div className="container flex gap-6">
+      <div className="container flex gap-6 items-start">
         {/* LEFT SIDEBAR */}
-        <div className="w-[25%]">
+        <div className="w-[25%] sticky top-24 self-start ">
           <div className="bg-white shadow-md rounded-md p-5 py-10 text-center">
             {/* Profile Image */}
             <div className="w-28 h-28 mx-auto rounded-full overflow-hidden mb-4 relative group flex items-center justify-center bg-gray-200">
@@ -195,8 +266,15 @@ const MyProfile = () => {
 
         {/* RIGHT CONTENT */}
         <div className="w-[75%]">
-          <div className="bg-white shadow-md rounded-md p-6">
-            <h2 className="text-xl font-bold mb-8">Edit Profile</h2>
+          <div className="bg-white shadow-md rounded-md p-6 mb-8">
+            <div className="flex items-center justify-between mb-8">
+              <h2 className="text-xl font-bold text-gray-700">Edit Profile</h2>
+              <Button
+                onClick={() => setshowPasswordChange(!showPasswordChange)}
+              >
+                Change Password
+              </Button>
+            </div>
 
             <form action="" onSubmit={handleSubmit}>
               <div className="grid grid-cols-2 gap-5">
@@ -205,7 +283,7 @@ const MyProfile = () => {
                   value={formFields.name}
                   disabled={isLoading === true ? true : false}
                   name="name"
-                  onChange={onChangeInput}
+                  onChange={handleProfileChange}
                   fullWidth
                 />
 
@@ -215,7 +293,7 @@ const MyProfile = () => {
                   value={formFields.email}
                   disabled={true}
                   name="email"
-                  onChange={onChangeInput}
+                  onChange={handleProfileChange}
                   fullWidth
                 />
 
@@ -224,16 +302,7 @@ const MyProfile = () => {
                   value={formFields.mobile}
                   disabled={isLoading === true ? true : false}
                   name="mobile"
-                  onChange={onChangeInput}
-                  fullWidth
-                />
-
-                <TextField
-                  label="Address"
-                  value={formFields.address_details}
-                  disabled={isLoading === true ? true : false}
-                  name="address_details"
-                  onChange={onChangeInput}
+                  onChange={handleProfileChange}
                   fullWidth
                 />
               </div>
@@ -256,6 +325,68 @@ const MyProfile = () => {
               </div>
             </form>
           </div>
+
+          {showPasswordChange === true && (
+            <div className="bg-white shadow-md rounded-md p-6 mb-8">
+              <h2 className="text-xl font-bold text-gray-700 ">
+                Change Password
+              </h2>
+              <form
+                action=""
+                onSubmit={handleSubmitPasswordChange}
+                className="mt-8"
+              >
+                <div className="grid grid-cols-2 gap-5">
+                  <TextField
+                    type="text"
+                    label="Old Password"
+                    value={changePassword.oldPassword}
+                    disabled={isLoading2 === true ? true : false}
+                    name="oldPassword"
+                    onChange={handlePasswordChange}
+                    fullWidth
+                  />
+
+                  <TextField
+                    type="text"
+                    label="New Password"
+                    value={changePassword.newPassword}
+                    disabled={isLoading2 === true ? true : false}
+                    name="newPassword"
+                    onChange={handlePasswordChange}
+                    fullWidth
+                  />
+
+                  <TextField
+                    type="text"
+                    label="Confirm Password"
+                    value={changePassword.confirmPassword}
+                    disabled={isLoading2 === true ? true : false}
+                    name="confirmPassword"
+                    onChange={handlePasswordChange}
+                    fullWidth
+                  />
+                </div>
+
+                {/* Save Button */}
+                <div className="mt-6 flex gap-5">
+                  <Button
+                    variant="contained"
+                    type="submit"
+                    fullWidth
+                    className=" hover:bg-gray-900! py-2.5! rounded-lg! btn-org flex items-center justify-center gap-3"
+                    disabled={!validateValue2}
+                  >
+                    {isLoading2 === true ? (
+                      <CircularProgress color="inherit" />
+                    ) : (
+                      "Change Password"
+                    )}
+                  </Button>
+                </div>
+              </form>
+            </div>
+          )}
         </div>
       </div>
     </section>

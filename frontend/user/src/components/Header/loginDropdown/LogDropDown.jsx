@@ -10,7 +10,7 @@ import { MdOutlineLogout } from "react-icons/md";
 import { postData } from "../../../utils/api";
 
 const LogDropDown = () => {
-  const { isLoggedIn, setIsLoggedIn, openAlertBox , userData} =
+  const { isLoggedIn, setIsLoggedIn, openAlertBox, userData } =
     useContext(ProductviewContext);
 
   const history = useNavigate();
@@ -18,7 +18,7 @@ const LogDropDown = () => {
   // Full fixed handleLogOut
   const handleLogOut = async () => {
     try {
-      await postDatatData("/api/user/logout");
+      await postData("/api/user/logout");
     } catch (error) {
       console.log("Logout API error:", error);
     } finally {

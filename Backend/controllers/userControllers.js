@@ -354,7 +354,7 @@ const removeImageAvatarFromCloudinary = async (req, res) => {
 const updateUserDetails = async (req, res) => {
   try {
     const userId = req.userId; // auth middleware
-    const { name, email, mobile, password  } = req.body;
+    const { name, email, mobile, password } = req.body;
 
     const userExist = await userModel.findById(userId);
     if (!userExist) {
@@ -412,7 +412,7 @@ const updateUserDetails = async (req, res) => {
         email: updateUser?.email,
         mobile: updateUser?.mobile,
         avatar: updateUser?.avatar,
-        address_details : updateUser?.address_details
+        address_details: updateUser?.address_details,
       },
     });
   } catch (error) {
@@ -533,7 +533,7 @@ const verifyForgotPassword = async (req, res) => {
 // resetPassord controller
 const resetPassword = async (req, res) => {
   try {
-    const { email, newPassword, confirmPassword } = req.body;
+    const { email, oldPassword, newPassword, confirmPassword } = req.body;
 
     // check input fields
     if (!email || !newPassword || !confirmPassword) {
@@ -549,6 +549,15 @@ const resetPassword = async (req, res) => {
     if (!user) {
       return res.status(400).json({
         message: "Email not available",
+        error: true,
+        success: false,
+      });
+    }
+
+    const checkPassword = await bcryptjs.compare(oldPassword, user.password);
+    if (!checkPassword) {
+      return res.status(400).json({
+        message: "Your old Password is wrong!",
         error: true,
         success: false,
       });
