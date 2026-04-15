@@ -1,5 +1,5 @@
 import React, { useState, useRef, useContext } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Button from "@mui/material/Button";
 import { ProductviewContext } from "../../context/MyContext";
 import { postData } from "../../utils/api";

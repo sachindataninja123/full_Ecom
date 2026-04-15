@@ -11,6 +11,7 @@ import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import { IoMdClose } from "react-icons/io";
 import Slide from "@mui/material/Slide";
+import toast, { Toaster } from "react-hot-toast";
 
 import { createContext, useState } from "react";
 import AddProducts from "../pages/Products/AddProducts";
@@ -36,6 +37,15 @@ const MyContextProvider = ({ children }) => {
     model: "",
   });
 
+  const openAlertBox = (status, msg) => {
+    if (status === "success") {
+      toast.success(msg);
+    }
+    if (status === "error") {
+      toast.error(msg);
+    }
+  };
+
   return (
     <MyContext.Provider
       value={{
@@ -45,6 +55,9 @@ const MyContextProvider = ({ children }) => {
         setisLoggedIn,
         isOpenFullScreenPanel,
         setIsOpenFullScreenPanel,
+
+        //toaster message
+        openAlertBox,
       }}
     >
       {children}
@@ -95,6 +108,8 @@ const MyContextProvider = ({ children }) => {
           <AddSubCatList />
         )}
       </Dialog>
+
+      <Toaster />
     </MyContext.Provider>
   );
 };

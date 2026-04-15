@@ -3,17 +3,17 @@ import { useNavigate, useLocation, NavLink } from "react-router-dom";
 import Button from "@mui/material/Button";
 import { FiLogIn, FiUserPlus } from "react-icons/fi";
 import { MyContext } from "../../context/MyContext";
+import { postData } from "../../utils/api";
 
 const VerifyAcc = () => {
-  const [otp, setOtp] = useState(["", "", "", ""]);
+  const [otp, setOtp] = useState(["", "", "", "", "", ""]);
   const inputs = useRef([]);
   const navigate = useNavigate();
-  const location = useLocation();
-  const context = useContext(MyContext);
+  const email = localStorage.getItem("userEmail");
 
-  const email = location.state?.email;
+  const { openAlertBox } = useContext(MyContext);
 
-  // Handle typing
+  // 🔹 Handle input change
   const handleChange = (value, index) => {
     if (!/^[0-9]?$/.test(value)) return;
 
@@ -25,27 +25,52 @@ const VerifyAcc = () => {
     if (value && index < otp.length - 1) {
       inputs.current[index + 1].focus();
     }
-  };
 
-  // Handle backspace
-  const handleKeyDown = (e, index) => {
-    if (e.key === "Backspace" && !otp[index] && index > 0) {
+    // Move backward on delete
+    if (!value && index > 0) {
       inputs.current[index - 1].focus();
     }
   };
 
-  const handleSubmit = () => {
-    const finalOtp = otp.join("");
+  // 🔹 Check if OTP complete
+  const isOtpComplete = otp.every((digit) => digit !== "");
 
-    if (finalOtp.length < otp.length) {
-      return context.openAlertBox("error", "Enter Full OTP");
+  // 🔹 Submit handler
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const actionType = localStorage.getItem("actionType");
+
+    if (actionType !== "forgot-password") {
+      const res = await postData("/api/user/verifyEmail", {
+        email: email,
+        otp: otp.join(""),
+      });
+
+      // console.log(res);
+
+      if (res?.data?.success) {
+        openAlertBox("success", res.data.message || "Email Verified!");
+        localStorage.removeItem("userEmail");
+        navigate("/admin/login");
+      } else {
+        openAlertBox("error", res?.data?.message || "Invalid OTP");
+      }
+    } else {
+      const res = await postData("/api/user/verify-forgot-password-otp", {
+        email: email,
+        otp: otp.join(""),
+      });
+
+      // console.log(res);
+
+      if (res?.data?.success) {
+        openAlertBox("success", res.data.message || "Email Verified!");
+        navigate("/reset-password");
+      } else {
+        openAlertBox("error", res?.data?.message || "Invalid OTP");
+      }
     }
-
-    // Replace with API call
-    console.log("OTP:", finalOtp);
-
-    context.openAlertBox("success", "Email Verified");
-    navigate("/admin/reset-password");
   };
 
   return (
@@ -89,24 +114,26 @@ const VerifyAcc = () => {
           </p>
         </div>
 
-        {/* OTP INPUTS */}
-        <div className="flex gap-3 justify-center mb-6">
-          {otp.map((digit, i) => (
+        {/* OTP Inputs */}
+        <div className="flex gap-3 justify-center mt-4 mb-4">
+          {otp.map((digit, index) => (
             <input
-              key={i}
+              key={index}
+              type="text"
               maxLength="1"
-              ref={(el) => (inputs.current[i] = el)}
+              ref={(el) => (inputs.current[index] = el)}
               value={digit}
-              onChange={(e) => handleChange(e.target.value, i)}
-              onKeyDown={(e) => handleKeyDown(e, i)}
+              onChange={(e) => handleChange(e.target.value, index)}
               className="w-12 h-12 text-center border rounded-lg text-lg focus:outline-none focus:ring-2 focus:ring-red-400"
             />
           ))}
         </div>
 
+        {/* Verify Button */}
         <Button
           onClick={handleSubmit}
-          className="bg-blue-500! text-white! w-full hover:bg-blue-600!"
+          disabled={!isOtpComplete}
+          className="bg-[#ff5252]! text-white! w-full hover:bg-gray-900! py-2!"
         >
           Verify OTP
         </Button>

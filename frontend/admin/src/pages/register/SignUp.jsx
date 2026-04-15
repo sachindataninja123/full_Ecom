@@ -1,5 +1,5 @@
-import React from "react";
-import { NavLink } from "react-router-dom";
+import React,{useContext} from "react";
+import { NavLink, useNavigate } from "react-router-dom";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import { FcGoogle } from "react-icons/fc";
@@ -9,10 +9,80 @@ import { IoEye, IoEyeOff } from "react-icons/io5";
 import InputAdornment from "@mui/material/InputAdornment";
 import IconButton from "@mui/material/IconButton";
 import { Link } from "react-router-dom";
+import CircularProgress from "@mui/material/CircularProgress";
 import { FiLogIn, FiUserPlus } from "react-icons/fi";
+import { MyContext } from "../../context/MyContext";
+import { postData } from "../../utils/api";
 
 const SignUp = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const { openAlertBox } = useContext(MyContext);
+
+  const history = useNavigate();
+
+  const [formFields, setFormFields] = useState({
+    name: "",
+    email: "",
+    password: "",
+  });
+
+  const onChangeInput = (e) => {
+    const { name, value } = e.target;
+    setFormFields(() => {
+      return {
+        ...formFields,
+        [name]: value,
+      };
+    });
+  };
+
+  const validateValue = Object.values(formFields).every((el) => el);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    setIsLoading(true);
+
+    if (formFields.name === "") {
+      openAlertBox("error", "Please enter Name");
+      setIsLoading(false);
+      return;
+    }
+
+    if (formFields.email === "") {
+      openAlertBox("error", "Please enter Email Id");
+      setIsLoading(false);
+      return;
+    }
+
+    if (formFields.password === "") {
+      openAlertBox("error", "Please enter Password");
+      setIsLoading(false);
+      return;
+    }
+
+    const res = await postData("/api/user/register", formFields);
+
+    console.log(res);
+
+    if (res?.data?.success) {
+      openAlertBox("success", res.data.message);
+      localStorage.setItem("userEmail", formFields.email);
+
+      setFormFields({
+        name: "",
+        email: "",
+        password: "",
+      });
+      history("/admin/account-verify");
+    } else {
+      openAlertBox("error", res?.data?.message || "Something went wrong");
+    }
+
+    setIsLoading(false);
+  };
 
   return (
     <section className="min-h-screen flex items-center justify-center  relative">
@@ -66,20 +136,37 @@ const SignUp = () => {
         </div>
 
         {/* FORM */}
-        <form className="flex flex-col gap-4 ">
-          <TextField label="Name" variant="outlined" size="small" fullWidth />
+        <form className="flex flex-col gap-4 " onSubmit={handleSubmit}>
+          <TextField
+            label="Name"
+            variant="outlined"
+            value={formFields.name}
+            disabled={isLoading === true ? true : false}
+            name="name"
+            size="small"
+            fullWidth
+            onChange={onChangeInput}
+          />
           <TextField
             label="Email Address"
             variant="outlined"
             size="small"
+            name="email"
+            value={formFields.email}
+            disabled={isLoading === true ? true : false}
             fullWidth
+            onChange={onChangeInput}
           />
           <TextField
             label="Password"
             type={showPassword ? "text" : "password"}
             variant="outlined"
             size="small"
+            name="password"
+            value={formFields.password}
+            disabled={isLoading === true ? true : false}
             fullWidth
+            onChange={onChangeInput}
             InputProps={{
               endAdornment: (
                 <InputAdornment position="end">
@@ -93,33 +180,18 @@ const SignUp = () => {
               ),
             }}
           />
-          <TextField
-            label="Confirm Password"
-            type={showPassword ? "text" : "password"}
-            variant="outlined"
-            size="small"
-            fullWidth
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="end">
-                  <IconButton
-                    onClick={() => setShowPassword(!showPassword)}
-                    edge="end"
-                  >
-                    {showPassword ? <IoEyeOff /> : <IoEye />}
-                  </IconButton>
-                </InputAdornment>
-              ),
-            }}
-          />
-
-      
 
           <Button
             variant="contained"
             className="bg-blue-500! text-white! text-[14px]! py-2! rounded-md!"
+            disabled={!validateValue}
+            type="submit"
           >
-            Sign Up
+            {isLoading === true ? (
+              <CircularProgress color="inherit" />
+            ) : (
+              "Sign Up"
+            )}
           </Button>
         </form>
 
