@@ -1,4 +1,4 @@
-import React , {useEffect} from "react";
+import React, { useEffect } from "react";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import ListItemText from "@mui/material/ListItemText";
@@ -31,8 +31,8 @@ export const MyContext = createContext();
 // provider component
 const MyContextProvider = ({ children }) => {
   const [isSideBarOpen, setIsSideBarOpen] = useState(true);
-
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userData, setUserData] = useState(null);
 
   const [isOpenFullScreenPanel, setIsOpenFullScreenPanel] = useState({
     open: false,
@@ -83,6 +83,8 @@ const MyContextProvider = ({ children }) => {
         setIsLoggedIn,
         isOpenFullScreenPanel,
         setIsOpenFullScreenPanel,
+        userData,
+        setUserData,
 
         //toaster message
         openAlertBox,

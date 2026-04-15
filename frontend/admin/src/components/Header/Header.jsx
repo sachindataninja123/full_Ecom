@@ -12,6 +12,7 @@ import MenuItem from "@mui/material/MenuItem";
 import Divider from "@mui/material/Divider";
 import { MyContext } from "../../context/MyContext";
 import { Link } from "react-router-dom";
+import { postData } from "../../utils/api";
 
 const StyledBadge = styled(Badge)(({ theme }) => ({
   "& .MuiBadge-badge": {
@@ -26,8 +27,13 @@ const Header = () => {
   const [anchorElMyAcc, setAnchorElMyAcc] = useState(null);
   const open = Boolean(anchorElMyAcc);
 
-  const { isSideBarOpen, setIsSideBarOpen, isLoggedIn, setIsLoggedIn } =
-    useContext(MyContext);
+  const {
+    isSideBarOpen,
+    setIsSideBarOpen,
+    isLoggedIn,
+    setIsLoggedIn,
+    userData,
+  } = useContext(MyContext);
 
   const handleClickMyAcc = (event) => {
     if (!isLoggedIn) return;
@@ -37,10 +43,20 @@ const Header = () => {
   const handleCloseMyAcc = () => {
     setAnchorElMyAcc(null);
   };
-
-  const handleLogout = () => {
-    setIsLoggedIn(false); //
-    handleCloseMyAcc();
+  const handleLogout = async () => {
+    try {
+      await postData("/api/user/logout");
+    } catch (error) {
+      console.log("Logout API error:", error);
+    } finally {
+      // Always clear local state even if API fails
+      localStorage.removeItem("accessToken");
+      localStorage.removeItem("refreshToken");
+      localStorage.removeItem("userEmail");
+      setIsLoggedIn(false);
+      openAlertBox("success", "Logged out successfully");
+      history("/");
+    }
   };
 
   return (
@@ -101,8 +117,8 @@ const Header = () => {
                   className="w-9 h-9 rounded-full object-cover"
                 />
                 <div>
-                  <h2 className="text-[14px] font-medium">Sachin</h2>
-                  <p className="text-[12px] text-gray-400">sachin@gmail.com</p>
+                  <h2 className="text-[14px] font-medium">{userData?.name}</h2>
+                  <p className="text-[12px] text-gray-400">{userData?.email}</p>
                 </div>
               </div>
             </MenuItem>

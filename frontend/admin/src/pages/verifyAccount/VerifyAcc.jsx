@@ -10,6 +10,7 @@ const VerifyAcc = () => {
   const inputs = useRef([]);
   const navigate = useNavigate();
   const email = localStorage.getItem("userEmail");
+  const [isLoading, setIsLoading] = useState(false);
 
   const { openAlertBox } = useContext(MyContext);
 
@@ -66,9 +67,11 @@ const VerifyAcc = () => {
 
       if (res?.data?.success) {
         openAlertBox("success", res.data.message || "Email Verified!");
-        navigate("/reset-password");
+        setIsLoading(false)
+        navigate("/admin/change-password");
       } else {
         openAlertBox("error", res?.data?.message || "Invalid OTP");
+        setIsLoading(false);
       }
     }
   };

@@ -533,7 +533,7 @@ const verifyForgotPassword = async (req, res) => {
 // resetPassord controller
 const resetPassword = async (req, res) => {
   try {
-    const { email, oldPassword, newPassword, confirmPassword } = req.body;
+    const { email, newPassword, confirmPassword } = req.body;
 
     // check input fields
     if (!email || !newPassword || !confirmPassword) {
@@ -554,14 +554,14 @@ const resetPassword = async (req, res) => {
       });
     }
 
-    const checkPassword = await bcryptjs.compare(oldPassword, user.password);
-    if (!checkPassword) {
-      return res.status(400).json({
-        message: "Your old Password is wrong!",
-        error: true,
-        success: false,
-      });
-    }
+    // const checkPassword = await bcryptjs.compare(oldPassword, user.password);
+    // if (!checkPassword) {
+    //   return res.status(400).json({
+    //     message: "Your old Password is wrong!",
+    //     error: true,
+    //     success: false,
+    //   });
+    // }
 
     if (newPassword !== confirmPassword) {
       return res.status(400).json({

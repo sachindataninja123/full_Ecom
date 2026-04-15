@@ -104,7 +104,7 @@ const Login = () => {
 
         console.log(res);
 
-        history("/verifyEmail");
+        history("/admin/account-verify");
       } else {
         openAlertBox("error", res?.data?.message || "Something went wrong");
       }
@@ -203,12 +203,11 @@ const Login = () => {
           />
 
           <div className="flex justify-end">
-            <Link
-              to="/admin/forgot-password"
-              className="text-sm text-blue-500 cursor-pointer hover:underline font-semibold hover:text-blue-600"
+            <a
+              className="text-sm text-blue-500 cursor-pointer hover:underline font-semibold hover:text-blue-600" onClick={forgotPassword}
             >
               Forgot Password?
-            </Link>
+            </a>
           </div>
 
           <Button

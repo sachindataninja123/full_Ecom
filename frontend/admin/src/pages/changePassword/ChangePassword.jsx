@@ -4,47 +4,81 @@ import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import { IoEye, IoEyeOff } from "react-icons/io5";
 import { FiLogIn, FiUserPlus } from "react-icons/fi";
-import { MyContext } from "../../context/MyContext"; // ✅ ADD THIS
+import { MyContext } from "../../context/MyContext";
+import CircularProgress from "@mui/material/CircularProgress";
+import { postData } from "../../utils/api";
 
 const ChangePassword = () => {
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-
+  const [isLoading, setIsLoading] = useState(false);
   const [isShowPassword, setIsShowPassword] = useState(false);
   const [isShowPassword2, setIsShowPassword2] = useState(false);
 
-  const navigate = useNavigate(); // ✅ FIX
-  const context = useContext(MyContext); // ✅ FIX
+  const [formFields, setFormFields] = useState({
+    email: localStorage.getItem("userEmail"),
+    newPassword: "",
+    confirmPassword: "",
+  });
+
+  const history = useNavigate();
+  const { openAlertBox } = useContext(MyContext);
+
+  const onChangeInput = (e) => {
+    const { name, value } = e.target;
+    setFormFields(() => {
+      return {
+        ...formFields,
+        [name]: value,
+      };
+    });
+  };
+
+  const validateValue =
+    formFields.email &&
+    formFields.newPassword.trim() !== "" &&
+    formFields.confirmPassword.trim() !== "";
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (!password || !confirmPassword) {
-      return context.openAlertBox("error", "All fields are required");
+    setIsLoading(true);
+
+    if (formFields.newPassword === "") {
+      openAlertBox("error", "Please enter new Password");
+      setIsLoading(false);
+      return;
     }
 
-    if (password.length < 6) {
-      return context.openAlertBox(
-        "error",
-        "Password must be at least 6 characters"
-      );
+    if (formFields.confirmPassword === "") {
+      openAlertBox("error", "Please enter confirm Password");
+      setIsLoading(false);
+      return;
     }
-
-    if (password !== confirmPassword) {
-      return context.openAlertBox("error", "Passwords do not match");
+    if (formFields.confirmPassword !== formFields.newPassword) {
+      openAlertBox("error", "Password and confirm Password do not match");
+      setIsLoading(false);
+      return;
     }
-
-    // 🔥 API CALL HERE
-    console.log("New Password:", password);
-
-    context.openAlertBox("success", "Password Changed Successfully");
-
-    navigate("/admin/login"); // 
+    postData(`/api/user/reset-password`, formFields)
+      .then((res) => {
+        if (res?.data?.error === false) {
+          localStorage.removeItem("userEmail");
+          localStorage.removeItem("actionType");
+          openAlertBox("success", res?.data?.message);
+          history("/admin/login");
+        } else {
+          openAlertBox("error", res?.data?.message);
+        }
+      })
+      .catch(() => {
+        openAlertBox("error", "Something went wrong");
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
   };
 
   return (
     <section className="min-h-screen flex items-center justify-center relative bg-gray-100">
-      
       {/* HEADER */}
       <header className="w-full fixed top-0 left-0 px-6 py-4 flex items-center justify-between z-50">
         <NavLink to="/">
@@ -72,28 +106,24 @@ const ChangePassword = () => {
 
       {/* CARD */}
       <div className="w-full max-w-lg rounded-md bg-[#f1f1f1] shadow-lg px-7 pb-14 pt-5 mt-20">
-        
         <div className="text-center mb-8">
-          <h2 className="text-3xl font-bold text-gray-700">
-            Reset Password
-          </h2>
-          <p className="text-gray-500 mt-2">
-            You can change password here
-          </p>
+          <h2 className="text-3xl font-bold text-gray-700">Reset Password</h2>
+          <p className="text-gray-500 mt-2">You can change password here</p>
         </div>
 
         {/* FORM */}
         <form className="space-y-5" onSubmit={handleSubmit}>
-          
           {/* New Password */}
           <div className="relative">
             <TextField
-              type={isShowPassword ? "text" : "password"}
               label="New Password"
+              type={isShowPassword ? "text" : "password"}
+              value={formFields.newPassword}
+              disabled={isLoading === true ? true : false}
+              onChange={onChangeInput}
+              name="newPassword"
               fullWidth
-              value={password}
               size="small"
-              onChange={(e) => setPassword(e.target.value)}
             />
 
             <Button
@@ -108,12 +138,14 @@ const ChangePassword = () => {
           {/* Confirm Password */}
           <div className="relative">
             <TextField
-              type={isShowPassword2 ? "text" : "password"}
               label="Confirm Password"
+              type={isShowPassword2 ? "text" : "password"}
+              value={formFields.confirmPassword}
+              disabled={isLoading === true ? true : false}
+              onChange={onChangeInput}
+              name="confirmPassword"
               fullWidth
               size="small"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
             />
 
             <Button
@@ -127,15 +159,18 @@ const ChangePassword = () => {
 
           {/* Submit */}
           <Button
-            type="submit"
             variant="contained"
+            type="submit"
             fullWidth
-            className="bg-blue-500! hover:bg-blue-600! py-2.5! "
+            className="hover:bg-blue-500! py-2.5! rounded-lg! btn-org flex items-center justify-center gap-3"
+            disabled={!validateValue || isLoading}
           >
-            Change Password
+            {isLoading ? (
+              <CircularProgress color="inherit" />
+            ) : (
+              "Change Password"
+            )}
           </Button>
-
-          
         </form>
 
         {/* FOOTER */}
