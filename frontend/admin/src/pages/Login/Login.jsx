@@ -1,5 +1,5 @@
-import React from "react";
-import { NavLink } from "react-router-dom";
+import React, { useContext } from "react";
+import { NavLink, useNavigate } from "react-router-dom";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import { FcGoogle } from "react-icons/fc";
@@ -10,9 +10,110 @@ import InputAdornment from "@mui/material/InputAdornment";
 import IconButton from "@mui/material/IconButton";
 import { Link } from "react-router-dom";
 import { FiLogIn, FiUserPlus } from "react-icons/fi";
+import { MyContext } from "../../context/MyContext";
+import CircularProgress from "@mui/material/CircularProgress";
+import { postData } from "../../utils/api";
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [formFields, setFormFields] = useState({
+    email: "",
+    password: "",
+  });
+
+  const onChangeInput = (e) => {
+    const { name, value } = e.target;
+    setFormFields(() => {
+      return {
+        ...formFields,
+        [name]: value,
+      };
+    });
+  };
+
+  const { openAlertBox, isLoggedIn, setIsLoggedIn } = useContext(MyContext);
+
+  const history = useNavigate();
+
+  const validateValue = Object.values(formFields).every((el) => el);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    setIsLoading(true);
+
+    if (formFields.email === "") {
+      openAlertBox("error", "Please enter Email Id");
+      setIsLoading(false);
+      return;
+    }
+
+    if (formFields.password === "") {
+      openAlertBox("error", "Please enter Password");
+      setIsLoading(false);
+      return;
+    }
+
+    const res = await postData("/api/user/login", formFields, {
+      withCredentials: true,
+    });
+
+    // console.log(res);
+
+    if (res?.data?.success) {
+      openAlertBox("success", res.data.message);
+      localStorage.setItem("userEmail", formFields.email);
+
+      setFormFields({
+        email: "",
+        password: "",
+      });
+
+      localStorage.setItem("accessToken", res?.data?.data?.accessToken);
+      localStorage.setItem("refreshToken", res?.data?.data?.refreshToken);
+
+      setIsLoggedIn(true);
+
+      history("/");
+    } else {
+      openAlertBox("error", res?.data?.message || "Something went wrong");
+    }
+
+    setIsLoading(false);
+  };
+
+  const forgotPassword = async () => {
+    if (formFields.email === "") {
+      openAlertBox("error", "Please enter Email Id");
+      return;
+    }
+
+    try {
+      setIsLoading(true);
+
+      const res = await postData("/api/user/forgot-password", {
+        email: formFields.email,
+      });
+
+      if (res?.data?.success) {
+        openAlertBox("success", res.data.message || "OTP sent successfully!");
+
+        localStorage.setItem("userEmail", formFields.email);
+        localStorage.setItem("actionType", "forgot-password");
+
+        console.log(res);
+
+        history("/verifyEmail");
+      } else {
+        openAlertBox("error", res?.data?.message || "Something went wrong");
+      }
+    } catch (error) {
+      openAlertBox("error", "Server error");
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <section className="min-h-screen flex items-center justify-center  relative">
@@ -66,19 +167,27 @@ const Login = () => {
         </div>
 
         {/* FORM */}
-        <form className="flex flex-col gap-4 ">
+        <form className="flex flex-col gap-4 " onSubmit={handleSubmit}>
           <TextField
             label="Email Address"
             variant="outlined"
+            value={formFields.email}
+            disabled={isLoading === true ? true : false}
+            name="email"
             size="small"
             fullWidth
+            onChange={onChangeInput}
           />
           <TextField
             label="Password"
             type={showPassword ? "text" : "password"}
             variant="outlined"
+            value={formFields.password}
+            disabled={isLoading === true ? true : false}
+            name="password"
             size="small"
             fullWidth
+            onChange={onChangeInput}
             InputProps={{
               endAdornment: (
                 <InputAdornment position="end">
@@ -103,10 +212,16 @@ const Login = () => {
           </div>
 
           <Button
+            type="submit"
             variant="contained"
             className="bg-blue-500! text-white! text-[14px]! py-2! rounded-md!"
+            disabled={!validateValue}
           >
-            Sign In
+            {isLoading === true ? (
+              <CircularProgress color="inherit" />
+            ) : (
+              "Sign In"
+            )}
           </Button>
         </form>
 

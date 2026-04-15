@@ -1,4 +1,4 @@
-import React from "react";
+import React , {useEffect} from "react";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import ListItemText from "@mui/material/ListItemText";
@@ -19,6 +19,8 @@ import HomeSlideForm from "../pages/HomeSliderBanner/HomeSlideForm";
 import AddCategoryForm from "../pages/Category/AddCategoryForm";
 import AddSubCatList from "../pages/subCategory/AddSubCatList";
 
+import { fetchDataFromApi } from "../utils/api";
+
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
@@ -30,12 +32,38 @@ export const MyContext = createContext();
 const MyContextProvider = ({ children }) => {
   const [isSideBarOpen, setIsSideBarOpen] = useState(true);
 
-  const [isLoggedIn, setisLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const [isOpenFullScreenPanel, setIsOpenFullScreenPanel] = useState({
     open: false,
     model: "",
   });
+
+  // fixed useEffect
+  useEffect(() => {
+    const token = localStorage.getItem("accessToken");
+
+    if (!token) {
+      setIsLoggedIn(false);
+      return;
+    }
+
+    setIsLoggedIn(true);
+
+    fetchDataFromApi("/api/user/user-details").then((res) => {
+      if (res?.success === true) {
+        setUserData(res.data);
+      } else if (res?.error === true) {
+        // Token expired or invalid → clean up
+        localStorage.removeItem("accessToken");
+        localStorage.removeItem("refreshToken");
+
+        openAlertBox("error", "Your session is expired! , please login again!");
+        setIsLoggedIn(false);
+        setUserData(null);
+      }
+    });
+  }, []); // only on mount
 
   const openAlertBox = (status, msg) => {
     if (status === "success") {
@@ -52,7 +80,7 @@ const MyContextProvider = ({ children }) => {
         isSideBarOpen,
         setIsSideBarOpen,
         isLoggedIn,
-        setisLoggedIn,
+        setIsLoggedIn,
         isOpenFullScreenPanel,
         setIsOpenFullScreenPanel,
 

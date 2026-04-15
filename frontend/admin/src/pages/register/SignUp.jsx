@@ -65,7 +65,7 @@ const SignUp = () => {
 
     const res = await postData("/api/user/register", formFields);
 
-    console.log(res);
+    // console.log(res);
 
     if (res?.data?.success) {
       openAlertBox("success", res.data.message);
