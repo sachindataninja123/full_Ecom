@@ -7,7 +7,7 @@ import { ProductviewContext } from "../../context/MyContext";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import CircularProgress from "@mui/material/CircularProgress";
-import { editData, postData, uploadImage } from "../../utils/api";
+import { editData, postData, putData, uploadImage } from "../../utils/api";
 
 const MyProfile = () => {
   const [previews, setPreviews] = useState([]);
@@ -25,7 +25,6 @@ const MyProfile = () => {
   });
 
   const [changePassword, setchangePassword] = useState({
-    email: "",
     oldPassword: "",
     newPassword: "",
     confirmPassword: "",
@@ -145,36 +144,30 @@ const MyProfile = () => {
   const handleSubmitPasswordChange = async (e) => {
     e.preventDefault();
 
-    if (!changePassword.oldPassword) {
+    if (!changePassword.oldPassword)
       return openAlertBox("error", "Please enter old password!");
-    }
-
-    if (!changePassword.newPassword) {
+    if (!changePassword.newPassword)
       return openAlertBox("error", "Please enter new password!");
-    }
-
-    if (!changePassword.confirmPassword) {
+    if (!changePassword.confirmPassword)
       return openAlertBox("error", "Please enter confirm password!");
-    }
-
-    if (changePassword.confirmPassword !== changePassword.newPassword) {
+    if (changePassword.confirmPassword !== changePassword.newPassword)
       return openAlertBox("error", "Passwords do not match!");
-    }
 
     setIsLoading2(true);
 
     try {
       const payload = {
-        ...changePassword,
-        email: userData?.email,
+        oldPassword: changePassword.oldPassword,
+        newPassword: changePassword.newPassword,
+        confirmPassword: changePassword.confirmPassword,
       };
 
-      const res = await postData(`/api/user/reset-password`, payload);
+      const res = await putData(`/api/user/change-password`, payload);
       console.log(res);
 
-      if (res?.data?.success) {
-        openAlertBox("success", res?.data?.message);
-
+      if (res?.success) {
+        // was res?.success
+        openAlertBox("success", res.message);
         setchangePassword({
           email: userData?.email || "",
           oldPassword: "",
@@ -182,10 +175,12 @@ const MyProfile = () => {
           confirmPassword: "",
         });
       } else {
-        openAlertBox("error", res?.data?.message || "Something went wrong");
+        openAlertBox("error", res?.message || "Something went wrong"); //  was res?.message
       }
     } catch (error) {
-      openAlertBox("error", "Something went wrong");
+      console.log(error);
+
+      openAlertBox("error", error?.message || "Something went wrong");
     }
 
     setIsLoading2(false);

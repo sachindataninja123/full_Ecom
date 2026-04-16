@@ -20,6 +20,28 @@ export const postData = async (url, formData) => {
   }
 };
 
+export const putData = async (url, formData) => {
+  try {
+    const res = await fetch(apiUrl + url, {
+      method: "PUT",
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formData),
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) throw { status: res.status, ...data };
+
+    return data; // ✅ return the parsed body directly, not wrapped
+  } catch (error) {
+    if (error?.status) throw error;
+    throw new Error(`Network error: ${error.message}`);
+  }
+};
+
 export const fetchDataFromApi = async (url) => {
   try {
     const { data } = await axios.get(apiUrl + url, {

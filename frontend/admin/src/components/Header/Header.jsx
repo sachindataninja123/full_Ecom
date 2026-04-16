@@ -35,6 +35,7 @@ const Header = () => {
     isLoggedIn,
     setIsLoggedIn,
     userData,
+    openAlertBox
   } = useContext(MyContext);
 
   const handleClickMyAcc = (event) => {
