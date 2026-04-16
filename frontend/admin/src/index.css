@@ -64,3 +64,15 @@ input::-webkit-inner-spin-button {
 .textarea {
   @apply w-full h-28 border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500;
 }
+
+.react-international-phone-input {
+  width: 100% !important;
+}
+
+.react-international-phone-country-selector-button {
+  width: 55px !important;
+}
+
+.react-international-phone-input-container {
+  border : 1px solid rgba(0,0,0,0.3) !important;
+}

@@ -47,7 +47,7 @@ const auth = async (req, res, next) => {
         message: "Provide token",
         error: true,
         success: false,
-      });
+      });j3
     }
 
     const decode = jwt.verify(token, process.env.SECRET_KEY_ACCESS_TOKEN); // no need for await
@@ -56,7 +56,7 @@ const auth = async (req, res, next) => {
     next();
 
   } catch (error) {
-    // ✅ Handle specific JWT errors properly
+    //  Handle specific JWT errors properly
     if (error.name === "TokenExpiredError") {
       return res.status(401).json({
         message: "Token expired, please login again",

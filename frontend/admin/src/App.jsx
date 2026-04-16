@@ -22,6 +22,7 @@ import Orders from "./pages/Orders/Orders";
 import ForgotPassword from "./pages/forgotPassword/ForgotPassword";
 import VerifyAcc from "./pages/verifyAccount/VerifyAcc";
 import ChangePassword from "./pages/changePassword/ChangePassword";
+import AdminProfile from "./pages/Profile/AdminProfile";
 
 const Layout = () => {
   const { isSideBarOpen } = useContext(MyContext);
@@ -83,6 +84,10 @@ const App = () => {
         {
           path: "orders",
           element: <Orders />,
+        },
+        {
+          path: "/admin/myprofile",
+          element: <AdminProfile />,
         },
       ],
     },

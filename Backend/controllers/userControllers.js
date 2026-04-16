@@ -591,6 +591,90 @@ const resetPassword = async (req, res) => {
   }
 };
 
+// change password in profile section
+const changePassword = async (req, res) => {
+  try {
+    const { oldPassword, newPassword, confirmPassword } = req.body;
+    const userId = req.userId; // from your auth middleware
+
+    console.log("req.userId →", req.userId); // is it undefined?
+    console.log("req.body →", req.body);
+
+    // Validate all fields
+    if (!oldPassword || !newPassword || !confirmPassword) {
+      return res.status(400).json({
+        message: "oldPassword, newPassword and confirmPassword are required",
+        error: true,
+        success: false,
+      });
+    }
+
+    // New passwords must match
+    if (newPassword !== confirmPassword) {
+      return res.status(400).json({
+        message: "newPassword and confirmPassword must be same",
+        error: true,
+        success: false,
+      });
+    }
+
+    // Don't allow setting the same password
+    if (oldPassword === newPassword) {
+      return res.status(400).json({
+        message: "New password must be different from old password",
+        error: true,
+        success: false,
+      });
+    }
+
+    // Fetch user from DB
+    const user = await userModel.findById(userId);
+
+    console.log("user found →", user); // is it null?
+
+    if (!user) {
+      return res.status(404).json({
+        message: "User not found",
+        error: true,
+        success: false,
+      });
+    }
+
+    // Verify old password
+    const isOldPasswordCorrect = await bcryptjs.compare(
+      oldPassword,
+      user.password,
+    );
+
+    console.log("stored hash →", user?.password);
+
+    if (!isOldPasswordCorrect) {
+      return res.status(400).json({
+        message: "Old password is incorrect",
+        error: true,
+        success: false,
+      });
+    }
+
+    // Hash and save new password
+    const salt = await bcryptjs.genSalt(10);
+    user.password = await bcryptjs.hash(newPassword, salt);
+    await user.save();
+
+    return res.status(200).json({
+      message: "Password changed successfully",
+      error: false,
+      success: true,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      message: error.message || error,
+      error: true,
+      success: false,
+    });
+  }
+};
+
 //RefreshToken controller
 const refreshToken = async (req, res) => {
   try {
@@ -682,6 +766,7 @@ module.exports = {
   forgotpassword,
   verifyForgotPassword,
   resetPassword,
+  changePassword,
   refreshToken,
   userDetails,
 };

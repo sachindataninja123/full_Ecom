@@ -11,7 +11,7 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import Divider from "@mui/material/Divider";
 import { MyContext } from "../../context/MyContext";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { postData } from "../../utils/api";
 
 const StyledBadge = styled(Badge)(({ theme }) => ({
@@ -26,6 +26,8 @@ const StyledBadge = styled(Badge)(({ theme }) => ({
 const Header = () => {
   const [anchorElMyAcc, setAnchorElMyAcc] = useState(null);
   const open = Boolean(anchorElMyAcc);
+
+  const history = useNavigate();
 
   const {
     isSideBarOpen,
@@ -46,6 +48,7 @@ const Header = () => {
   const handleLogout = async () => {
     try {
       await postData("/api/user/logout");
+      history("/admin");
     } catch (error) {
       console.log("Logout API error:", error);
     } finally {
@@ -55,7 +58,7 @@ const Header = () => {
       localStorage.removeItem("userEmail");
       setIsLoggedIn(false);
       openAlertBox("success", "Logged out successfully");
-      history("/");
+      history("/admin");
     }
   };
 
@@ -125,9 +128,11 @@ const Header = () => {
 
             <Divider />
 
-            <MenuItem>
-              <CiUser className="mr-2" /> Profile
-            </MenuItem>
+            <Link to="/admin/myprofile">
+              <MenuItem>
+                <CiUser className="mr-2" /> Profile
+              </MenuItem>
+            </Link>
 
             <MenuItem onClick={handleLogout}>
               <VscSignOut className="mr-2" /> Logout
