@@ -3,8 +3,16 @@ const userModel = require("../models/user.model");
 
 const addAddressController = async (req, res) => {
   try {
-    const { address_line, city, state, pincode, country, mobile, status } =
-      req.body;
+    const {
+      address_line,
+      city,
+      state,
+      pincode,
+      country,
+      mobile,
+      status,
+      selected,
+    } = req.body;
 
     const userId = req.userId;
     // console.log(userId);
@@ -59,6 +67,7 @@ const addAddressController = async (req, res) => {
       mobile,
       status,
       userId,
+      selected,
     });
 
     const savedAddress = await address.save();
@@ -117,4 +126,9 @@ const getAddressController = async (req, res) => {
   }
 };
 
-module.exports = { addAddressController, getAddressController };
+
+
+module.exports = {
+  addAddressController,
+  getAddressController,
+};

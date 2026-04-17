@@ -33,6 +33,7 @@ const MyContextProvider = ({ children }) => {
   const [isSideBarOpen, setIsSideBarOpen] = useState(true);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userData, setUserData] = useState(null);
+  const [address, setAddress] = useState([]);
 
   const [isOpenFullScreenPanel, setIsOpenFullScreenPanel] = useState({
     open: false,
@@ -88,6 +89,10 @@ const MyContextProvider = ({ children }) => {
 
         //toaster message
         openAlertBox,
+
+        //address
+        address,
+        setAddress,
       }}
     >
       {children}

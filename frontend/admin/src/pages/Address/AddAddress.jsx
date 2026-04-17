@@ -15,11 +15,9 @@ import { MyContext } from "../../context/MyContext";
 import { useEffect } from "react";
 import CircularProgress from "@mui/material/CircularProgress";
 
-
 const AddAddress = () => {
   const [phone, setPhone] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-
 
   const { setIsOpenFullScreenPanel, openAlertBox, userData } =
     useContext(MyContext);
@@ -32,6 +30,7 @@ const AddAddress = () => {
     mobile: "",
     status: "",
     userId: userData?._id,
+    selected : false
   });
 
   useEffect(() => {
@@ -40,8 +39,6 @@ const AddAddress = () => {
       userId: formFields.userId,
     }));
   }, [userData]);
-
-
 
   const [status, setStatus] = useState("");
 

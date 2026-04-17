@@ -19,7 +19,6 @@ const AdminProfile = () => {
   const [userId, setUserId] = useState("");
   const [showPasswordChange, setshowPasswordChange] = useState(false);
   const [phone, setPhone] = useState("");
-  const [address, setAddress] = useState([]);
 
   const [isLoading, setIsLoading] = useState(false);
   const [isLoading2, setIsLoading2] = useState(false);
@@ -44,8 +43,14 @@ const AdminProfile = () => {
 
   const formdata = new FormData();
 
-  const { openAlertBox, userData, setUserData, setIsOpenFullScreenPanel } =
-    useContext(MyContext);
+  const {
+    openAlertBox,
+    userData,
+    setUserData,
+    setIsOpenFullScreenPanel,
+    setAddress,
+    address,
+  } = useContext(MyContext);
 
   const history = useNavigate();
 
