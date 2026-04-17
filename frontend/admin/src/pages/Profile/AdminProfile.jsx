@@ -33,7 +33,8 @@ const AdminProfile = () => {
 
   const formdata = new FormData();
 
-  const { openAlertBox, userData, setUserData } = useContext(MyContext);
+  const { openAlertBox, userData, setUserData, setIsOpenFullScreenPanel } =
+    useContext(MyContext);
 
   const history = useNavigate();
 
@@ -309,6 +310,19 @@ const AdminProfile = () => {
                     }));
                   }}
                 />
+              </div>
+
+              <br />
+              <div
+                className="flex items-center justify-center p-5 border  border-dashed hover:border-blue-500 bg-[#f1f1f1] hover:bg-[#e7f3f9] cursor-pointer"
+                onClick={() =>
+                  setIsOpenFullScreenPanel({
+                    open: true,
+                    model: "Add New Address",
+                  })
+                }
+              >
+                <span className="text-[15px] font-semibold">Add Address</span>
               </div>
 
               {/* Save Button */}

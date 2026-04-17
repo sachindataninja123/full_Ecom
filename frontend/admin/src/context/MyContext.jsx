@@ -18,8 +18,8 @@ import AddProducts from "../pages/Products/AddProducts";
 import HomeSlideForm from "../pages/HomeSliderBanner/HomeSlideForm";
 import AddCategoryForm from "../pages/Category/AddCategoryForm";
 import AddSubCatList from "../pages/subCategory/AddSubCatList";
-
 import { fetchDataFromApi } from "../utils/api";
+import AddAddress from "../pages/Address/AddAddress";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -137,6 +137,8 @@ const MyContextProvider = ({ children }) => {
         {isOpenFullScreenPanel?.model === "Add New Sub Category" && (
           <AddSubCatList />
         )}
+
+        {isOpenFullScreenPanel?.model === "Add New Address" && <AddAddress />}
       </Dialog>
 
       <Toaster />
