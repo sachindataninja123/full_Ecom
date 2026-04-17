@@ -9,14 +9,17 @@ import { PhoneInput } from "react-international-phone";
 import "react-international-phone/style.css";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
-import { postData } from "../../utils/api";
+import { fetchDataFromApi, postData } from "../../utils/api";
 import { useContext } from "react";
 import { MyContext } from "../../context/MyContext";
 import { useEffect } from "react";
+import CircularProgress from "@mui/material/CircularProgress";
+
 
 const AddAddress = () => {
   const [phone, setPhone] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+
 
   const { setIsOpenFullScreenPanel, openAlertBox, userData } =
     useContext(MyContext);
@@ -32,8 +35,13 @@ const AddAddress = () => {
   });
 
   useEffect(() => {
-    formFields.userId = userData?._id;
+    setFormFields((prev) => ({
+      ...prev,
+      userId: formFields.userId,
+    }));
   }, [userData]);
+
+
 
   const [status, setStatus] = useState("");
 
@@ -55,6 +63,7 @@ const AddAddress = () => {
       status: value,
     }));
   };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
@@ -96,20 +105,21 @@ const AddAddress = () => {
 
     try {
       const res = await postData(`/api/address/add`, formFields);
+      // console.log(res);
 
-      if (res?.success) {
-        //  editData returns data directly, not res.data
-        openAlertBox("success", res.message);
-        localStorage.setItem("userEmail", formFields.email);
-        setUserData(res.data); // update context with new data
+      if (res?.data?.success) {
+        openAlertBox("success", res.data.message);
+
         setIsOpenFullScreenPanel({
           open: false,
         });
       } else {
-        openAlertBox("error", res?.message || "Something went wrong");
+        openAlertBox("error", res?.data?.message || "Something went wrong");
       }
     } catch (error) {
-      openAlertBox("error", "Something went wrong");
+      console.log(error);
+
+      openAlertBox("error", error?.message || "Something went wrong");
     }
 
     setIsLoading(false);
@@ -215,13 +225,20 @@ const AddAddress = () => {
           </div>
         </div>
 
-        <div className="sticky bottom-0 mt-7 shadow-md">
+        <div className="mt-7">
           <Button
             type="submit"
             className="btn-blue w-full flex items-center justify-center gap-2"
+            disabled={isLoading}
           >
-            <FaCloudUploadAlt size={20} />
-            Publish and Submit
+            {isLoading ? (
+              <CircularProgress size={24} />
+            ) : (
+              <>
+                <FaCloudUploadAlt size={20} />
+                Publish and Submit
+              </>
+            )}
           </Button>
         </div>
       </form>

@@ -734,11 +734,12 @@ const refreshToken = async (req, res) => {
 const userDetails = async (req, res) => {
   try {
     const userId = req.userId;
-    console.log(userId);
+    // console.log(userId);
 
     const user = await userModel
       .findById(userId)
-      .select("-password -refresh_token");
+      .select("-password -refresh_token")
+      .populate("address_details");
 
     return res.status(200).json({
       message: "User Details",

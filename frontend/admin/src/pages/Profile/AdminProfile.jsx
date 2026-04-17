@@ -8,6 +8,10 @@ import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import { PhoneInput } from "react-international-phone";
 import "react-international-phone/style.css";
+import { fetchDataFromApi } from "../../utils/api";
+import Radio from "@mui/material/Radio";
+
+const label = { slotProps: { input: { "aria-label": "Checkbox demo" } } };
 
 const AdminProfile = () => {
   const [previews, setPreviews] = useState([]);
@@ -15,6 +19,7 @@ const AdminProfile = () => {
   const [userId, setUserId] = useState("");
   const [showPasswordChange, setshowPasswordChange] = useState(false);
   const [phone, setPhone] = useState("");
+  const [address, setAddress] = useState([]);
 
   const [isLoading, setIsLoading] = useState(false);
   const [isLoading2, setIsLoading2] = useState(false);
@@ -30,6 +35,12 @@ const AdminProfile = () => {
     newPassword: "",
     confirmPassword: "",
   });
+
+  const [selectedValue, setSelectedValue] = useState("");
+
+  const handleChange = (e) => {
+    setSelectedValue(e.target.value);
+  };
 
   const formdata = new FormData();
 
@@ -98,6 +109,12 @@ const AdminProfile = () => {
       history("/");
     }
   }, [history]);
+
+  useEffect(() => {
+    fetchDataFromApi(`/api/address/get`).then((res) => {
+      setAddress(res.data);
+    });
+  }, []);
 
   // Input Change profile
   const handleProfileChange = (e) => {
@@ -323,6 +340,40 @@ const AdminProfile = () => {
                 }
               >
                 <span className="text-[15px] font-semibold">Add Address</span>
+              </div>
+
+              <div className="flex flex-col gap-4 mt-4">
+                {address?.length > 0 ? (
+                  address.map((item) => (
+                    <label
+                      key={item._id}
+                      className={`flex items-start gap-3 border rounded-lg p-4 cursor-pointer transition-all 
+        ${
+          selectedValue === item._id
+            ? "border-blue-500 bg-blue-50"
+            : "border-gray-200 bg-white hover:border-gray-400"
+        }`}
+                    >
+                      <Radio
+                        checked={selectedValue === item._id}
+                        value={item._id}
+                        onChange={handleChange}
+                        name="address"
+                      />
+
+                      <div className="text-sm text-gray-700 leading-5">
+                        <p className="font-semibold">{item.address_line}</p>
+                        <p>
+                          {item.city}, {item.state} - {item.pincode}
+                        </p>
+                        <p>{item.country}</p>
+                        <p className="text-gray-500">{item.mobile}</p>
+                      </div>
+                    </label>
+                  ))
+                ) : (
+                  <p className="text-gray-500">No address found</p>
+                )}
               </div>
 
               {/* Save Button */}
