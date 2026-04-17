@@ -15,7 +15,7 @@ import CheckOut from "./pages/CheckOut/CheckOut";
 import MyProfile from "./pages/MyProfile/MyProfile";
 import MyList from "./pages/MyList/MyList";
 import MyOrders from "./pages/MyOrders/MyOrders";
-
+import Address from "./pages/MyProfile/Address";
 
 const App = () => {
   return (

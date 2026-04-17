@@ -8,12 +8,15 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import CircularProgress from "@mui/material/CircularProgress";
 import { editData, postData, putData, uploadImage } from "../../utils/api";
+import { PhoneInput } from "react-international-phone";
+import "react-international-phone/style.css";
 
 const MyProfile = () => {
   const [previews, setPreviews] = useState([]);
   const [uploading, setUploading] = useState(false);
   const [userId, setUserId] = useState("");
   const [showPasswordChange, setshowPasswordChange] = useState(false);
+  const [phone, setPhone] = useState("");
 
   const [isLoading, setIsLoading] = useState(false);
   const [isLoading2, setIsLoading2] = useState(false);
@@ -32,8 +35,9 @@ const MyProfile = () => {
 
   const formdata = new FormData();
 
-  const { openAlertBox, userData, setUserData } =
+  const { openAlertBox, userData, setUserData, setIsOpenFullScreenPanel } =
     useContext(ProductviewContext);
+
   const history = useNavigate();
 
   let selectedImages = [];
@@ -202,6 +206,9 @@ const MyProfile = () => {
         address_details: userData.address_details || "",
       });
 
+      const ph = `"${userData?.mobile}"`;
+      setPhone(ph);
+
       setchangePassword({
         email: userData?.email || "",
       });
@@ -292,14 +299,37 @@ const MyProfile = () => {
                   fullWidth
                 />
 
-                <TextField
-                  label="Phone"
-                  value={formFields.mobile}
-                  disabled={isLoading === true ? true : false}
-                  name="mobile"
-                  onChange={handleProfileChange}
-                  fullWidth
+                <PhoneInput
+                  defaultCountry="in"
+                  value={phone}
+                  disabled={isLoading}
+                  onChange={(phone) => {
+                    setPhone(phone);
+                    setFormFields((prev) => ({
+                      ...prev,
+                      mobile: phone,
+                    }));
+                  }}
+                  className="w-full"
+                  inputClassName="!w-full !h-[56px] !border !border-gray-300 !rounded-md !px-3 text-[16px]!"
+                  countrySelectorStyleProps={{
+                    buttonClassName:
+                      "!h-[56px] !border !border-gray-300 !rounded-l-md !bg-white hover:!bg-gray-100",
+                  }}
                 />
+              </div>
+
+              <br />
+              <div
+                className="flex items-center justify-center p-5 border  border-dashed hover:border-blue-500 bg-[#f1f1f1] hover:bg-[#e7f3f9] cursor-pointer"
+                onClick={() =>
+                  setIsOpenFullScreenPanel({
+                    open: true,
+                    model: "Add New Address",
+                  })
+                }
+              >
+                <span className="text-[15px] font-semibold">Add Address</span>
               </div>
 
               {/* Save Button */}

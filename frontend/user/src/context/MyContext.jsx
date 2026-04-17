@@ -6,12 +6,17 @@ import Slide from "@mui/material/Slide";
 import ProductZoom from "../components/ProductZoom/ProductZoom";
 import { IoMdClose } from "react-icons/io";
 import ProductInfo from "../components/ProductInfo/ProductInfo";
+import AppBar from "@mui/material/AppBar";
+import Toolbar from "@mui/material/Toolbar";
+import IconButton from "@mui/material/IconButton";
+import Typography from "@mui/material/Typography";
 
 import Drawer from "@mui/material/Drawer";
 import { Link } from "react-router-dom";
 import CartPanel from "../components/CartPanel/CartPanel";
 import toast, { Toaster } from "react-hot-toast";
 import { fetchDataFromApi } from "../utils/api";
+import Address from "../pages/MyProfile/Address";
 
 export const ProductviewContext = createContext();
 
@@ -29,6 +34,11 @@ const MyContext = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const [openCartPanel, setOpenCartPanel] = useState(false);
+
+  const [isOpenFullScreenPanel, setIsOpenFullScreenPanel] = useState({
+    open: false,
+    model: "",
+  });
 
   const toggleDrawer = (newOpen) => () => {
     setOpenCartPanel(newOpen);
@@ -120,8 +130,14 @@ const MyContext = ({ children }) => {
         isLoggedIn,
         setIsLoggedIn,
 
+        //userData
         userData,
         setUserData,
+
+        // dialog box opens
+        setIsOpenFullScreenPanel,
+        isOpenFullScreenPanel
+
       }}
     >
       {children}
@@ -183,6 +199,43 @@ const MyContext = ({ children }) => {
 
         <CartPanel />
       </Drawer>
+
+      <Dialog
+        fullScreen
+        open={isOpenFullScreenPanel.open}
+        onClose={() =>
+          setIsOpenFullScreenPanel({
+            open: false,
+          })
+        }
+        slots={{
+          transition: Transition,
+        }}
+      >
+        <AppBar sx={{ position: "relative" }}>
+          <Toolbar>
+            <IconButton
+              edge="start"
+              color="inherit"
+              onClick={() =>
+                setIsOpenFullScreenPanel({
+                  open: false,
+                })
+              }
+              aria-label="close"
+            >
+              <IoMdClose className="text-gray-800" />
+            </IconButton>
+            <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
+              <span className="text-gray-800">
+                {isOpenFullScreenPanel?.model}
+              </span>
+            </Typography>
+          </Toolbar>
+        </AppBar>
+
+        {isOpenFullScreenPanel?.model === "Add New Address" && <Address />}
+      </Dialog>
     </ProductviewContext.Provider>
   );
 };
