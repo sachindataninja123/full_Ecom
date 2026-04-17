@@ -8,6 +8,7 @@ const categoryRouter = require("../routes/categoryRoutes");
 const productRouter = require("../routes/productRoutes");
 const cartRouter = require("../routes/cartRoutes");
 const myListRouter = require("../routes/myListRoutes");
+const addressRouter = require("../routes/addressRoutes");
 
 const app = express();
 app.use(cors());
@@ -26,5 +27,6 @@ app.use("/api/category", categoryRouter);
 app.use("/api/product", productRouter);
 app.use("/api/cart", cartRouter);
 app.use("/api/myList", myListRouter);
+app.use("/api/address", addressRouter);
 
 module.exports = app;
