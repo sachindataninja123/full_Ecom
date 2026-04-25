@@ -46,7 +46,7 @@ const Home = () => {
 
       <CategorySlider />
 
-      {/* popular products section */}
+       {/* popular products section  */}
       <section className="bg-white py-8">
         <div className="container">
           <div className="flex items-center justify-between">

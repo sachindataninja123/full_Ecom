@@ -3,6 +3,8 @@ const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const morgan = require("morgan");
 const helmet = require("helmet");
+const path = require("path");
+
 const userRouter = require("../routes/userRoutes");
 const categoryRouter = require("../routes/categoryRoutes");
 const productRouter = require("../routes/productRoutes");
@@ -10,18 +12,24 @@ const cartRouter = require("../routes/cartRoutes");
 const myListRouter = require("../routes/myListRoutes");
 const addressRouter = require("../routes/addressRoutes");
 
-const app = express();
-app.use(cors());
+const app = express(); // create app once, at the top
 
-app.use(express.json());
-app.use(cookieParser());
-app.use(morgan());
+// ── Middleware (order matters!) ──────────────────────────────
 app.use(
-  helmet({
-    crossOriginResourcePolicy: false,
+  cors({
+    origin: "http://localhost:5173",
+    credentials: true, // needed for cookies
   }),
-);
+); // single cors() call handles preflight too
 
+app.use(express.json()); // parse JSON request bodies
+app.use(cookieParser()); // parse cookies
+app.use(morgan("dev")); //format string required
+app.use(helmet({ crossOriginResourcePolicy: false }));
+
+app.use("/uploads", express.static(path.join(__dirname, "../uploads")));
+
+// ── Routes ───────────────────────────────────────────────────
 app.use("/api/user", userRouter);
 app.use("/api/category", categoryRouter);
 app.use("/api/product", productRouter);

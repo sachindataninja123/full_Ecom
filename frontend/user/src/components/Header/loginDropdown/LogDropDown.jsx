@@ -7,7 +7,7 @@ import { FaRegUser } from "react-icons/fa";
 import { FaRegHeart } from "react-icons/fa";
 import { IoBagHandleOutline } from "react-icons/io5";
 import { MdOutlineLogout } from "react-icons/md";
-import { postData } from "../../../utils/api";
+import { fetchDataFromApi, postData } from "../../../utils/api";
 
 const LogDropDown = () => {
   const { isLoggedIn, setIsLoggedIn, openAlertBox, userData } =
@@ -18,7 +18,7 @@ const LogDropDown = () => {
   // Full fixed handleLogOut
   const handleLogOut = async () => {
     try {
-      await postData("/api/user/logout");
+      await fetchDataFromApi("/api/user/logout");
     } catch (error) {
       console.log("Logout API error:", error);
     } finally {

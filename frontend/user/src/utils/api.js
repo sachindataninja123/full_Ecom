@@ -5,8 +5,9 @@ export const postData = async (url, formData) => {
   try {
     const res = await fetch(apiUrl + url, {
       method: "POST",
+      credentials: "include", //  ADD THIS
       headers: {
-        Authorization: `Bearer ${localStorage.getItem("accessToken")}`, // 
+        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify(formData),
